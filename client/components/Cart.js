@@ -2,15 +2,15 @@ import React from "react";
 import { connect } from "react-redux";
 
 export default function Cart(props) {
-  const { cartItems, onAdd, onRemove } = props;
-  const itemsPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
+  const { cart, onAdd, onRemove } = props;
+  const itemsPrice = cart.reduce((a, c) => a + c.price * c.qty, 0);
   const tax = itemsPrice * 0.08;
   const totalPrice = itemsPrice + tax;
   return (
     <div>
       <h3>Cart Items</h3>
-      <div>{cartItems.length === 0 && <div>Cart is Empty</div>}</div>
-      {cartItems.map((item) => {
+      <div>{cart.length === 0 && <div>Cart is Empty</div>}</div>
+      {cart.map((item) => {
         return (
           <div key={item.id}>
             <img src={item.image}></img>
@@ -25,7 +25,7 @@ export default function Cart(props) {
           </div>
         );
       })}
-      {cartItems.length !== 0 && (
+      {cart.length !== 0 && (
         <>
           <hr></hr>
           <div className="row">
@@ -51,3 +51,20 @@ export default function Cart(props) {
     </div>
   );
 }
+
+/* make cart persist :
+this should be on the main page, the first page that our app will load on:
+
+const cartFromLocalStorage = JSON.parse(LocalStorage.getItem("cart") || "[]")
+
+function App(){
+    const [cart, setCart] = useState(cartfromLocalStorage);
+    
+useEffect(()=>{
+    localStorage.setItem("cart", JSON.stringify(cart));
+},[cart]);
+    
+}
+
+
+*/
