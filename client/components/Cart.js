@@ -1,11 +1,44 @@
 import React from "react";
-import { connect } from "react-redux";
+import { useState, useEffect } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
+
+const cartFromLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]");
 
 export default function Cart(props) {
-  const { cart, onAdd, onRemove } = props;
+  const [cart, setCart] = useState(cartFromLocalStorage);
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
   const itemsPrice = cart.reduce((a, c) => a + c.price * c.qty, 0);
   const tax = itemsPrice * 0.08;
   const totalPrice = itemsPrice + tax;
+  const onAdd = (product) => {
+    const exist = cart.find((item) => item.id === product.id);
+    if (exist) {
+      setCart(
+        cart.map((item) =>
+          item.id === product.id ? { ...exist, qty: exist.qty + 1 } : item
+        )
+      );
+    } else {
+      setCart([...cart, { ...product, qty: 1 }]);
+    }
+  };
+  const onRemove = (product) => {
+    const exist = cart.find((item) => item.id === product.id);
+    if (exist.qty === 1) {
+      setCart(cart.filter((item) => item.id !== product.id));
+    } else {
+      setCart(
+        cart.map((item) =>
+          item.id === product.id ? { ...exist, qty: exist.qty - 1 } : item
+        )
+      );
+    }
+  };
+
   return (
     <div>
       <h3>Cart Items</h3>
@@ -13,11 +46,15 @@ export default function Cart(props) {
       {cart.map((item) => {
         return (
           <div key={item.id}>
-            <img src={item.image}></img>
+            <img src={item.imageURL}></img>
             <div>{item.name}</div>
             <div>
-              <button onClick={() => onAdd(item)}>+</button>
-              <button onClick={() => onRemove(item)}>-</button>
+              <button onClick={() => onAdd(item)}>
+                <AddCircleRoundedIcon />
+              </button>
+              <button onClick={() => onRemove(item)}>
+                <DeleteIcon />
+              </button>
             </div>
             <div>
               {item.qty} x {item.price.toFixed(2)}
