@@ -3,19 +3,6 @@ import { connect } from 'react-redux';
 import { fetchSingleProduct } from '../store/singleProduct';
 import '../../public/singleProduct.css';
 
-const singleProductDummyData = [
-	{
-		id: 1,
-		name: 'Titanic',
-		price: 4.99,
-		description:
-			'a really sad movie about love. a ship sinks. based on true event.',
-		imageUrl:
-			'https://i.pinimg.com/originals/42/42/65/4242658e6f1b0d6322a4a93e0383108b.png',
-		quantity: 1,
-	},
-];
-
 export class SingleProduct extends Component {
 	componentDidMount() {
 		this.props.getProduct(this.props.match.params.id);
@@ -26,14 +13,14 @@ export class SingleProduct extends Component {
 
 		return (
 			<div className="product">
-				<div key={singleProductDummyData.id}>
+				<div key={singleProduct.id}>
 					<img
-						src={singleProductDummyData.imageUrl}
+						src={singleProduct.imageUrl}
 						style={{ width: '200px', height: '200px' }}
 					/>
-					<h1>{singleProductDummyData.name}</h1>
-					<div>{singleProductDummyData.description}</div>
-					<div>Price: ${singleProductDummyData.price}</div>
+					<h1>{singleProduct.name}</h1>
+					<div>{singleProduct.description}</div>
+					<div>Price: ${singleProduct.price}</div>
 					<button type="button" className="button">
 						Add To Cart
 					</button>
