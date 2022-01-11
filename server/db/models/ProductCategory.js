@@ -18,6 +18,5 @@ const ProductCategory = db.define('productCategory', {
 
 })
 
-module.exports = {
-ProductCategory
-}
+module.exports = ProductCategory
+

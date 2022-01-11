@@ -54,9 +54,7 @@ const User = db.define('user', {
   }
 })
 
-module.exports = {
-   User
-}
+module.exports = User
 
 
 /**
