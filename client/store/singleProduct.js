@@ -17,7 +17,7 @@ export const fetchSingleProduct = (id) => async (dispatch) => {
 	}
 };
 
-export default function singleProduct(singleProduct = {}, action) {
+export default function singleProductReducer(singleProduct = {}, action) {
 	switch (action.type) {
 		case SET_SINGLEPRODUCT:
 			return action.product;
