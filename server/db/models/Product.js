@@ -42,7 +42,9 @@ const Product = db.define('user', {
   }
 })
 
-module.exports = Product
+module.exports = {
+  Product
+}
 
 /**
  * instanceMethods
