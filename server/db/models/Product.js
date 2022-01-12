@@ -1,10 +1,10 @@
 const Sequelize = require('sequelize')
 const { Op } = require('sequelize')
-const { STRING, INTEGER, TEXT, DECIMAL } = Sequelize
+const { STRING, INTEGER, TEXT, DECIMAL, ARRAY } = Sequelize
 const db = require('../db')
 // Carly Note: Think about Pagination here down the line
 
-const Product = db.define('user', {
+const Product = db.define('product', {
   name: {
     type: STRING,
     allowNull: false
@@ -42,7 +42,7 @@ const Product = db.define('user', {
   }
 })
 
-module.exports = Product
+module.exports = {Product}
 
 
 /**
