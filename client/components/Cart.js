@@ -3,13 +3,15 @@ import { useState, useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 
-const cartFromLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]");
+const cartFromLocalStorage = JSON.parse(
+  window.localStorage.getItem("cart") || "[]"
+);
 
 export default function Cart(props) {
   const [cart, setCart] = useState(cartFromLocalStorage);
 
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
+    window.localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
   const itemsPrice = cart.reduce((a, c) => a + c.price * c.qty, 0);
   const tax = itemsPrice * 0.08;
