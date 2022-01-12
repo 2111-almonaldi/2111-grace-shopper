@@ -2,7 +2,7 @@
 const {generateMovies} = require('./generateMovies')
 const {generateUsers} = require('./generateUsers')
 
-const {db, models: {Cart, Order, Product, ProductCategory, User } } = require('../server/db')
+const {db, models: { Order, Product, ProductCategory, User } } = require('../server/db')
 
 /**
  * seed - this function clears the database, updates tables to
@@ -18,10 +18,7 @@ async function seed() {
   const products = await Product.bulkCreate(dataProducts)
   console.log(`seeded ${products.length} products`)
 
-  // Creating Users
-  const dataUsers = generateUsers()
-  const users = await User.bulkCreate(dataUsers)
-  console.log(`seeded ${users.length} users`)
+
 
   // Create Categories
   const dataCategories = [
@@ -52,6 +49,11 @@ async function seed() {
   // add function that iterates trough all the product objects, selects the "categories" array, filters by each category, and pushes that object into the appropriate cat?
   console.log(`seeded ${categories.length} categories`)
 
+  // Creating Users
+  const dataUsers = generateUsers()
+  const users = await User.bulkCreate(dataUsers)
+  console.log(`seeded ${users.length} users`)
+
   // Create Orders
   const dataOrders = []
   for (let i = 0; i < users.length; i++) {
@@ -64,18 +66,20 @@ async function seed() {
 
 
   // Create Associations: Products &&  Users
-
+    let productArr = [];
 
     for (let i = 0; i < users.length; i++) {
-    const user = users[i]
-    const userOrder = await user.getOrders();
+      let user = users[i]
+      let userOrder = await user.getOrders();
+      let num = Math.floor(Math.random() * (products.length + 1))
+      let pIdx = Math.floor(Math.random() * (products.length))
 
-    let num = 0;
-    while (num < (Math.floor(Math.random() * 10))) {
-      const pIdx = Math.floor(Math.random() * ((products.length + 1)))
-      await userOrder[0].setProducts([...products[pIdx]])
-      num++
-    }
+      while (num <= products.length) {
+        let orderProduct = products[pIdx]
+        productArr.push(orderProduct)
+        num += 1;
+      }
+      userOrder = {...userOrder, productArr}
    }
 
    console.log(`seeded successfully`);

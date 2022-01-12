@@ -28,30 +28,28 @@ module.exports = {Cart}
  */
 
 // // CARLY NOTE: FIGURE OUT HOW TO CREATE USER INSTANCE HERE!!!!
-// Cart.getUserItems = async function(userId, productId){
-//   // const user = await this.getUser();
-//   const order = await User.getOrders({
-//     include: [Order],
-//     where: {
-//       status: "PROCESSING"
-//     }
+
+// Cart.prototype.getUserItems = async function(userId, productId){
+//   const user = await User.findByPk(userId)
+//   const userOrder = await user.getOrders({
+//     where: { status: "PROCESSING"}
 //   })
-//   return order[0].getProducts(productId ? { where: { id: productId } } : {})
+//   return userOrder[0].getProducts(productId ? { where: { id: productId } } : {})
 // }
-// // Cart.addProducts = async function(products){
-// //   let order = await user.getOrders({
-// //     where: {
-// //       status: "PROCESSING"
-// //     }
-// //   });
-// //   order = order[0];
+// Cart.prototype.addProducts = async function(userId, products){
+//   const user = await User.findByPk(userId)
+//   const userOrderProducts = user.getUserItems()
+//   if (userOrderProducts.length) {
+//     await userOrderProducts[0].cart.cartQuantity + cartQuantity
+//   } else {
+//     const userOrder = await user.getOrders({
+//       where: { status: "PROCESSING"}
+//     })
+//     userOrder.addProduct(userOrderProducts[0])
+//   }
 
-// //   for (let i = 0; i < products.length; i++) {
-// //     const {id, cartQuantity } = products
-// //     const dbProduct = await Product.findByPk(id);
-// //     const products = await order
 
 
-// // Cart.updateCartQuanity = async (user, productId, newQuantity)
+// Cart.updateCartQuanity = async (user, productId, newQuantity)
 
 

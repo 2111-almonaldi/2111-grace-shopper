@@ -7,17 +7,17 @@ function generateMovies() {
 
   for (let id=1; id <= 50; id++) {
 
-    let idx = Math.floor(Math.random() * (movies.length + 1))
+    let idx = Math.floor(Math.random() * (movies.length))
     let obj = movies[idx]
 
       let name = obj["title"]
       let imageUrl = obj["posterUrl"]
       let description = obj["plot"]
-      let price = faker.commerce.price(5, 100, true, true)
-      let quantity = faker.datatype.number({ min: 1, max: 50})
-      let genre1 = obj["genres"].split(',')[0]
-      let genre2 = obj["genres"].split(',')[1]
-      let genre3 = obj["genres"].split(',')[2]
+      let price = faker.commerce.price(5, 100)
+      let quantity = Math.floor(Math.random() * 100)
+      let genre1 = obj["genres"][0]
+      let genre2 = obj["genres"][1]
+      let genre3 = obj["genres"][2]
       let categories = [{"name" : genre1}, {"name" : genre2}, {"name": genre3}]
 
       movieArr.push({

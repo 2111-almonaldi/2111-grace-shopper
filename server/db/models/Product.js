@@ -4,7 +4,7 @@ const { STRING, INTEGER, TEXT, DECIMAL, ARRAY } = Sequelize
 const db = require('../db')
 // Carly Note: Think about Pagination here down the line
 
-const Product = db.define('user', {
+const Product = db.define('product', {
   name: {
     type: STRING,
     allowNull: false
@@ -39,10 +39,6 @@ const Product = db.define('user', {
       notEmpty: true,
       min: 0
     }
-  },
-  categories: {
-    type: ARRAY,
-    allowNull: false
   }
 })
 

@@ -16,7 +16,7 @@ Order.belongsTo(User)
 
 // ORDER VS PRODUCT - Cart is the join table of product and order
 Order.belongsToMany(Product, {through: Cart})
-Product.belongsToMany(Product, {through: Cart})
+Product.belongsToMany(Order, {through: Cart})
 
 // USER VS PRODUCT - make a wishllist ? later on...
 User.belongsToMany(Product, {through: 'join-product-user', as: 'wishlist'});
