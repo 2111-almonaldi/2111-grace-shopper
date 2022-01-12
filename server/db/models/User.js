@@ -21,26 +21,26 @@ const User = db.define('user', {
   },
   email: {
     type: STRING,
-    allowNull: false,
+    // allowNull: false,
     unique: true,
     validate: {
       isEmail: true,
-      notEmpty: true
+      // notEmpty: true
     }
   },
   firstName: {
     type: STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
+    // allowNull: false,
+    // validate: {
+    //   notEmpty: true
+    // }
   },
   lastName: {
     type: STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
+    // allowNull: false,
+    // validate: {
+    //   notEmpty: true
+    // }
   },
   fullName: {
     type: VIRTUAL,
@@ -54,7 +54,7 @@ const User = db.define('user', {
   }
 })
 
-module.exports = User
+module.exports = {User}
 
 
 /**
@@ -72,8 +72,8 @@ User.prototype.generateToken = function() {
 /**
  * classMethods
  */
-User.authenticate = async function({ email, password }){
-    const user = await this.findOne({where: { email }})
+User.authenticate = async function({ username, password }){
+    const user = await this.findOne({where: { username }})
     if (!user || !(await user.correctPassword(password))) {
       const error = Error('Incorrect username/password');
       error.status = 401;
