@@ -15,7 +15,8 @@
     "test": "NODE_ENV=test JWT=a_secret mocha \"./server/**/*.spec.js\" \"./client/**/*.spec.js\" --require @babel/register --require esm ",
     "test:dev": "npm run test -- --watch",
     "test:dev:models": "npm run test:dev -- --grep=model",
-    "test:dev:routes": "npm run test:dev -- --grep=route"
+    "test:dev:routes": "npm run test:dev -- --grep=route",
+    "generateMovies": "node script/generateMovies.js"
   },
   "author": "Fullstack Academy of Code",
   "license": "MIT",
@@ -24,7 +25,11 @@
     "bcrypt": "^5.0.0",
     "compression": "^1.7.3",
     "express": "^4.16.4",
+    "faker": "^6.6.6",
+    "fs": "^0.0.1-security",
+    "g": "^2.0.1",
     "history": "^4.9.0",
+    "json-server": "^0.17.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
     "pg": "^8.5.1",
