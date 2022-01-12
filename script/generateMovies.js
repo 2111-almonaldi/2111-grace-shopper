@@ -1,25 +1,24 @@
 const movies = require('./rawMovies')
 const faker = require('faker')
 
-export default function generateMovies() {
+function generateMovies() {
 
   let movieArr = []
 
-  for (let id=1; id <= 5; id++) {
+  for (let id=1; id <= 50; id++) {
 
     let idx = Math.floor(Math.random() * (movies.length + 1))
     let obj = movies[idx]
 
-    if (obj["Type"] === 'movie') {
-      let name = obj["Title"]
-      let imageUrl = obj["Poster"]
-      let description = obj["Plot"]
+      let name = obj["title"]
+      let imageUrl = obj["posterUrl"]
+      let description = obj["plot"]
       let price = faker.commerce.price(5, 100, true, true)
       let quantity = faker.datatype.number({ min: 1, max: 50})
-      let genre1 = obj["Genre"].split(',')[0]
-      let genre2 = obj["Genre"].split(',')[1]
-      let genre3 = obj["Genre"].split(',')[2]
-      let categoryId = [genre1, genre2, genre3]
+      let genre1 = obj["genres"].split(',')[0]
+      let genre2 = obj["genres"].split(',')[1]
+      let genre3 = obj["genres"].split(',')[2]
+      let categories = [{"name" : genre1}, {"name" : genre2}, {"name": genre3}]
 
       movieArr.push({
         id,
@@ -28,12 +27,11 @@ export default function generateMovies() {
         price,
         description,
         quantity,
-        categoryId
+        categories
 
     });
   }
 
-  }
 
   const result =  []
   const map = new Map();
@@ -47,7 +45,7 @@ export default function generateMovies() {
         price: item.price,
         description: item.description,
         quantity: item.quantity,
-        categoryId: item.categoryId
+        categories: item.categories
       })
     }
   }
@@ -55,7 +53,7 @@ export default function generateMovies() {
 }
 
 
-
+module.exports = { generateMovies }
 
 
 

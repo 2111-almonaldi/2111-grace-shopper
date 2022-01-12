@@ -1,7 +1,7 @@
 const faker = require('faker');
 
 
-export default function generateUsers() {
+function generateUsers() {
 
   let users = []
 
@@ -27,8 +27,10 @@ export default function generateUsers() {
     });
   }
 
-  return  users
+  return users
 }
+
+module.exports = { generateUsers}
 
 
 

@@ -19,12 +19,12 @@ Order.belongsToMany(Product, {through: Cart})
 Product.belongsToMany(Product, {through: Cart})
 
 // USER VS PRODUCT - make a wishllist ? later on...
-User.belongsToMany(Product, {through: 'wishlist'});
-Product.belongsToMany(User, {through: 'wishlist'});
+User.belongsToMany(Product, {through: 'join-product-user', as: 'wishlist'});
+Product.belongsToMany(User, {through: 'join-product-user', as: 'wishlist'});
 
 // PRODUCT VS PRODUCTCATEGORY
-Product.belongsTo(ProductCategory);
-ProductCategory.hasMany(Product);
+Product.belongsToMany(ProductCategory, {through: 'join-product-category', as: 'categories'});
+ProductCategory.belongsToMany(Product, {through: 'join-product-category', as: 'categories'});
 
 
 module.exports = {
