@@ -25,22 +25,22 @@ const User = db.define('user', {
     unique: true,
     validate: {
       isEmail: true,
-      notEmpty: true
+      // notEmpty: true
     }
   },
   firstName: {
     type: STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
+    // allowNull: false,
+    // validate: {
+    //   notEmpty: true
+    // }
   },
   lastName: {
     type: STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
+    // allowNull: false,
+    // validate: {
+    //   notEmpty: true
+    // }
   },
   fullName: {
     type: VIRTUAL,
