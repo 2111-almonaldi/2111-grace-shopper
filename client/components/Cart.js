@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
+//import DeleteIcon from "@mui/icons-material/Delete";
+//import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 
 const cartFromLocalStorage = JSON.parse(
   window.localStorage.getItem("cart") || "[]"
@@ -52,10 +52,10 @@ export default function Cart(props) {
             <div>{item.name}</div>
             <div>
               <button onClick={() => onAdd(item)}>
-                <AddCircleRoundedIcon />
+                {/*<AddCircleRoundedIcon />*/} Add Item
               </button>
               <button onClick={() => onRemove(item)}>
-                <DeleteIcon />
+                {/*<DeleteIcon />*/} Delete Item
               </button>
             </div>
             <div>

@@ -2,18 +2,19 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../store";
-import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
+//import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 
 const Navbar = ({ handleClick, isLoggedIn }) => (
   <div>
-    <h1>FS-App-Template</h1>
+    <h1>MockBuster</h1>
     <nav>
       {isLoggedIn ? (
         <div>
           {/* The navbar will show these links after you log in */}
           <Link to="/home">Home</Link>
           <Link to="/cart">
-            <ShoppingCartRoundedIcon />
+            Cart
+            {/*<ShoppingCartRoundedIcon />*/}
           </Link>
           <a href="#" onClick={handleClick}>
             Logout
@@ -25,7 +26,8 @@ const Navbar = ({ handleClick, isLoggedIn }) => (
           <Link to="/login">Login</Link>
           <Link to="/signup">Sign Up</Link>
           <Link to="/cart">
-            <ShoppingCartRoundedIcon />
+            Cart
+            {/*<ShoppingCartRoundedIcon />*/}
           </Link>
         </div>
       )}
