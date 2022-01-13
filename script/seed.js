@@ -49,7 +49,7 @@ async function seed() {
   // add function that iterates trough all the product objects, selects the "categories" array, filters by each category, and pushes that object into the appropriate cat?
   console.log(`seeded ${categories.length} categories`)
 
-  // Creating Users
+  // Creating Users ** Create one admin, one signup, one login => await create user!!!
   const dataUsers = generateUsers()
   const users = await User.bulkCreate(dataUsers)
   console.log(`seeded ${users.length} users`)

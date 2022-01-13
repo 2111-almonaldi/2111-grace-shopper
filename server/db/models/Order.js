@@ -13,6 +13,8 @@ const Order =  db.define('order', {
   }
 })
 
+// add in skus -> product details / order details
+// orderdetails
 
 module.exports = {Order};
 
