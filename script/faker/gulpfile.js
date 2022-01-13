@@ -5,8 +5,8 @@ function defaultTask(cb) {
   cb();
 }
 
-exports.browser = require('./build/gulp-tasks/browser');
-exports.jsdoc = require('./build/gulp-tasks/jsdoc');
-exports.readme = require('./build/gulp-tasks/readme');
+exports.browser = require('faker/build/gulp-tasks/browser');
+exports.jsdoc = require('faker/build/gulp-tasks/jsdoc');
+exports.readme = require('faker/build/gulp-tasks/readme');
 
 exports.default = defaultTask

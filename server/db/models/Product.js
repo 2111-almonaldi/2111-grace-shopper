@@ -1,21 +1,21 @@
-const Sequelize = require('sequelize')
-const { Op } = require('sequelize')
-const { STRING, INTEGER, TEXT, DECIMAL, ARRAY } = Sequelize
-const db = require('../db')
+const Sequelize = require("sequelize");
+const { Op } = require("sequelize");
+const { STRING, INTEGER, TEXT, DECIMAL, ARRAY } = Sequelize;
+const db = require("../db");
 // Carly Note: Think about Pagination here down the line
 
-const Product = db.define('product', {
+const Product = db.define("product", {
   name: {
     type: STRING,
-    allowNull: false
+    allowNull: false,
   },
   imageUrl: {
     type: STRING,
     allowNull: false,
-    defaultValue: 'https://placeholder.jpg',
+    defaultValue: "https://placeholder.jpg",
     validate: {
-      isUrl: true
-    }
+      isUrl: true,
+    },
   },
   price: {
     type: DECIMAL,
@@ -23,12 +23,12 @@ const Product = db.define('product', {
     validate: {
       isDecimal: true,
       notEmpty: true,
-      min: 0.99
-    }
+      min: 0.99,
+    },
   },
   description: {
     type: TEXT,
-    allowNull: false
+    allowNull: false,
   },
   quantity: {
     type: INTEGER,
@@ -37,34 +37,25 @@ const Product = db.define('product', {
     validate: {
       isInt: true,
       notEmpty: true,
-      min: 0
-    }
-  }
-})
+      min: 0,
+    },
+  },
+});
 
-module.exports = {Product}
-
+module.exports = { Product };
 
 /**
  * instanceMethods
  */
 
-
 /**
  * classMethods
  */
-Product.updateInventory = async function(purchasedProducts){
+Product.updateInventory = async function (purchasedProducts) {
   for (let i = 0; i < purchasedProducts.length; i++) {
     let purchasedProduct = purchasedProducts[i];
     await purchasedProduct.update({
-      quantity: purchasedProduct.quantity - purchasedProduct.cart.cartQuantity
-    })
+      quantity: purchasedProduct.quantity - purchasedProduct.cart.cartQuantity,
+    });
   }
-}
-
-
-
-
-
-
-
+};

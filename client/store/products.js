@@ -1,30 +1,30 @@
-import axios from 'axios'
+import axios from "axios";
 
 //Action Types
-const GOT_PRODUCTS = 'GOT_PRODUCTS'
+const GOT_PRODUCTS = "GOT_PRODUCTS";
 
 //Action Creators
-const gotProducts = (data) => ({
+const gotProducts = (products) => ({
   type: GOT_PRODUCTS,
-  data
-})
+  products,
+});
 
 //Thunk Creator
 export const loadProducts = () => {
   return async (dispatch) => {
-    const { data } = await axios.get('/api/products')
-    dispatch(gotProducts(data))
-  }
-}
+    const { data } = await axios.get("/api/products");
+    dispatch(gotProducts(data));
+  };
+};
 
 //Reducer
-const initialState = []
+const initialState = [];
 
-export const productsReducer = (state = initialState, action) => {
+export default function productsReducer(state = initialState, action) {
   switch (action.type) {
     case GOT_PRODUCTS:
-      return action.data
+      return action.products;
     default:
-      return state
+      return state;
   }
 }
