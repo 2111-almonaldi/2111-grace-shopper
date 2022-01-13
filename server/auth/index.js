@@ -1,7 +1,9 @@
 const router = require("express").Router();
-const {
-  models: { User },
-} = require("../db");
+const { models: { User } } = require("../db");
+const { requireToken } = require("../authMiddleware")
+const cookieParser = require("cookie-parser");
+const cookieSecret = process.env.COOKIE_SECRET;
+router.use(cookieParser(cookieSecret));
 module.exports = router;
 
 router.post("/login", async (req, res, next) => {
