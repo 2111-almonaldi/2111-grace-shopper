@@ -2,16 +2,20 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../store";
+//import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 
 const Navbar = ({ handleClick, isLoggedIn }) => (
   <div>
-    <h1>FS-App-Template</h1>
+    <h1>MockBuster</h1>
     <nav>
       {isLoggedIn ? (
         <div>
           {/* The navbar will show these links after you log in */}
           <Link to="/home">Home</Link>
-          <Link to="/cart">Cart</Link>
+          <Link to="/cart">
+            Cart
+            {/*<ShoppingCartRoundedIcon />*/}
+          </Link>
           <a href="#" onClick={handleClick}>
             Logout
           </a>
@@ -21,7 +25,10 @@ const Navbar = ({ handleClick, isLoggedIn }) => (
           {/* The navbar will show these links before you log in */}
           <Link to="/login">Login</Link>
           <Link to="/signup">Sign Up</Link>
-          <Link to="/cart">Cart</Link>
+          <Link to="/cart">
+            Cart
+            {/*<ShoppingCartRoundedIcon />*/}
+          </Link>
         </div>
       )}
     </nav>
