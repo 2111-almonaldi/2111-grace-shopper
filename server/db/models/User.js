@@ -4,6 +4,7 @@ const db = require("../db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const axios = require("axios");
+const { JsonWebTokenError, TokenExpiredError } = require("jsonwebtoken")
 
 const SALT_ROUNDS = 5;
 
@@ -57,6 +58,16 @@ const User = db.define("user", {
 module.exports = { User };
 
 /**
+ * customErrors
+ */
+class UserNotFoundError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "UserNotFoundError"
+  }
+}
+
+/**
  * instanceMethods
  */
 User.prototype.correctPassword = function (candidatePwd) {
@@ -78,7 +89,8 @@ User.authenticate = async function ({ username, password }) {
     error.status = 401;
     throw error;
   }
-  return user.generateToken();
+  const token = await user.generateToken()
+  return { user, token }
 };
 
 User.findByToken = async function (token) {
@@ -86,13 +98,19 @@ User.findByToken = async function (token) {
     const { id } = await jwt.verify(token, process.env.JWT);
     const user = User.findByPk(id);
     if (!user) {
-      throw "Unable to find user";
+      throw new UserNotFoundError("Unable to find user")
     }
     return user;
   } catch (ex) {
-    const error = Error("bad token");
-    error.status = 401;
-    throw error;
+    if (ex instanceof JsonWebTokenError){
+      console.log(ex)
+    } else if (ex instanceof TokenExpiredError) {
+      console.log(ex)
+    } else {
+      console.log(ex)
+      ex.status = 401
+    }
+    throw ex;
   }
 };
 
