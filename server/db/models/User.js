@@ -10,7 +10,7 @@ const SALT_ROUNDS = 5;
 const User = db.define("user", {
   username: {
     type: STRING,
-    unique: true,
+    //   unique: true,
     allowNull: false,
   },
   password: {
@@ -21,26 +21,26 @@ const User = db.define("user", {
   },
   email: {
     type: STRING,
-    allowNull: false,
-    unique: true,
+    //    allowNull: false,
+    // unique: true,
     validate: {
       isEmail: true,
-      notEmpty: true,
+      //      notEmpty: true,
     },
   },
   firstName: {
     type: STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
+    //    allowNull: false,
+    //    validate: {
+    //      notEmpty: true,
+    //    },
   },
   lastName: {
     type: STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
+    //    allowNull: false,
+    //    validate: {
+    //      notEmpty: true,
+    //    },
   },
   fullName: {
     type: VIRTUAL,
@@ -65,7 +65,7 @@ User.prototype.correctPassword = function (candidatePwd) {
 };
 
 User.prototype.generateToken = function () {
-  return jwt.sign({ id: this.id }, process.env.JWT);
+  return jwt.sign({ id: this.id, username: this.username }, process.env.JWT);
 };
 
 /**
