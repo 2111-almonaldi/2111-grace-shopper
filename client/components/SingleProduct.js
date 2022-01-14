@@ -31,7 +31,7 @@ export class SingleProduct extends Component {
 }
 
 const mapState = (state) => ({
-	singleProduct: state.singleProductReducer.singleProduct,
+	singleProduct: state.singleProduct,
 });
 
 const mapDispatch = (dispatch) => ({

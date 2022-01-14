@@ -7,7 +7,7 @@ const {
 // GET /api/products
 router.get("/", async (req, res, next) => {
   try {
-    const products = await Product.findAll();
+    const products = await Product.findAll({ attributes: ['name', 'imageUrl', 'description', 'price'] });
     res.json(products);
   } catch (err) {
     next(err);
