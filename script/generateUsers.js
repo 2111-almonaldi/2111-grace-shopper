@@ -10,7 +10,7 @@ function generateUsers() {
       firstName: "Nicole",
       lastName: "DeSantis",
       fullName: "Nicole DeSantis",
-      isAdmin: "t",
+      isAdmin: false
     },
     {
       id: 2,
@@ -20,7 +20,7 @@ function generateUsers() {
       firstName: "Brendan",
       lastName: "Kennedy",
       fullName: "Brendan Kennedy",
-      isAdmin: "f",
+      isAdmin: false
     },
   ];
 

@@ -13,7 +13,7 @@ router.post("/login", async (req, res, next) => {
   try {
 
     const { username, password } = req.body;
-    const { user, token } = await User.authenticate({ username, password });
+    const { user, token } = await User.authenticate({ username, password});
     res.cookie("token", token, {
       sameSite: "strict",
       httpOnly: true,
@@ -84,10 +84,44 @@ router.post("/change", requireToken, async (req, res, next) => {
 
 router.get("/me", async (req, res, next) => {
   try {
-    res.send(await User.findByToken(req.headers.authorization));
+    const { firstName, lastName, username, email} = req.user
+    res.send({ loggedIn: true, firstName, lastName, username, email})
   } catch (ex) {
     next(ex);
   }
 });
 
+router.get("/info", requireToken, async (req, res, next) => {
+  try {
+    const { firstName, lastName, username, email} = req.user
+    res.send({ user: { firstName, lastName, username, email}})
+  } catch (ex) {
+    next(ex);
+  }
+})
+
+router.put("/update", requireToken, async (req, res, next) => {
+  try {
+    const { firstName, lastName, username, email} = req.body
+    await req.user.update({ firstName, lastName, username, email })
+    res.send({ user: { firstName, lastName, username, email} })
+  } catch (ex) {
+    next(ex);
+  }
+})
+
+router.get("/logout", (req, res, next) => {
+  try {
+    res.clearCookie("token", {
+      sameSite: "strict",
+      httpOnly: true,
+      signed: true
+    })
+    res.json({
+      loggedIn: false
+    })
+  } catch (ex) {
+    next(ex);
+  }
+})
 module.exports = router;

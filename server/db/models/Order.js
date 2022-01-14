@@ -51,13 +51,13 @@ module.exports = { Order };
 
 // // CARLY NOTE: FIGURE OUT HOW TO CREATE USER INSTANCE HERE!!!!
 
-// Cart.prototype.getUserItems = async function(userId, productId){
-//   const user = await User.findByPk(userId)
-//   const userOrder = await user.getOrders({
-//     where: { status: "PROCESSING"}
-//   })
-//   return userOrder[0].getProducts(productId ? { where: { id: productId } } : {})
-// }
+Order.prototype.getUserItems = async function(userId, productId){
+  const user = await User.findByPk(userId)
+  const userOrder = await user.getOrders({
+    where: { status: "PROCESSING"}
+  })
+  return userOrder[0].getProducts(productId ? { where: { id: productId } } : {})
+}
 // Cart.prototype.addProducts = async function(userId, products){
 //   const user = await User.findByPk(userId)
 //   const userOrderProducts = user.getUserItems()

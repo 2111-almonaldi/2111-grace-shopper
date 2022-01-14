@@ -52,7 +52,7 @@ module.exports = {
   devServer: {
   compress: true,
   inline: true,
-  port:
+  port: "8080",
     allowedHosts: [".amazonaws.com"]
   },
 };

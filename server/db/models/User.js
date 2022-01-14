@@ -5,7 +5,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const axios = require("axios");
 const { JsonWebTokenError, TokenExpiredError } = require("jsonwebtoken")
-const { jwtSecret } = require("../../config")
+const { jwtSecret } = require("../../config");
+const { user } = require("pg/lib/defaults");
 
 const SALT_ROUNDS = 5;
 
@@ -96,7 +97,7 @@ User.authenticate = async function ({ username, password }) {
 
 User.findByToken = async function (token) {
   try {
-    const { id } = await jwt.verify(token, process.env.JWT);
+    const { id } = await jwt.verify(token, jwtSecret);
     const user = User.findByPk(id);
     if (!user) {
       throw new UserNotFoundError("Unable to find user")
@@ -116,12 +117,11 @@ User.findByToken = async function (token) {
 };
 
 // Lookup user by email: If no user, create a user -> Look up order history!
-/*
+
 User.lookupByEmail = async function ({ firstName, lastName, username, email, password }) {
   try {
     let user = await User.findOne({
       where: {
-      email: email,
       username: username
       }
     });
@@ -142,7 +142,7 @@ User.lookupByEmail = async function ({ firstName, lastName, username, email, pas
     throw error
   }
 }
-*/
+
 
 /**
  * hooks
@@ -160,9 +160,18 @@ const emailToLowerCase = async (user) => {
   }
 };
 
+const usernameToLowerCase = async (user) => {
+  if (user.changed("username")) {
+    user.username = user.username.toLowerCase();
+  }
+};
+
 User.beforeCreate(hashPassword);
 User.beforeUpdate(hashPassword);
 User.beforeBulkCreate((users) => Promise.all(users.map(hashPassword)));
 
 User.beforeUpdate(emailToLowerCase);
 User.beforeBulkCreate((users) => Promise.all(users.map(emailToLowerCase)));
+
+User.beforeUpdate(usernameToLowerCase);
+User.beforeBulkCreate((users) => Promise.all(users.map(usernameToLowerCase)))

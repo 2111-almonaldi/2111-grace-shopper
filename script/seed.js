@@ -57,7 +57,7 @@ async function seed() {
   // Create Orders
   const dataOrders = []
   for (let i = 0; i < users.length; i++) {
-    const order = await Order.create({status: "PROCESSING"})
+    const order = await Order.create({status: "CREATED"})
     dataOrders.push(order)
     await order.setUser(users[i])
   }
@@ -65,7 +65,7 @@ async function seed() {
 
 
 
-  // Create Associations: Products &&  Users
+  // Create Associations: Products &&  Orders
     let productArr = [];
 
     for (let i = 0; i < users.length; i++) {

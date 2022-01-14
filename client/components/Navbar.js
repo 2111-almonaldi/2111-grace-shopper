@@ -1,10 +1,16 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { connect, useSelector } from "react-redux";
+import { Link as RouterLink, useHistory } from "react-router-dom";
 import { logout } from "../store";
 //import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 
-const Navbar = ({ handleClick, isLoggedIn }) => (
+const Navbar = ({ handleClick }) => {
+  // const dispatch = useDispatch()
+  // const history = useHistory()
+  // const isLoggedIn = useSelector((state) => state.auth.loggedIn);
+  // const isAdmin = useSelector((state) => state.auth.adminStatus);
+  // const name = useSelector((state) => state.auth.firstName);
+
   <div>
     <h1>MockBuster</h1>
     <nav>
@@ -16,9 +22,9 @@ const Navbar = ({ handleClick, isLoggedIn }) => (
             Cart
             {/*<ShoppingCartRoundedIcon />*/}
           </Link>
-          <a href="#" onClick={handleClick}>
+          <Link to="/logout" onClick={handleClick}>
             Logout
-          </a>
+          </Link>
         </div>
       ) : (
         <div>
@@ -34,7 +40,7 @@ const Navbar = ({ handleClick, isLoggedIn }) => (
     </nav>
     <hr />
   </div>
-);
+};
 
 /**
  * CONTAINER
