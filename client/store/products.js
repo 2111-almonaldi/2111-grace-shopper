@@ -13,7 +13,7 @@ const gotProducts = (products) => ({
 export const loadProducts = () => {
   return async (dispatch) => {
     try{
-      const { data } = await axios.get("/api/products");
+      const { data } = await axios.get(`/api/products`);
       dispatch(gotProducts(data));
     } catch(err){
       console.error(err)
