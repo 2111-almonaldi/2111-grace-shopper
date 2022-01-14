@@ -12,6 +12,7 @@ const Order = db.define("order", {
   },
   items: {
     type: ARRAY(Sequelize.JSON),
+    // allowNull: false,
   },
   subtotal: {
     type: VIRTUAL,
