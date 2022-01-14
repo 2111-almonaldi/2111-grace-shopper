@@ -4,7 +4,7 @@ import thunkMiddleware from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import auth from "./auth";
 import productsReducer from "./products";
-import axios from 'axios';
+import axios from "axios";
 import singleProductReducer from "./singleProduct";
 import cartReducer from "./cart";
 
@@ -15,13 +15,14 @@ const reducer = combineReducers({
   cart: cartReducer,
 });
 
-let middleware = [
-  thunkMiddleware.withExtraArgument({axios})
-]
+let middleware = [thunkMiddleware.withExtraArgument({ axios })];
 
-middleware = [...middleware, createLogger({ collapsed: true })]
+middleware = [...middleware, createLogger({ collapsed: true })];
 
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(...middleware)));
+const store = createStore(
+  reducer,
+  composeWithDevTools(applyMiddleware(...middleware))
+);
 
 export default store;
 export * from "./auth";
