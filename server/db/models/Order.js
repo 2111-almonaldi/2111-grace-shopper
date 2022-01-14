@@ -1,43 +1,43 @@
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 const { ENUM, ARRAY, VIRTUAL, STRING } = Sequelize;
-const db = require('../db');
-const { Product } = require('./Product');
-const { User } = require('./User');
+const db = require("../db");
+const { Product } = require("./Product");
+const { User } = require("./User");
 
-const Order = db.define('order', {
-	status: {
-		type: ENUM('CREATED', 'PROCESSING', 'CANCELLED', 'FULFILLED'),
-		allowNull: false,
-		defaultValue: 'CREATED',
-	},
-	items: {
-		type: ARRAY(Sequelize.JSON),
-		// allowNull: false,
-	},
-	subtotal: {
-		type: VIRTUAL,
-		get() {
-			if (this.items.length) {
-				return this.items
-					.map((item) => {
-						item.quantity * item.price;
-					})
-					.reduce((a, b) => a + b, 0);
-			}
-		},
-	},
-	customerName: {
-		type: STRING,
-	},
-	customerEmail: {
-		type: STRING,
-	},
-	customerAddress: {
-		type: STRING,
-	},
-	customerPhone: {
-		type: STRING,
-	},
+const Order = db.define("order", {
+  status: {
+    type: ENUM("CREATED", "PROCESSING", "CANCELLED", "FULFILLED"),
+    allowNull: false,
+    defaultValue: "CREATED",
+  },
+  items: {
+    type: ARRAY(Sequelize.JSON),
+    // allowNull: false,
+  },
+  subtotal: {
+    type: VIRTUAL,
+    get() {
+      if (this.items.length) {
+        return this.items
+          .map((item) => {
+            item.quantity * item.price;
+          })
+          .reduce((a, b) => a + b, 0);
+      }
+    },
+  },
+  customerName: {
+    type: STRING,
+  },
+  customerEmail: {
+    type: STRING,
+  },
+  customerAddress: {
+    type: STRING,
+  },
+  customerPhone: {
+    type: STRING,
+  },
 });
 
 // add in skus -> product details / order details
