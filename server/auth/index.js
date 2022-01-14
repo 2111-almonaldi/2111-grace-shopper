@@ -17,7 +17,7 @@ router.post("/login", async (req, res, next) => {
     res.cookie("token", token, {
       sameSite: "strict",
       httpOnly: true,
-      signed: true
+      // signed: true
     })
     // check that the user exists
     if (!user) {
@@ -52,11 +52,12 @@ router.post("/signup", async (req, res, next) => {
     res.cookie("token", token, {
       sameSite: "strcit",
       httpOnly: true,
-      signed: true
+      // signed: true
     })
     res.send({
       loggedIn: true,
-      firstName: user.firstName
+      firstName: user.firstName,
+      isAdmin: user.isAdmin
     })
     // res.send({ token: await user.generateToken() });
   } catch (err) {
@@ -82,6 +83,7 @@ router.post("/change", requireToken, async (req, res, next) => {
   }
 });
 
+// admin stuff: make sure isAdmin is sent also
 router.get("/me", async (req, res, next) => {
   try {
     const { firstName, lastName, username, email} = req.user

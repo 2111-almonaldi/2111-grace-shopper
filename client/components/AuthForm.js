@@ -16,9 +16,10 @@ const AuthForm = (props) => {
   const [lastName, setLastName] = useState("")
 
   const history = useHistory()
-  // const gotLoginAlert = useSelector((state) => state.auth.loginSuccess)
+  // const gotLoginAlert = useSelector((state) => state.auth.gotLogin)
 
   const dispatch = useDispatch()
+  // **
   const routeChange = () => {
     if (dispatch(gotLogin(true))) {
       let path = "/home"
@@ -40,12 +41,14 @@ const AuthForm = (props) => {
         routeChange()
       } else { throw new Error ("Authentication failed")}
     } else {
+      // "signup"
       const formName = evt.target.name;
       const username = evt.target.username.value;
       const password = evt.target.password.value;
       const email = evt.target.email.value;
       const firstName = evt.target.firstName.value;
       const lastName = evt.target.lastName.value;
+      // {username, password...} = credentials
       const successLogin =  dispatch(authenticate(formName, {username, password, firstName, email}))
         if (successLogin) {
           routeChange()
@@ -78,6 +81,7 @@ const AuthForm = (props) => {
       </div>
     );
   }
+  // "signup"
   return (
     <div>
       <form onSubmit={handleSubmit} name={name} >

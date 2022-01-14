@@ -11,11 +11,11 @@ const { Order } = require('./models/Order');
 //associations could go here!
 
 // USER VS ORDER
-User.hasMany(Order);
+User.hasMany(Order); //order
 Order.belongsTo(User);
 
 // ORDER VS PRODUCT
-Order.hasMany(Product);
+Order.hasMany(Product); //items
 Product.belongsTo(Order);
 
 // Order.belongsToMany(Product, { through: OrderDetails });

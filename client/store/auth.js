@@ -1,6 +1,7 @@
 import axios from "axios"
 import history from "../history"
 import { database } from "faker";
+// import Prototypes.object
 
 /**
  * STATE
@@ -47,7 +48,7 @@ export const me = () => async dispatch => {
 
       }
       else {
-        conole.log("Authentication failed")
+        console.log("Authentication failed")
       }
     } catch (err) {
       console.log(err)
@@ -56,7 +57,7 @@ export const me = () => async dispatch => {
 }
 
 
-export const authenticate = (credentials, method) => {
+export const authenticate = (method, credentials) => {
   return async (dispatch) => {
     try {
       const res = await axios.post(`/auth/${method}`, credentials)
@@ -191,7 +192,7 @@ export default function(state = initialState, action) {
     case GOT_LOGIN:
       return {
         ...state,
-        loginSuccess: action.bool
+        gotLogin: action.bool
       }
     case SET_ADMIN:
       return {

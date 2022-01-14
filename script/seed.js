@@ -57,15 +57,28 @@ async function seed() {
   // Create Orders
   const dataOrders = []
   for (let i = 0; i < users.length; i++) {
-    const order = await Order.create({status: "CREATED"})
-    dataOrders.push(order)
-    await order.setUser(users[i])
+    let uIdx = Math.floor(Math.random() * (users.length))
+    let num = Math.floor(Math.random() * (users.length + 1))
+    if (num % 2) {
+      const order = await Order.create({status: "CREATED"})
+      dataOrders.push(order)
+      await order.setUser(users[i])
+    } else {
+      const order = await Order.create({status: "PROCESSING"})
+      dataOrders.push(order)
+      await order.setUser(users[i])
+    }
+
   }
+  const orderCheckedout = dataOrders.filter(order => order.status === "PROCESSING")
+  const orderInCartOnly = dataOrders.filter(order => order.status === "CREATED")
   console.log(`seeded ${dataOrders.length} orders`)
-
-
+  console.log(`seeded ${orderCheckedout.length} orders with status ${orderCheckedout[0].status}`)
+  console.log(`seeded ${orderInCartOnly.length} orders with status ${orderInCartOnly[0].status}`)
 
   // Create Associations: Products &&  Orders
+  // make some of the users order status to equal processing
+  // order.getUseritems(userId, productId)
     let productArr = [];
 
     for (let i = 0; i < users.length; i++) {
@@ -80,6 +93,8 @@ async function seed() {
         num += 1;
       }
       userOrder = {...userOrder, productArr}
+
+      //
    }
 
    console.log(`seeded successfully`);

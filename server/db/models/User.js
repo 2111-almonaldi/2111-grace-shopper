@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const axios = require("axios");
 const { JsonWebTokenError, TokenExpiredError } = require("jsonwebtoken")
 const { jwtSecret } = require("../../config");
-const { user } = require("pg/lib/defaults");
+// const { user } = require("pg/lib/defaults");
 
 const SALT_ROUNDS = 5;
 
@@ -40,10 +40,7 @@ const User = db.define("user", {
   },
   lastName: {
     type: STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
+    allowNull: true,
   },
   fullName: {
     type: VIRTUAL,

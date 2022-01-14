@@ -6,11 +6,11 @@ import {loadProducts} from "../store/products"
  */
 export const Home = props => {
   const {username, firstName} = props
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   dispatch(loadProducts())
-  // })
+  useEffect(() => {
+    dispatch(loadProducts())
+  })
   return (
     <div>
       <h3>Welcome, {firstName} : {username}</h3>

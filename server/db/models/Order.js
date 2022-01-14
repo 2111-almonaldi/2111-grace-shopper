@@ -10,9 +10,9 @@ const Order = db.define('order', {
 		allowNull: false,
 		defaultValue: 'CREATED',
 	},
-	items: {
-		type: ARRAY(Sequelize.JSON)
-	},
+	// items: {
+	// 	type: ARRAY(Sequelize.JSON)
+	// },
 	subtotal: {
 		type: VIRTUAL,
 		get() {

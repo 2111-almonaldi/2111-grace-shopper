@@ -4,6 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import { logout } from "../store";
 //import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 
+
 const Navbar = ({ handleClick }) => {
   // const dispatch = useDispatch()
   // const history = useHistory()
