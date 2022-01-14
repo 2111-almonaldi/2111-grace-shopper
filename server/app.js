@@ -14,7 +14,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 // app.use(express.json())
 
-// cookie parsing middleware
+// // cookie parsing middleware
 app.use(cookieParser())
 
 // auth and api routes
@@ -25,6 +25,7 @@ app.get("/", (req, res)=> res.sendFile(path.join(__dirname, "..", "public/index.
 
 // static file-serving middleware
 app.use(express.static(path.join(__dirname, "..", "public")))
+app.use(express.urlencoded({ extended: true }))
 
 // any remaining requests with an extension (.js, .css, etc.) send 404
 app.use((req, res, next) => {
