@@ -13,7 +13,7 @@ const SALT_ROUNDS = 5;
 const User = db.define("user", {
   username: {
     type: STRING,
-    unique: true,
+    //   unique: true,
     allowNull: false,
   },
   password: {
@@ -24,7 +24,7 @@ const User = db.define("user", {
   },
   email: {
     type: STRING,
-    allowNull: false,
+       allowNull: false,
     unique: true,
     validate: {
       isEmail: true,

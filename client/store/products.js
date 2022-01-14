@@ -12,8 +12,12 @@ const gotProducts = (products) => ({
 //Thunk Creator
 export const loadProducts = () => {
   return async (dispatch) => {
-    const { data } = await axios.get("/api/products");
-    dispatch(gotProducts(data));
+    try{
+      const { data } = await axios.get(`/api/products`);
+      dispatch(gotProducts(data));
+    } catch(err){
+      console.error(err)
+    }
   };
 };
 

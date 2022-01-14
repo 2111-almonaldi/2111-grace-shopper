@@ -11,7 +11,6 @@ router.use(cookieParser(cookieSecret));
 
 router.post("/login", async (req, res, next) => {
   try {
-
     const { username, password } = req.body;
     const { user, token } = await User.authenticate({ username, password});
     res.cookie("token", token, {
@@ -48,9 +47,9 @@ router.post("/signup", async (req, res, next) => {
       lastName,
       password,
     });
-    const token = await user.generateToken();
+    const {token} = await user.generateToken();
     res.cookie("token", token, {
-      sameSite: "strcit",
+      sameSite: "strict",
       httpOnly: true,
       // signed: true
     })

@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
-import { AllProducts } from "./components/AllProducts";
-import { SingleProduct } from "./components/SingleProduct";
+import AllProducts from "./components/AllProducts";
+import SingleProduct from "./components/SingleProduct";
 import { Login, Signup } from "./components/AuthForm";
 import Home from "./components/Home";
 import Cart from "./components/Cart";
@@ -13,7 +13,7 @@ import { me } from "./store";
  */
 class Routes extends Component {
   componentDidMount() {
-    this.props.loadInitialData();
+    // this.props.loadInitialData();
   }
 
   render() {

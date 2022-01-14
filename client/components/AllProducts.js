@@ -3,9 +3,6 @@ import { connect } from "react-redux";
 import { loadProducts } from '../store/products';
 import { Link } from "react-router-dom";
 
-// Notice that we're exporting the AllStudents component twice. The named export
-// (below) is not connected to Redux, while the default export (at the very
-// bottom) is connected to Redux. Our tests should cover _both_ cases.
 export class AllProducts extends React.Component {
   componentDidMount () {
     this.props.loadProducts();
@@ -15,18 +12,18 @@ export class AllProducts extends React.Component {
     const { products } = this.props;
     
     return (
-      <div id='products'>
+      <div className='products'>
         {
-          products.map(product => {
+          products.map((product, index) => {
             return (
-              <div className='product' key={product.id}>
+              <div className='product' key={index}>
                 <img src={product.imageUrl} />
                 <div className='product-info'>
                     <h5>
-                      <Link className='page_links' to={`/products/${product.id}`}>{product.name}</Link>
+                      <Link className='page_links' to={`/products/${index+1}`}>{product.name}</Link>
                     </h5>
                   <p>{product.description}</p>
-                  <p>Price: {product.price}</p>
+                  <p>Price: ${product.price}</p>
                 </div>
                 
               </div>

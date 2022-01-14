@@ -6,14 +6,18 @@ import { database } from "faker";
 /**
  * STATE
  */
-// const TOKEN = "token"
+
 export const LOGGED_IN = true;
 export const NOT_LOGGED_IN = false;
+import axios from "axios";
+import history from "../history";
+
+const TOKEN = "token";
 
 /**
  * ACTION TYPES
  */
-// const SET_AUTH = "SET_AUTH"
+const SET_AUTH = "SET_AUTH"
 const SET_LOGIN = "SET_LOGIN"
 const SET_LOGOUT = "SET_LOGOUT"
 const SET_INFO = "SET_INFO"
@@ -25,7 +29,7 @@ const SET_ADMIN = "SET_ADMIN"
 /**
  * ACTION CREATORS
  */
-// const setAuth = auth => ({ type: SET_AUTH, auth })
+const setAuth = auth => ({ type: SET_AUTH, auth })
 const setLogin = (firstName, lastName, username, email) => ({  type: SET_LOGIN, firstName, lastName, username, email })
 const setLogOut = () => ({  type: SET_LOGOUT, firstName: "Guest"})
 const setInfo = ({ firstName, lastName, username, email}) => ({  type: SET_INFO, payload: { firstName, lastName, username, email}} )
@@ -53,8 +57,22 @@ export const me = () => async dispatch => {
     } catch (err) {
       console.log(err)
     }
-  }
-}
+const setAuth = (auth) => ({ type: SET_AUTH, auth });
+
+/**
+ * THUNK CREATORS
+ */
+// export const me = () => async (dispatch) => {
+//   const token = window.localStorage.getItem(TOKEN);
+//   if (token) {
+//     const res = await axios.get("/auth/me", {
+//       headers: {
+//         authorization: token,
+//       },
+//     });
+//     return dispatch(setAuth(res.data));
+//   }
+// };
 
 
 export const authenticate = (method, credentials) => {
@@ -113,6 +131,32 @@ export const getInfo = () => {
     }
   }
 }
+// export const authenticate =
+//   (username, password, method, email, firstName, lastName) =>
+//   async (dispatch) => {
+//     try {
+//       const res = await axios.post(`/auth/${method}`, {
+//         username,
+//         password,
+//         email,
+//         firstName,
+//         lastName,
+//       });
+//       window.localStorage.setItem(TOKEN, res.data.token);
+//       dispatch(me());
+//     } catch (authError) {
+//       return dispatch(setAuth({ error: authError }));
+//     }
+//   };
+
+// export const logout = () => {
+//   window.localStorage.removeItem(TOKEN);
+//   history.push("/login");
+//   return {
+//     type: SET_AUTH,
+//     auth: {},
+//   };
+// };
 
 export const updateInfoThunk = (updateInfo) => {
   return async (dispatch) => {
@@ -198,8 +242,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         isAdmin: action.status
-      }
-    default:
-      return state
-  }
-}
+//       }
+// export default function (state = {}, action) {
+//   switch (action.type) {
+//     case SET_AUTH:
+//       return action.auth;
+//     default:
+//       return state;
+//   }
+// }
