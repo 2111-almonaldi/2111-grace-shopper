@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { connect, useSelector } from "react-redux";
-import { Link as RouterLink, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { logout } from "../store";
 //import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 
 const Navbar = ({ handleClick }) => {
   // const dispatch = useDispatch()
   // const history = useHistory()
-  // const isLoggedIn = useSelector((state) => state.auth.loggedIn);
+  const isLoggedIn = useSelector((state) => state.auth.loggedIn);
   // const isAdmin = useSelector((state) => state.auth.adminStatus);
-  // const name = useSelector((state) => state.auth.firstName);
+  const name = useSelector((state) => state.auth.firstName);
 
+  return (
   <div>
     <h1>MockBuster</h1>
     <nav>
@@ -35,11 +36,13 @@ const Navbar = ({ handleClick }) => {
             Cart
             {/*<ShoppingCartRoundedIcon />*/}
           </Link>
+          <Link to="/products">Products</Link>
         </div>
       )}
     </nav>
     <hr />
   </div>
+  )
 };
 
 /**
@@ -47,7 +50,7 @@ const Navbar = ({ handleClick }) => {
  */
 const mapState = (state) => {
   return {
-    isLoggedIn: !!state.auth.id,
+    isLoggedIn: !!state.auth.loggedIn,
   };
 };
 

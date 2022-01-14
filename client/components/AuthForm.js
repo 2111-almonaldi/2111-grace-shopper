@@ -7,7 +7,7 @@ import { gotLogin } from "../store/auth"
  * COMPONENT
  */
 const AuthForm = (props) => {
-  const { name, displayName, error } = props;
+  const { name, displayName, error, handleSubmit } = props;
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [email, setEmail] = useState("")
@@ -16,25 +16,12 @@ const AuthForm = (props) => {
   const history = useHistory()
 
   const handleChange = () => {
-    let path = '/';
+    let path = '/home';
     history.push(path)
   }
-  const gotLoginAlert = useSelector((state) => state.auth.loginSuccess)
-  const dispatch = useDispatch()
+  // const gotLoginAlert = useSelector((state) => state.auth.loginSuccess)
+  // const dispatch = useDispatch()
 
-  const handleSubmit = async (evt) => {
-    evt.preventDefault()
-    if (name === "signup") {
-      const success = await dispatch(authenticate(name, {username, password, firstName, email }))
-      if (success) handleChange()
-      else console.log(error)
-    } else {
-      const success = await dispatch(authenticate(name, {username, password }))
-      if (success) handleChange()
-      else console.log(error)
-    }
-
-  }
 
   if (displayName === "Login") {
     return (
@@ -126,17 +113,30 @@ const mapSignup = (state) => {
   };
 };
 
-// const mapDispatch = (dispatch) => {
-//   return {
-//     handleSubmit(evt) {
-//       evt.preventDefault();
-//       const formName = evt.target.name;
-//       const username = evt.target.username.value;
-//       const password = evt.target.password.value;
-//       dispatch(authenticate(username, password, formName));
-//     },
-//   };
-// };
+const mapDispatch = (dispatch) => {
+  return {
+    handleSubmit(evt) {
+      evt.preventDefault();
+      if (evt.target.name === "login") {
+        const formName = evt.target.name;
+        const username = evt.target.username.value;
+        const password = evt.target.password.value;
+        dispatch(authenticate(username, password, formName));
+      } else {
+        const formName = evt.target.name;
+        const username = evt.target.username.value;
+        const password = evt.target.password.value;
+        const email = evt.target.email.value;
+        const firstName = evt.target.firstName.value;
+        const lastName = evt.target.lastName.value;
+        dispatch(
+          authenticate(username, password, formName, email, firstName, lastName)
+        );
+      }
+    },
+  };
+};
 
-export const Login = connect(mapLogin)(AuthForm);
-export const Signup = connect(mapSignup)(AuthForm);
+
+export const Login = connect(mapLogin, mapDispatch)(AuthForm);
+export const Signup = connect(mapSignup, mapDispatch)(AuthForm);

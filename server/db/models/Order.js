@@ -11,8 +11,7 @@ const Order = db.define('order', {
 		defaultValue: 'CREATED',
 	},
 	items: {
-		type: ARRAY(Sequelize.JSON),
-		allowNull: false,
+		type: ARRAY(Sequelize.JSON)
 	},
 	subtotal: {
 		type: VIRTUAL,
