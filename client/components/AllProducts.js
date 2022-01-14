@@ -20,7 +20,7 @@ export class AllProducts extends React.Component {
                 <img src={product.imageUrl} />
                 <div className='product-info'>
                     <h5>
-                      <Link className='page_links' to={`/products/${product.id}`}>{product.name}</Link>
+                      <Link className='page_links' to={`/products/${index+1}`}>{product.name}</Link>
                     </h5>
                   <p>{product.description}</p>
                   <p>Price: ${product.price}</p>
