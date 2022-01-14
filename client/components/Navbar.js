@@ -23,9 +23,9 @@ const Navbar = ({ handleClick }) => {
             Cart
             {/*<ShoppingCartRoundedIcon />*/}
           </Link>
-          <Link to="/logout" onClick={handleClick}>
+          <a href="#" onClick={handleClick}>
             Logout
-          </Link>
+          </a>
         </div>
       ) : (
         <div>
@@ -50,7 +50,7 @@ const Navbar = ({ handleClick }) => {
  */
 const mapState = (state) => {
   return {
-    isLoggedIn: !!state.auth.loggedIn,
+    isLoggedIn: state.auth.loggedIn
   };
 };
 

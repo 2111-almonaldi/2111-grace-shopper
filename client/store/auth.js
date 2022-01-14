@@ -25,7 +25,7 @@ const SET_ADMIN = "SET_ADMIN"
  * ACTION CREATORS
  */
 // const setAuth = auth => ({ type: SET_AUTH, auth })
-const setLogin = (firstName, lastName, username) => ({  type: SET_LOGIN, firstName, lastName, username })
+const setLogin = (firstName, lastName, username, email) => ({  type: SET_LOGIN, firstName, lastName, username, email })
 const setLogOut = () => ({  type: SET_LOGOUT, firstName: "Guest"})
 const setInfo = ({ firstName, lastName, username, email}) => ({  type: SET_INFO, payload: { firstName, lastName, username, email}} )
 const updateInfo = ({ firstName, lastName, username, email} ) => ({  type: UPDATE_INFO, payload: { firstName, lastName, username, email }})
@@ -36,13 +36,17 @@ const setAdmin = (status) => ({ type: SET_ADMIN, status })
  * THUNK CREATORS
  */
 export const me = () => async dispatch => {
-  return async(dispatch, getState) => {
+  return async(dispatch) => {
     try {
       const res = await axios.get("/auth/me")
       console.log(`res: ${res}`)
       if (res.data.loggedIn) {
         const { firstName, lastName, username, email, isAdmin} = res.data
-      } else {
+        dispatch(setLogin(firstName, lastName, username, email))
+        dispatch(setAdmin(isAdmin))
+
+      }
+      else {
         conole.log("Authentication failed")
       }
     } catch (err) {
@@ -52,7 +56,7 @@ export const me = () => async dispatch => {
 }
 
 
-export const authenticate = (credentials, method) => async dispatch => {
+export const authenticate = (credentials, method) => {
   return async (dispatch) => {
     try {
       const res = await axios.post(`/auth/${method}`, credentials)
@@ -76,7 +80,7 @@ export const authenticate = (credentials, method) => async dispatch => {
 }
 
 export const logout = () => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     try {
       const res = await axios.get("/auth/logout")
       if (!res.data.loggedIn) {

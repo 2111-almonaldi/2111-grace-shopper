@@ -13,7 +13,7 @@ export const Home = props => {
   // })
   return (
     <div>
-      <h3>Welcome, {firstName}</h3>
+      <h3>Welcome, {firstName} : {username}</h3>
     </div>
   )
 }
@@ -23,7 +23,8 @@ export const Home = props => {
  */
 const mapState = state => {
   return {
-    firstName: state.auth.firstName
+    firstName: state.auth.firstName,
+    userName: state.auth.userName
   }
 }
 

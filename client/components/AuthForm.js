@@ -3,27 +3,58 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import { authenticate } from "../store";
 import { useHistory } from "react-router-dom"
 import { gotLogin } from "../store/auth"
+import PropTypes from "prop-types"
 /**
  * COMPONENT
  */
 const AuthForm = (props) => {
-  const { name, displayName, error, handleSubmit } = props;
+  const { name, displayName, error} = props;
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [email, setEmail] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
+
   const history = useHistory()
-
-  const handleChange = () => {
-    let path = '/home';
-    history.push(path)
-  }
   // const gotLoginAlert = useSelector((state) => state.auth.loginSuccess)
-  // const dispatch = useDispatch()
+
+  const dispatch = useDispatch()
+  const routeChange = () => {
+    if (dispatch(gotLogin(true))) {
+      let path = "/home"
+      history.push(path)
+    } else {
+      let path = '/login';
+      history.push(path)
+    }
+  }
+
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    if (evt.target.name === "login") {
+      const formName = evt.target.name;
+      const username = evt.target.username.value;
+      const password = evt.target.password.value;
+      const successLogin =  dispatch(authenticate(formName, {username, password}));
+      if (successLogin) {
+        routeChange()
+      } else { throw new Error ("Authentication failed")}
+    } else {
+      const formName = evt.target.name;
+      const username = evt.target.username.value;
+      const password = evt.target.password.value;
+      const email = evt.target.email.value;
+      const firstName = evt.target.firstName.value;
+      const lastName = evt.target.lastName.value;
+      const successLogin =  dispatch(authenticate(formName, {username, password, firstName, email}))
+        if (successLogin) {
+          routeChange()
+        } else { throw new Error ("Authentication failed")}
+    }
+  }
 
 
-  if (displayName === "Login") {
+  if (name === "login") {
     return (
       <div>
         <form onSubmit={handleSubmit} name={name}>
@@ -113,30 +144,44 @@ const mapSignup = (state) => {
   };
 };
 
-const mapDispatch = (dispatch) => {
-  return {
-    handleSubmit(evt) {
-      evt.preventDefault();
-      if (evt.target.name === "login") {
-        const formName = evt.target.name;
-        const username = evt.target.username.value;
-        const password = evt.target.password.value;
-        dispatch(authenticate(username, password, formName));
-      } else {
-        const formName = evt.target.name;
-        const username = evt.target.username.value;
-        const password = evt.target.password.value;
-        const email = evt.target.email.value;
-        const firstName = evt.target.firstName.value;
-        const lastName = evt.target.lastName.value;
-        dispatch(
-          authenticate(username, password, formName, email, firstName, lastName)
-        );
-      }
-    },
-  };
-};
 
 
-export const Login = connect(mapLogin, mapDispatch)(AuthForm);
-export const Signup = connect(mapSignup, mapDispatch)(AuthForm);
+// const mapDispatch = (dispatch) => {
+//   return {
+//     handleSubmit(evt) {
+//       evt.preventDefault();
+//       if (evt.target.name === "login") {
+//         const formName = evt.target.name;
+//         const username = evt.target.username.value;
+//         const password = evt.target.password.value;
+//         const successLogin =  dispatch(authenticate(formName, {username, password}));
+//         if (successLogin) {
+//           routeChange()
+//         } else { throw new Error ("Authentication failed")}
+//       } else {
+//         const formName = evt.target.name;
+//         const username = evt.target.username.value;
+//         const password = evt.target.password.value;
+//         const email = evt.target.email.value;
+//         const firstName = evt.target.firstName.value;
+//         const lastName = evt.target.lastName.value;
+//         const successLogin =  dispatch(authenticate(formName, {username, password, firstName, email}))
+//           if (successLogin) {
+//             routeChange()
+//           } else { throw new Error ("Authentication failed")}
+//       }
+//     },
+//   };
+// };
+
+
+export const Login = connect(mapLogin)(AuthForm);
+export const Signup = connect(mapSignup)(AuthForm);
+
+// prop types
+AuthForm.propTypes = {
+  name: PropTypes.string.isRequired,
+  displayName: PropTypes.string.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  error: PropTypes.object
+}
