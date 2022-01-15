@@ -8,6 +8,44 @@ console.log(`Cookie Secret: ${cookieSecret}`);
 console.log(`JWT Secret: ${jwtSecret}`)
 router.use(cookieParser(cookieSecret));
 
+router.post("/signup", async (req, res, next) => {
+  try {
+    const user = await User.create(req.body)
+    // const user = await User.create({
+    //   username,
+    //   email,
+    //   firstName,
+    //   lastName,
+    //   password,
+    // });
+    await user.createOrder();
+    const token = await user.generateToken();
+    console.log(token);
+
+    res.cookie("token", token, {
+      sameSite: "strict",
+      httpOnly: true,
+      signed: false,
+      maxAge: 30 * 24 * 60 * 60,
+      path: "/"
+    })
+    res.send({
+      loggedIn: true,
+      firstName: user.firstName,
+      isAdmin: user.isAdmin,
+      username: user.username,
+      email: user.email,
+      lastName: user.lastName
+    })
+    // res.send({ token: await user.generateToken() });
+  } catch (err) {
+    if (err.name === "SequelizeUniqueConstraintError") {
+      res.status(401).send("User already exists");
+    } else {
+      next(err);
+    }
+  }
+});
 
 router.post("/login", async (req, res, next) => {
   try {
@@ -16,7 +54,9 @@ router.post("/login", async (req, res, next) => {
     res.cookie("token", token, {
       sameSite: "strict",
       httpOnly: true,
-      // signed: true
+      signed: false,
+      maxAge: 30 * 24 * 60 * 60,
+      path: "/"
     })
     // check that the user exists
     if (!user) {
@@ -28,8 +68,12 @@ router.post("/login", async (req, res, next) => {
     res.send({
       loggedIn: true,
       firstName: user.firstName,
-      isAdmin: user.isAdmin
+      isAdmin: user.isAdmin,
+      username: user.username,
+      email: user.email,
+      lastName: user.lastName
     });
+    console.log(user.isAdmin)
     }
   } catch (err) {
     res.status(401).send("Authentication failed")
@@ -37,36 +81,6 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
-router.post("/signup", async (req, res, next) => {
-  try {
-    const { username, email, firstName, lastName, password } = req.body;
-    const user = await User.create({
-      username,
-      email,
-      firstName,
-      lastName,
-      password,
-    });
-    const {token} = await user.generateToken();
-    res.cookie("token", token, {
-      sameSite: "strict",
-      httpOnly: true,
-      // signed: true
-    })
-    res.send({
-      loggedIn: true,
-      firstName: user.firstName,
-      isAdmin: user.isAdmin
-    })
-    // res.send({ token: await user.generateToken() });
-  } catch (err) {
-    if (err.name === "SequelizeUniqueConstraintError") {
-      res.status(401).send("User already exists");
-    } else {
-      next(err);
-    }
-  }
-});
 
 // see of current password is correct
 router.post("/change", requireToken, async (req, res, next) => {
@@ -83,7 +97,7 @@ router.post("/change", requireToken, async (req, res, next) => {
 });
 
 // admin stuff: make sure isAdmin is sent also
-router.get("/me", async (req, res, next) => {
+router.get("/me", requireToken, async (req, res, next) => {
   try {
     const { firstName, lastName, username, email} = req.user
     res.send({ loggedIn: true, firstName, lastName, username, email})

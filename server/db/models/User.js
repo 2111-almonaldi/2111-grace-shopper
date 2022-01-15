@@ -75,7 +75,7 @@ User.prototype.correctPassword = function (candidatePwd) {
 };
 
 User.prototype.generateToken = function () {
-  return jwt.sign({ id: this.id }, jwtSecret);
+  return jwt.sign({ id: this.id, username: this.username}, jwtSecret);
 };
 
 /**

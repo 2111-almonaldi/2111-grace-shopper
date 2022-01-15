@@ -1,7 +1,10 @@
 import axios from "axios"
 import history from "../history"
 import { database } from "faker";
-// import Prototypes.object
+// const cookieParser = require("cookie-parser");
+// const { cookieSecret, jwtSecret } = require('../config')
+// add cart and local cart (user vs guest) thunks/action creators
+// initCart()
 
 /**
  * STATE
@@ -9,8 +12,7 @@ import { database } from "faker";
 
 export const LOGGED_IN = true;
 export const NOT_LOGGED_IN = false;
-import axios from "axios";
-import history from "../history";
+
 
 const TOKEN = "token";
 
@@ -57,7 +59,9 @@ export const me = () => async dispatch => {
     } catch (err) {
       console.log(err)
     }
-const setAuth = (auth) => ({ type: SET_AUTH, auth });
+  }
+}
+
 
 /**
  * THUNK CREATORS
@@ -79,6 +83,7 @@ export const authenticate = (method, credentials) => {
   return async (dispatch) => {
     try {
       const res = await axios.post(`/auth/${method}`, credentials)
+      console.log(res.data)
       if (res.data.loggedIn) {
         const {firstName, lastName, username, email, isAdmin} = res.data
         dispatch(gotLogin(true))
@@ -86,9 +91,11 @@ export const authenticate = (method, credentials) => {
         dispatch(setAdmin(isAdmin))
         return true;
       } else {
+        // dispatch(me())
         console.log("Authentication failed")
         dispatch(gotLogin(false))
-        return false
+        // dispatch(setLogin(firstName, lastName, username, email))
+        // dispatch(setAdmin(isAdmin))
       }
     } catch (err) {
       // return dipatch(setAuth({error: authError}))
@@ -242,7 +249,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         isAdmin: action.status
-//       }
+    }
+    default:
+      return state;
+  }
+}
 // export default function (state = {}, action) {
 //   switch (action.type) {
 //     case SET_AUTH:

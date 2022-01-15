@@ -7,6 +7,7 @@ import PropTypes from "prop-types"
 /**
  * COMPONENT
  */
+// look into eager loading of username/name
 const AuthForm = (props) => {
   const { name, displayName, error} = props;
   const [username, setUsername] = useState("")
@@ -32,16 +33,7 @@ const AuthForm = (props) => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    if (evt.target.name === "login") {
-      const formName = evt.target.name;
-      const username = evt.target.username.value;
-      const password = evt.target.password.value;
-      const successLogin =  dispatch(authenticate(formName, {username, password}));
-      if (successLogin) {
-        routeChange()
-      } else { throw new Error ("Authentication failed")}
-    } else {
-      // "signup"
+    if (evt.target.name === "signup") {
       const formName = evt.target.name;
       const username = evt.target.username.value;
       const password = evt.target.password.value;
@@ -49,12 +41,22 @@ const AuthForm = (props) => {
       const firstName = evt.target.firstName.value;
       const lastName = evt.target.lastName.value;
       // {username, password...} = credentials
-      const successLogin =  dispatch(authenticate(formName, {username, password, firstName, email}))
+      console.log(firstName)
+      const successLogin =  dispatch(authenticate(formName, {username, password, firstName, lastName, email}))
         if (successLogin) {
           routeChange()
         } else { throw new Error ("Authentication failed")}
     }
+    if (evt.target.name === "login") {
+      const formName = evt.target.name;
+      const username = evt.target.username.value;
+      const password = evt.target.password.value;
+      const successLogin = dispatch(authenticate(formName, {username, password}));
+      if (successLogin) {
+        routeChange()
+      } else { throw new Error ("Authentication failed")}
   }
+}
 
 
   if (name === "login") {
@@ -178,14 +180,12 @@ const mapSignup = (state) => {
 //   };
 // };
 
-
-export const Login = connect(mapLogin)(AuthForm);
-export const Signup = connect(mapSignup)(AuthForm);
-
 // prop types
 AuthForm.propTypes = {
   name: PropTypes.string.isRequired,
   displayName: PropTypes.string.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  error: PropTypes.object
+  error: PropTypes.bool
 }
+
+export const Login = connect(mapLogin)(AuthForm);
+export const Signup = connect(mapSignup)(AuthForm);

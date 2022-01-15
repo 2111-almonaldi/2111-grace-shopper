@@ -10,7 +10,7 @@ function generateUsers() {
       firstName: "Nicole",
       lastName: "DeSantis",
       fullName: "Nicole DeSantis",
-      isAdmin: false
+      isAdmin: true
     },
     {
       id: 2,
