@@ -25,4 +25,14 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+// POST /api/products
+router.post("/", async (req, res, next) => {
+  try {
+    const product = await Product.create(req.body);
+    res.status(201).send(product);
+  } catch(err) {
+    next(err);
+  }
+})
+
 module.exports = router;
