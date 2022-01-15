@@ -1,5 +1,6 @@
 import axios from "axios";
 import history from "../history";
+import { database } from "faker";
 
 const TOKEN = "token";
 
@@ -29,7 +30,7 @@ export const me = () => async (dispatch) => {
 };
 
 export const authenticate =
-  (username, password, method, email, firstName, lastName) =>
+  (method, username, password, email, firstName, lastName) =>
   async (dispatch) => {
     try {
       const res = await axios.post(`/auth/${method}`, {
@@ -41,6 +42,7 @@ export const authenticate =
       });
       window.localStorage.setItem(TOKEN, res.data.token);
       dispatch(me());
+      history.push("/home");
     } catch (authError) {
       return dispatch(setAuth({ error: authError }));
     }
