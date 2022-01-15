@@ -1,21 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { addNewProduct } from '../store/products';
+import { addNewProduct, loadProducts } from '../store/products';
 
 class AddProduct extends React.Component {
   constructor() {
     super();
     this.state = {
-      name: '',
-      imageUrl: '',
-      price: '',
-      quantity,
-      description: ''
+      name: "",
+      imageUrl: "",
+      price: "",
+      quantity: "",
+      description: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount () {
+    this.props.loadProducts();
   }
   
   handleChange(evt) {
@@ -29,16 +33,19 @@ class AddProduct extends React.Component {
     this.props.addNewProduct({ ...this.state });
   }
 
-
   render() {
+    // const { products } = this.props;
+    // const itemsId = products.length + 2;
+    // console.log(this.props)
     const { name, imageUrl, price, quantity, description } = this.state;
+    // console.log(this.state)
     const { handleSubmit, handleChange} = this;
 
     return (
       <div className='form-container'>
         <form className='product-form' onSubmit={handleSubmit}>
           <div>
-          <label htmlFor='name'>Product Name</label><br/>
+          <label htmlFor='name'>Movie Name</label><br/>
           <input name='name' onChange={handleChange} value={name} />
           </div>
 
@@ -70,15 +77,23 @@ class AddProduct extends React.Component {
 
           <br/>
 
-          <Link className='update' to='/products'>Click Here To Cancel</Link>
+          <Link className='cancel' to='/products'>Click Here To Cancel</Link>
         </form>
       </div>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch, { history }) => ({
+// const mapState = (state) => {
+//     return {
+//         products: state.products
+//     }
+// }
+
+const mapDispatch = (dispatch, { history }) => ({
+    // loadProducts: () => dispatch(loadProducts()),
     addNewProduct: (product) => dispatch(addNewProduct(product, history))
 });
 
-export default connect(null, mapDispatchToProps)(AddProduct)
+// export default connect(mapState, mapDispatch)(AddProduct)
+export default connect(null, mapDispatch)(AddProduct)

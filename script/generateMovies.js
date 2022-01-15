@@ -5,7 +5,7 @@ function generateMovies() {
 
   let movieArr = []
 
-  for (let id=1; id <= 50; id++) {
+  for (let id=50; id <= 100; id++) {
 
     let idx = Math.floor(Math.random() * (movies.length))
     let obj = movies[idx]
