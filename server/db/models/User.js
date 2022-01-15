@@ -97,7 +97,6 @@ User.findByToken = async function (token) {
 };
 
 // Lookup user by email: If no user, create a user -> Look up order history!
-/*
 User.lookupByEmail = async function ({ firstName, lastName, username, email, password }) {
   try {
     let user = await User.findOne({
@@ -123,7 +122,7 @@ User.lookupByEmail = async function ({ firstName, lastName, username, email, pas
     throw error
   }
 }
-*/
+
 
 /**
  * hooks
@@ -141,9 +140,19 @@ const emailToLowerCase = async (user) => {
   }
 };
 
+const usernameToLowerCase = async (user) => {
+  if (user.changed("username")) {
+    user.username = user.username.toLowerCase();
+  }
+}
+
 User.beforeCreate(hashPassword);
 User.beforeUpdate(hashPassword);
 User.beforeBulkCreate((users) => Promise.all(users.map(hashPassword)));
 
 User.beforeUpdate(emailToLowerCase);
 User.beforeBulkCreate((users) => Promise.all(users.map(emailToLowerCase)));
+
+
+User.beforeUpdate(usernameToLowerCase)
+User.beforeBulkCreate((users) => Promise.all(users.map(usernameToLowerCase)));

@@ -80,6 +80,8 @@ async function seed() {
     userOrder = { ...userOrder, productArr };
   }
 
+  console.log(`${users[0].userOrder}`);
+
   console.log(`seeded successfully`);
 }
 

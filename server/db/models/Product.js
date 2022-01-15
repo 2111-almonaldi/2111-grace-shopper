@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 const { Op } = require("sequelize");
-const { STRING, INTEGER, TEXT, DECIMAL, ARRAY } = Sequelize;
+const { STRING, INTEGER, TEXT, FLOAT, ARRAY } = Sequelize;
 const db = require("../db");
 // Carly Note: Think about Pagination here down the line
 
@@ -12,13 +12,13 @@ const Product = db.define("product", {
   imageUrl: {
     type: STRING,
     allowNull: false,
-    defaultValue: "https://placeholder.jpg",
+    defaultValue: "/images/defaultProduct.jpg",
     validate: {
       isUrl: true,
     },
   },
   price: {
-    type: DECIMAL,
+    type: FLOAT,
     allowNull: false,
     validate: {
       isDecimal: true,
@@ -47,6 +47,13 @@ module.exports = { Product };
 /**
  * instanceMethods
  */
+ Product.prototype.decrementInventory = function (numPurchased) {
+  this.quantity = numPurchased = Math.max(this.quantity - numPurchased, 0);
+}
+
+Product.prototype.incrementInventory = function (numCanceled) {
+  this.quantity = Math.max(this.quantity + numCanceled, 0);
+}
 
 /**
  * classMethods
@@ -59,3 +66,19 @@ Product.updateInventory = async function (purchasedProducts) {
     });
   }
 };
+
+
+/**
+ * Sequelize helper functions
+ */
+
+// const filterByCategory = ({ categories }) => {
+//   if (categories) {
+//     categories = categories.split("|")
+//     return {
+//       where: {
+//         catego
+//       }
+//     }
+//   }
+// }
