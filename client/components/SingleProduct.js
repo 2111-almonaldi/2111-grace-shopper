@@ -32,6 +32,7 @@ export class SingleProduct extends Component {
 				</div>
 				<div>
 					<Link className="page_links" to={`/products/${singleProduct.id}/update`}>Update</Link>
+					<Link className="page_links" to={`/products/${singleProduct.id}/delete`}>Delete</Link>
 				</div>
 
 			</div>

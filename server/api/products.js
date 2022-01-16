@@ -48,4 +48,15 @@ router.put("/:id", async (req, res, next) => {
   }
 })
 
+// DELETE /api/products/:id
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const product = await Product.findByPk(req.params.id);
+    await product.destroy();
+    res.send(product);
+  } catch(err) {
+    next(err);
+  }
+})
+
 module.exports = router;
