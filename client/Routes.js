@@ -12,31 +12,61 @@ import { me } from "./store";
  * COMPONENT
  */
 class Routes extends Component {
+  constructor() {
+    super();
+    this.state = {
+      cart: [],
+    };
+  }
+
+  addToCart = (product) => {
+    const cartItems = this.state.cart.slice();
+    let inCart = false;
+    cartItems.forEach((item) => {
+      if (item.id === product.id) {
+        item.count++;
+        inCart = true;
+      }
+    });
+    if (!inCart) {
+      cartItems.push({ ...product, count: 1 });
+    }
+    this.setState({ cart: cartItems });
+  };
   componentDidMount() {
-    // this.props.loadInitialData();
+    this.props.loadInitialData();
   }
 
   render() {
     const { isLoggedIn } = this.props;
 
     return (
-        <div>
-          {isLoggedIn ? (
-            <Switch>
-              <Route path="/home" component={Home} />
-              <Route path="/cart" component={Cart} />
-            </Switch>
-          ) : (
-            <Switch>
-              <Route path="/" exact component={Login} />
-              <Route path="/login" component={Login} />
-              <Route path="/signup" component={Signup} />
-              <Route exact path="/products" component={AllProducts} />
-              <Route path="/products/:id" component={SingleProduct} />
-              <Route path="/cart" component={Cart} />
-            </Switch>
-          )}
-        </div>
+      <div>
+        {isLoggedIn ? (
+          <Switch>
+            <Route path="/home" component={Home} />
+            <Route
+              path="/cart"
+              render={(props) => <Cart {...props} cart={this.state.cart} />}
+            />
+            <Route exact path="/products" component={AllProducts} />
+            <Route path="/products/:id" component={SingleProduct} />
+          </Switch>
+        ) : (
+          <Switch>
+            <Route path="/" exact component={Login} />
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
+            <Route exact path="/home" component={Home} />
+            <Route exact path="/products" component={AllProducts} />
+            <Route path="/products/:id" component={SingleProduct} />
+            <Route
+              path="/cart"
+              render={(props) => <Cart {...props} cart={this.state.cart} />}
+            />
+          </Switch>
+        )}
+      </div>
     );
   }
 }

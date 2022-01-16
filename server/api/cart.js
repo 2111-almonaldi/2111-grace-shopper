@@ -8,7 +8,7 @@ router.get("/cart", async (req, res, next) => {
     const { id } = req.body;
     const cart = await Order.findOne({
       where: {
-        id: id,
+        userId: id,
       },
       include: [{ model: Order }],
     });

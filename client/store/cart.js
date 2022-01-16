@@ -1,22 +1,18 @@
 import axios from "axios";
 
 const SET_CART = "SET_CART";
-const UPDATE_CART = "UPDATE_CART";
+const ADD_TO_CART = "ADD_TO_CART";
+const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 
 export const setCart = (cart) => ({
   type: SET_CART,
   cart,
 });
 
-export const _updateCart = (cart) => ({
-  type: UPDATE_CART,
-  cart,
-});
-
-export const fetchCart = () => {
+export const fetchCart = (userId) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get("/api/cart");
+      const { data } = await axios.get("/api/cart", { userId });
       dispatch(setCart(data));
     } catch (error) {
       console.log(error);
