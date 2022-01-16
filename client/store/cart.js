@@ -2,6 +2,7 @@ import axios from "axios";
 
 const SET_CART = "SET_CART";
 const ADD_TO_CART = "ADD_TO_CART";
+const DECREASE_ITEM = "DECREASE_ITEM";
 const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 
 export const setCart = (cart) => ({
@@ -11,6 +12,11 @@ export const setCart = (cart) => ({
 
 export const addItem = (cart) => ({
   type: ADD_TO_CART,
+  cart,
+});
+
+export const _decreaseItem = (cart) => ({
+  type: DECREASE_ITEM,
   cart,
 });
 
@@ -46,6 +52,25 @@ export const addToCart = (product) => (dispatch, getState) => {
   window.localStorage.setItem("cart", JSON.stringify(cartItems));
 };
 
+export const decreaseItem = (product) => (dispatch, getState) => {
+  if (product.count === 1) {
+    const cartItems = getState()
+      .cart.cartItems.slice()
+      .filter((item) => item.name !== product.name);
+    dispatch(removeItem(cartItems));
+    window.localStorage.setItem("cart", JSON.stringify(cartItems));
+  } else {
+    const cartItems = getState().cart.cartItems.slice();
+    cartItems.forEach((item) => {
+      if (item.name === product.name) {
+        item.count--;
+      }
+    });
+    dispatch(_decreaseItem(cartItems));
+    window.localStorage.setItem("cart", JSON.stringify(cartItems));
+  }
+};
+
 export const removeFromCart = (product) => (dispatch, getState) => {
   const cartItems = getState()
     .cart.cartItems.slice()
@@ -63,6 +88,8 @@ export default function cartReducer(state = initialState, action) {
     case SET_CART:
       return { cartItems: action.cart };
     case ADD_TO_CART:
+      return { cartItems: action.cart };
+    case DECREASE_ITEM:
       return { cartItems: action.cart };
     case REMOVE_FROM_CART:
       return { cartItems: action.cart };

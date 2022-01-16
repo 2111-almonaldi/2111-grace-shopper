@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { setCart, removeFromCart } from "../store/cart";
+import {
+  addToCart,
+  setCart,
+  removeFromCart,
+  decreaseItem,
+} from "../store/cart";
 //import DeleteIcon from "@mui/icons-material/Delete";
 //import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 
@@ -35,7 +40,12 @@ export class Cart extends Component {
                     <div>
                       <div>{item.name}</div>
                       <div>
-                        {item.price} x {item.count}{" "}
+                        <button onClick={() => this.props.remove(item)}>
+                          -
+                        </button>
+                        {item.count}{" "}
+                        <button onClick={() => this.props.add(item)}>+</button>{" "}
+                        <strong>{item.price}</strong>
                         <button onClick={() => this.props.removeFromCart(item)}>
                           Remove
                         </button>
@@ -82,6 +92,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     removeFromCart: (product) => dispatch(removeFromCart(product)),
+    add: (product) => dispatch(addToCart(product)),
+    remove: (product) => dispatch(decreaseItem(product)),
     clearCart: () => dispatch(setCart([])),
   };
 };
