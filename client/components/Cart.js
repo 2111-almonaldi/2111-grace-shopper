@@ -43,7 +43,7 @@ export class Cart extends Component {
                       <div>
                         <button onClick={() => this.props.remove(item)}>
                           -
-                        </button>
+                        </button>{" "}
                         {item.count}{" "}
                         <button onClick={() => this.props.add(item)}>+</button>{" "}
                         <strong>{item.price}</strong>
