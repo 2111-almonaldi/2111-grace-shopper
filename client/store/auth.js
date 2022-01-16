@@ -1,10 +1,9 @@
 import axios from "axios"
 import history from "../history"
 import { database } from "faker";
-// const cookieParser = require("cookie-parser");
-// const { cookieSecret, jwtSecret } = require('../config')
-// add cart and local cart (user vs guest) thunks/action creators
-// initCart()
+import { getErrors } from "./errors"
+import {postCookie} from "../utils/csrf"
+
 
 /**
  * STATE
@@ -14,7 +13,7 @@ export const LOGGED_IN = true;
 export const NOT_LOGGED_IN = false;
 
 
-const TOKEN = "token";
+
 
 /**
  * ACTION TYPES
@@ -27,12 +26,12 @@ const UPDATE_INFO = "UPDATE_INFO"
 const CHANGE_PASSWORD = "CHANGE_PASSWORD"
 const GOT_LOGIN = "GOT_LOGIN"
 const SET_ADMIN = "SET_ADMIN"
-
+const REGISTER_USER = "REGISTER_USER"
 /**
  * ACTION CREATORS
  */
-const setAuth = auth => ({ type: SET_AUTH, auth })
-const setLogin = (firstName, lastName, username, email) => ({  type: SET_LOGIN, firstName, lastName, username, email })
+const setLogin = (firstName, lastName, username, email) => ({  type: SET_LOGIN, firstName, lastName, username, email})
+const registerNewUser = (firstName, lastName, username, email) => ({ type: REGISTER_USER, firstName, lastName, username, email})
 const setLogOut = () => ({  type: SET_LOGOUT, firstName: "Guest"})
 const setInfo = ({ firstName, lastName, username, email}) => ({  type: SET_INFO, payload: { firstName, lastName, username, email}} )
 const updateInfo = ({ firstName, lastName, username, email} ) => ({  type: UPDATE_INFO, payload: { firstName, lastName, username, email }})
@@ -42,6 +41,10 @@ const setAdmin = (status) => ({ type: SET_ADMIN, status })
 /**
  * THUNK CREATORS
  */
+
+
+
+
 export const me = () => async dispatch => {
   return async(dispatch) => {
     try {
@@ -89,18 +92,19 @@ export const authenticate = (method, credentials) => {
         dispatch(gotLogin(true))
         dispatch(setLogin(firstName, lastName, username, email))
         dispatch(setAdmin(isAdmin))
-        return true;
-      } else {
-        // dispatch(me())
+        // user registration success
+      } else if (res.data.token && !res.data.loggedIn) {
+        const {firstName, lastName,username, email} = res.data
+        dispatch(registerNewUser(firstName, lastName, email, username))
+      }
+      else {
+
+      }
         console.log("Authentication failed")
         dispatch(gotLogin(false))
-        // dispatch(setLogin(firstName, lastName, username, email))
-        // dispatch(setAdmin(isAdmin))
       }
-    } catch (err) {
-      // return dipatch(setAuth({error: authError}))
-      dispatch(gotLogin(false))
-      console.log(err)
+      catch (err) {
+      err.response && dispatch(getErrors(error.response.data))
     }
   }
 }
@@ -110,13 +114,13 @@ export const logout = () => {
     try {
       const res = await axios.get("/auth/logout")
       if (!res.data.loggedIn) {
+        window.localStorage.removeItem("token")
         dispatch(setLogout())
-        dispatch(gotLogin(false))
-      } else {
-        console.log("Failed to log out user")
+        history.push("/login")
       }
+
     } catch (err) {
-      console.log(err)
+      err.response && dispatch(getErrors(error.response.data))
     }
   }
 }

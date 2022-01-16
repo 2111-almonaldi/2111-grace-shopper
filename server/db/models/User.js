@@ -74,6 +74,10 @@ User.prototype.correctPassword = function (candidatePwd) {
   return bcrypt.compare(candidatePwd, this.password);
 };
 
+User.prototype.isInvalidField = function (receivedFields, validFields) {
+  return receivedFields.some(field => validFields.indexOf(field) === -1);
+}
+
 User.prototype.generateToken = function () {
   return jwt.sign({ id: this.id, username: this.username}, jwtSecret);
 };

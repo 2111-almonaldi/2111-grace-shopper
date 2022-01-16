@@ -3,18 +3,20 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import { authenticate } from "../store";
 import { useHistory } from "react-router-dom"
 import { gotLogin } from "../store/auth"
+import { getErrors, resetErrors } from "../store/errors"
 import PropTypes from "prop-types"
 /**
  * COMPONENT
  */
 // look into eager loading of username/name
 const AuthForm = (props) => {
-  const { name, displayName, error} = props;
+  const { name, displayName, errors} = props;
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [email, setEmail] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
+
 
   const history = useHistory()
   // const gotLoginAlert = useSelector((state) => state.auth.gotLogin)
@@ -30,6 +32,7 @@ const AuthForm = (props) => {
       history.push(path)
     }
   }
+
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -58,6 +61,11 @@ const AuthForm = (props) => {
   }
 }
 
+  componentDidUpdate(prevProps) {
+    if(!_.isEqual(prevProps.errors, this.props.errors)) {
+      getErrors(this.state.errors)
+    }
+  }
 
   if (name === "login") {
     return (
@@ -138,7 +146,7 @@ const mapLogin = (state) => {
   return {
     name: "login",
     displayName: "Login",
-    error: state.auth.error,
+    errors: state.errors
   };
 };
 
@@ -146,7 +154,7 @@ const mapSignup = (state) => {
   return {
     name: "signup",
     displayName: "Sign Up",
-    error: state.auth.error,
+    errors: state.errors
   };
 };
 

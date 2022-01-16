@@ -6,11 +6,12 @@ import auth from "./auth";
 import productsReducer from "./products";
 import axios from 'axios';
 import singleProductReducer from "./singleProduct";
-
+import errorReducer from "./errors"
 const reducer = combineReducers({
   auth,
   products: productsReducer,
   singleProduct: singleProductReducer,
+  errorReducer
 });
 
 let middleware = [
