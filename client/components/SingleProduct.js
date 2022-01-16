@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchSingleProduct } from '../store/singleProduct';
+import { fetchSingleProduct, setSingleProduct } from '../store/singleProduct';
 import '../../public/singleProduct.css';
 
 export class SingleProduct extends Component {
 	componentDidMount() {
 		this.props.getProduct(this.props.match.params.id);
 	}
+
+	componentWillUnmount() {
+		this.props.clearProduct();
+	  }
 
 	render() {
 		const { singleProduct } = this.props;
@@ -41,6 +45,7 @@ const mapState = (state) => ({
 
 const mapDispatch = (dispatch) => ({
 	getProduct: (id) => dispatch(fetchSingleProduct(id)),
+    clearProduct: () => dispatch(setSingleProduct({}))
 });
 
 export default connect(mapState, mapDispatch)(SingleProduct);
