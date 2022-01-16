@@ -43,9 +43,9 @@ export const addNewProduct = (data, history) => {
 
 export const updateProduct = (product, history) => {
   return async (dispatch) => {
-    const { data: updated } = await axios.put(`api/products/${product.id}`, product);
-    dispatch(updateProduct(updated));
-    history.push(`/products`);
+    const { data: updated } = await axios.put(`/api/products/${product.id}`, product);
+    dispatch(changeProduct(updated));
+    history.push(`/products/${product.id}`);
   }
 }
 

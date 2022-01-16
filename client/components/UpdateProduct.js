@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { updateProduct } from '../redux/campuses';
+import { updateProduct } from '../store/products';
 import { setSingleProduct, fetchSingleProduct } from '../store/singleProduct';
 
 class UpdateProduct extends React.Component {
@@ -10,15 +10,13 @@ class UpdateProduct extends React.Component {
     this.state = {
       name: '',
       imageUrl: '',
-      price: '',
-      quantity: '',
+      price: 0,
+      quantity: 0,
       description: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
-    this.toggle = this.toggle.bind(this);
   }
 
   componentDidMount() {
@@ -34,8 +32,8 @@ class UpdateProduct extends React.Component {
       this.setState({
         name: this.props.singleProduct.name || '',
         imageUrl: this.props.singleProduct.imageUrl || '',
-        address: this.props.singleProduct.quantity || '',
-        address: this.props.singleProduct.price || '',
+        quantity: this.props.singleProduct.quantity || 0,
+        price: this.props.singleProduct.price || 0,
         description: this.props.singleProduct.description || '',
       });
     }
@@ -56,13 +54,11 @@ class UpdateProduct extends React.Component {
     const { name, imageUrl, price, quantity, description } = this.state;
     const { handleSubmit, handleChange } = this;
 
-    const campus = this.props.singleCampus || {};
-
     return (
       <div className='form-container'>
             <form className='product_form' onSubmit={handleSubmit}>
                 <div>
-                  <label htmlFor='name'>Campus Name</label><br/>
+                  <label htmlFor='name'>Product Name</label><br/>
                   <input name='name' onChange={handleChange} value={name} />
                 </div>
 
@@ -83,28 +79,27 @@ class UpdateProduct extends React.Component {
 
                 <div>
                   <label htmlFor='description'>Description</label><br/>
-                  <textarea name='description' onChange={handleChange} value={description} rows="2" cols="41" className='formDesc' />
+                  <textarea name='description' onChange={handleChange} value={description} rows="3" cols="41" className='formDesc' />
                 </div><br/>
 
                 <div>
                   <button type='submit'>Save</button>
                 </div><br/>
-              <Link className='cancel' to='/products'>Click Here to Cancel</Link>
             </form> <br/>
-
+            <Link className='cancel' to='/products'>Click Here to Cancel</Link>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({singleProduct}) => ({
-    singleProduct
+const mapState = (state) => ({
+    singleProduct: state.singleProduct
   });
 
-const mapDispatchToProps = (dispatch, { history }) => ({
+const mapDispatch = (dispatch, { history }) => ({
     updateProduct: (product) => dispatch(updateProduct(product, history)),
     fetchSingleProduct: (id) => dispatch(fetchSingleProduct(id)),
     clearProduct: () => dispatch(setSingleProduct({}))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateProduct)
+export default connect(mapState, mapDispatch)(UpdateProduct);

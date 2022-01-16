@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchSingleProduct } from '../store/singleProduct';
 import '../../public/singleProduct.css';
@@ -25,6 +26,10 @@ export class SingleProduct extends Component {
 						Add To Cart
 					</button>
 				</div>
+				<div>
+					<Link className="page_links" to={`/products/${singleProduct.id}/update`}>Update</Link>
+				</div>
+
 			</div>
 		);
 	}

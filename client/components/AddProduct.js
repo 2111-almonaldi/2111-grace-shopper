@@ -17,10 +17,6 @@ class AddProduct extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
-  componentDidMount () {
-    this.props.loadProducts();
-  }
   
   handleChange(evt) {
     this.setState({
@@ -34,11 +30,7 @@ class AddProduct extends React.Component {
   }
 
   render() {
-    // const { products } = this.props;
-    // const itemsId = products.length + 2;
-    // console.log(this.props)
     const { name, imageUrl, price, quantity, description } = this.state;
-    // console.log(this.state)
     const { handleSubmit, handleChange} = this;
 
     return (
@@ -51,7 +43,7 @@ class AddProduct extends React.Component {
 
           <div>
           <label htmlFor='imageUrl'>Image</label><br/>
-          <input name='imageUrl' onChange={handleChange} value={imageUrl} />
+          <textarea name='imageUrl' onChange={handleChange} value={imageUrl}  rows="2" cols="41" />
           </div>
 
           <div>
@@ -66,7 +58,7 @@ class AddProduct extends React.Component {
 
           <div>
           <label htmlFor='description'>Description</label><br/>
-          <input name='description' onChange={handleChange} value={description} />
+          <textarea name='description' onChange={handleChange} value={description} rows="2" cols="41" />
           </div>
 
           <br/>
@@ -84,16 +76,8 @@ class AddProduct extends React.Component {
   }
 }
 
-// const mapState = (state) => {
-//     return {
-//         products: state.products
-//     }
-// }
-
 const mapDispatch = (dispatch, { history }) => ({
-    // loadProducts: () => dispatch(loadProducts()),
     addNewProduct: (product) => dispatch(addNewProduct(product, history))
 });
 
-// export default connect(mapState, mapDispatch)(AddProduct)
 export default connect(null, mapDispatch)(AddProduct)
