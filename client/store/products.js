@@ -4,6 +4,7 @@ import axios from "axios";
 const GOT_PRODUCTS = "GOT_PRODUCTS";
 const ADD_PRODUCT = "ADD_PRODUCT";
 const UPDATE_PRODUCT = "UPDATE_PRODUCT";
+const DELETE_PRODUCT = "DELETE_PRODUCT";
 
 //Action Creators
 const gotProducts = (products) => ({
@@ -14,12 +15,17 @@ const gotProducts = (products) => ({
 const addProduct = (product) => ({
   type: ADD_PRODUCT,
   product
-})
+});
+
+const deleteProduct = (product) => ({
+  type: DELETE_PRODUCT,
+  product
+});
 
 const changeProduct = (product) => ({
   type: UPDATE_PRODUCT,
   product
-})
+});
 
 //Thunk Creator
 export const loadProducts = () => {
@@ -47,6 +53,15 @@ export const updateProduct = (product, history) => {
     dispatch(changeProduct(updated));
     history.push(`/products/${product.id}`);
   }
+  
+}
+
+export const removeProduct = (id, history) => {
+  return async (dispatch) => {
+    const { data: product } = await axios.delete(`/api/products/${id}`);
+    dispatch(deleteProduct(product));
+    history.push(`/products`);
+  }
 }
 
 //Reducer
@@ -58,6 +73,8 @@ export default function productsReducer(state = initialState, action) {
       return action.products;
     case UPDATE_PRODUCT:
       return state.map((product) => product.id === action.product.id ? action.product : product);
+    case DELETE_PRODUCT:
+      return state.filter((product) => product.id !== action.product.id);
     case ADD_PRODUCT:
       return [...state, action.product]
     default:

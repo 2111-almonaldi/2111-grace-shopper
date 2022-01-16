@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchSingleProduct, setSingleProduct } from '../store/singleProduct';
+import { removeProduct } from '../store/products';
 import '../../public/singleProduct.css';
 
 export class SingleProduct extends Component {
@@ -32,7 +33,7 @@ export class SingleProduct extends Component {
 				</div>
 				<div>
 					<Link className="page_links" to={`/products/${singleProduct.id}/update`}>Update</Link>
-					<Link className="page_links" to={`/products/${singleProduct.id}/delete`}>Delete</Link>
+					<button type="button" className="deleteBtn" onClick={() => {this.props.removeProduct(singleProduct.id)}}>Delete</button>
 				</div>
 
 			</div>
@@ -44,8 +45,9 @@ const mapState = (state) => ({
 	singleProduct: state.singleProduct,
 });
 
-const mapDispatch = (dispatch) => ({
+const mapDispatch = (dispatch, { history }) => ({
 	getProduct: (id) => dispatch(fetchSingleProduct(id)),
+	removeProduct: (id) => dispatch(removeProduct(id, history)),
     clearProduct: () => dispatch(setSingleProduct({}))
 });
 
