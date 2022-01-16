@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchSingleProduct } from '../store/singleProduct';
+import { fetchSingleProduct, setSingleProduct } from '../store/singleProduct';
+import { removeProduct } from '../store/products';
 import '../../public/singleProduct.css';
 
 export class SingleProduct extends Component {
 	componentDidMount() {
 		this.props.getProduct(this.props.match.params.id);
 	}
+
+	componentWillUnmount() {
+		this.props.clearProduct();
+	  }
 
 	render() {
 		const { singleProduct } = this.props;
@@ -25,6 +31,11 @@ export class SingleProduct extends Component {
 						Add To Cart
 					</button>
 				</div>
+				<div>
+					<Link className="page_links" to={`/products/${singleProduct.id}/update`}>Update</Link>
+					<button type="button" className="deleteBtn" onClick={() => {this.props.removeProduct(singleProduct.id)}}>Delete</button>
+				</div>
+
 			</div>
 		);
 	}
@@ -34,8 +45,10 @@ const mapState = (state) => ({
 	singleProduct: state.singleProduct,
 });
 
-const mapDispatch = (dispatch) => ({
+const mapDispatch = (dispatch, { history }) => ({
 	getProduct: (id) => dispatch(fetchSingleProduct(id)),
+	removeProduct: (id) => dispatch(removeProduct(id, history)),
+    clearProduct: () => dispatch(setSingleProduct({}))
 });
 
 export default connect(mapState, mapDispatch)(SingleProduct);
