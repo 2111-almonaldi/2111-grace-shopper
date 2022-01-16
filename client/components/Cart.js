@@ -6,6 +6,7 @@ import {
   setCart,
   removeFromCart,
   decreaseItem,
+  clearCart,
 } from "../store/cart";
 //import DeleteIcon from "@mui/icons-material/Delete";
 //import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
@@ -94,7 +95,7 @@ const mapDispatch = (dispatch) => {
     removeFromCart: (product) => dispatch(removeFromCart(product)),
     add: (product) => dispatch(addToCart(product)),
     remove: (product) => dispatch(decreaseItem(product)),
-    clearCart: () => dispatch(setCart([])),
+    clearCart: () => dispatch(clearCart([])),
   };
 };
 

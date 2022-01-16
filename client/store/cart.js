@@ -36,6 +36,11 @@ export const fetchCart = (userId) => {
   };
 };
 
+export const clearCart = () => (dispatch) => {
+  dispatch(setCart([]));
+  window.localStorage.setItem("cart", JSON.stringify([]));
+};
+
 export const addToCart = (product) => (dispatch, getState) => {
   const cartItems = getState().cart.cartItems.slice();
   let inCart = false;

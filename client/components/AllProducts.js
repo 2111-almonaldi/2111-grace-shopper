@@ -14,7 +14,6 @@ export class AllProducts extends React.Component {
 
   render() {
     const { products } = this.props;
-    console.log(this.props);
 
     return (
       <div className="products">
