@@ -2,14 +2,19 @@ import React from "react";
 import { connect } from "react-redux";
 import { loadProducts } from "../store/products";
 import { Link } from "react-router-dom";
+import { addToCart } from "../store/cart";
 
 export class AllProducts extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   componentDidMount() {
     this.props.loadProducts();
   }
 
   render() {
     const { products } = this.props;
+    console.log(this.props);
 
     return (
       <div className="products">
@@ -46,6 +51,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     loadProducts: () => dispatch(loadProducts()),
+    addToCart: (product) => dispatch(addToCart(product)),
   };
 };
 
