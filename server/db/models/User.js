@@ -89,6 +89,7 @@ User.findByToken = async function (token) {
       where: {
         id,
       },
+      attributes: ["firstName", "lastName", "id", "isAdmin", "username"],
       include: [
         {
           model: Order,

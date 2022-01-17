@@ -5,6 +5,7 @@ const CREATE_ORDER = "CREATE_ORDER";
 const CLEAR_ORDER = "CLEAR_ORDER";
 const FETCH_ORDERS = "FETCH_ORDERS";
 const UPDATE_ORDER = "UPDATE_ORDER";
+const LOGOUT_ORDER = "LOGOUT_ORDER";
 
 const _createOrder = (order) => ({
   type: CREATE_ORDER,
@@ -36,6 +37,18 @@ export const createOrder = (order) => {
       console.log(error, "order creation error");
     }
   };
+};
+
+export const logoutOrder = () => (dispatch, getState) => {
+  try {
+    const orderItems = getState().cart.cartItems;
+    const userId = getState().auth.id;
+    if (orderItems.length) {
+      dispatch(createOrder({ items: orderItems, userId }));
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const clearOrder = () => (dispatch) => {

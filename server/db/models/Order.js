@@ -15,7 +15,16 @@ const Order = db.define("order", {
     // allowNull: false,
   },
   subtotal: {
-    type: INTEGER,
+    type: VIRTUAL,
+    get() {
+      if (this.items.length) {
+        return this.items
+          .map((item) => {
+            item.count * item.price;
+          })
+          .reduce((a, b) => a + b, 0);
+      }
+    },
   },
   customerName: {
     type: STRING,
