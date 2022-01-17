@@ -56,28 +56,47 @@ async function seed() {
   console.log(`seeded ${users.length} users`);
 
   // Create Orders - Random 50/50 split with orders
-  /**
-   * U
-   */
-   const dataOrders = [];
-   for (let i = 0; i < users.length; i++) {
-     let num = Math.floor(Math.random() * (users.length + 1))
-     if (num % 2) {
-       const order = await Order.create({status: "CREATED"})
-       dataOrders.push(order)
-       await order.setUser(users[i])
-     } else {
-       const order = await Order.create({status: "PROCESSING"})
-       dataOrders.push(order)
-       await order.setUser(users[i])
-     }
+  const dataOrders = [];
+  for (let i = 0; i < users.length; i++) {
+    let num = Math.floor(Math.random() * (users.length + 1))
+    if (num % 2) {
+      const order = await Order.create({status: "CREATED"})
+      dataOrders.push(order)
+      await order.setUser(users[i])
+    } else {
+      const order = await Order.create({status: "PROCESSING"})
+      dataOrders.push(order)
+      await order.setUser(users[i])
+    }
 
-   }
-   // half of users already completed purchase and therefore have order history
-   const ordersCheckout = dataOrders.filter(order => order.status === "PROCESSING")
+    // Create Associations: Products &&  Users
+    let productArr = [];
 
-   // half of users have items in their cart but have not checkout out yet -> this allows us to test for cart persistence when user login/logout and completes the purchase lifecycle
-   const ordersInCartOnly = dataOrders.filter(order => order.status === "CREATED")
+    for (let i = 0; i < users.length; i++) {
+      let user = users[i];
+      let userOrder = await user.getOrders();
+      let num = Math.floor(Math.random() * (products.length + 1));
+      let pIdx = Math.floor(Math.random() * products.length);
+
+      while (num <= products.length) {
+        let orderProduct = products[pIdx];
+        productArr.push(orderProduct);
+        num += 1;
+      }
+      // we assign a random number of products and random assortment of items to each userOrder => simulation of consumer behavior improves external validity of our engineering
+      // user order now has two key value pairs:
+      userOrder = { ...userOrder, productArr };
+
+  }
+  // Define Orders in Cart vs Orders Purchased (Order History)
+  // half of users already completed purchase and therefore have order history
+  const ordersCheckout = dataOrders.filter(order => order.status === "PROCESSING")
+
+  // half of users have items in their cart but have not checkout out yet -> this allows us to test for cart persistence when user login/logout and completes the purchase lifecycle
+  const ordersInCartOnly = dataOrders.filter(order => order.status === "CREATED")
+
+
+
 
    // confirming order distribution
    console.log(`seeded ${dataOrders.length} orde vcvnm   nmvgkbcxdvb mhgfrwedcvb rs`)
@@ -85,23 +104,7 @@ async function seed() {
    console.log(`seeded ${ordersInCartOnly.length} orders with status ${ordersInCartOnly[0].status}`)
 
 
-  // Create Associations: Products &&  Users
-  let productArr = [];
 
-  for (let i = 0; i < users.length; i++) {
-    let user = users[i];
-    let userOrder = await user.getOrders();
-    let num = Math.floor(Math.random() * (products.length + 1));
-    let pIdx = Math.floor(Math.random() * products.length);
-
-    while (num <= products.length) {
-      let orderProduct = products[pIdx];
-      productArr.push(orderProduct);
-      num += 1;
-    }
-    // we assign a random number of products and random assortment of items to each userOrder => simulation of consumer behavior improves external validity of our engineering
-    // user order now has two key value pairs:
-    userOrder = { ...userOrder, productArr };
 
     /**isolate checkout out items and add model features */
 
@@ -123,8 +126,6 @@ async function seed() {
       userOrder = {...userOrder, customerName, customerEmail, customerAddress, customerCity, customerState, customerZip, customerPhone, orderNumber }
 
     }
-
-
 
     // force create for two users [0][1]
   }
