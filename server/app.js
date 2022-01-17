@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_TEST);
 const app = express();
 module.exports = app;
@@ -10,8 +11,10 @@ module.exports = app;
 app.use(morgan('dev'));
 
 // body parsing middleware
-app.use(express.json());
-app.use(express.urlencoded());
+// app.use(express.json());
+// app.use(express.urlencoded());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 

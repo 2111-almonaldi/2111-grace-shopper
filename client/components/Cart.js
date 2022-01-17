@@ -7,7 +7,7 @@ import {
 	decreaseItem,
 	clearCart,
 } from '../store/cart';
-//import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from '@mui/icons-material/Delete';
 //import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 
 export class Cart extends Component {
@@ -47,7 +47,7 @@ export class Cart extends Component {
 												<button onClick={() => this.props.add(item)}>+</button>{' '}
 												<strong>{item.price}</strong>
 												<button onClick={() => this.props.removeFromCart(item)}>
-													Remove
+													<DeleteIcon />
 												</button>
 											</div>
 										</div>
