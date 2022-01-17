@@ -39,16 +39,30 @@ export const createOrder = (order) => {
   };
 };
 
-export const logoutOrder = () => (dispatch, getState) => {
-  try {
-    const orderItems = getState().cart.cartItems;
-    const userId = getState().auth.id;
-    if (orderItems.length) {
-      dispatch(createOrder({ items: orderItems, userId }));
+export const logoutOrder = () => {
+  return async (dispatch, getState) => {
+    try {
+      const orderItems = getState().cart.cartItems;
+      const userId = getState().auth.id;
+      if (!getState().orders.order) {
+        if (orderItems.length) {
+          const { data: created } = await axios.post("/api/orders", {
+            items: orderItems,
+            userId,
+          });
+        }
+      } else {
+        const id = getState().orders.order.id;
+        const { data: updated } = await axios.put(`/api/orders/${id}`, {
+          items: orderItems,
+          id,
+        });
+      }
+      return dispatch(clearOrder());
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
-  }
+  };
 };
 
 export const clearOrder = () => (dispatch) => {
