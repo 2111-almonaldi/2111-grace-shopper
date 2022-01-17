@@ -1,6 +1,8 @@
 const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_TEST);
 const app = express();
 module.exports = app;
 
@@ -9,6 +11,9 @@ app.use(morgan('dev'));
 
 // body parsing middleware
 app.use(express.json());
+app.use(express.urlencoded());
+
+app.use(cors());
 
 // auth and api routes
 app.use('/auth', require('./auth'));
@@ -35,6 +40,32 @@ app.use((req, res, next) => {
 // sends index.html
 app.use('*', (req, res) => {
 	res.sendFile(path.join(__dirname, '..', 'public/index.html'));
+});
+
+// stripe payment
+app.post('payment', cors(), async (req, res, next) => {
+	let { amount, id } = req.body;
+	try {
+		const payment = await stripe.paymentIntents.create({
+			amount,
+			currency: 'USD',
+			description: 'Mockbuster',
+			payment_method: id,
+			confirm: true,
+		});
+
+		console.log('Payment', payment);
+		res.json({
+			message: 'Payment Successful',
+			success: true,
+		});
+	} catch (err) {
+		console.log('Payment Server Error', err);
+		res.json({
+			message: 'Payment Failure',
+			success: false,
+		});
+	}
 });
 
 // error handling endware

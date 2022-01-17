@@ -1,75 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 // import Cart from '../Cart';
+import PaymentForm from './PaymentForm';
 import '../../../public/checkoutMain.css';
-import {
-	PaymentElement,
-	useStripe,
-	useElements,
-} from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+
+const stripePromise = loadStripe(
+	'pk_test_51KIhdSBUe6p65tjNXtHN5NUIQVk30J1x34GqAuvZZZc4QYJ7m2FHOiEjIbfyIkNGXAT2Km74UYnJ5BYJfZ442nIQ00QqawjRra'
+);
 
 export default function CheckoutMain() {
-	const stripe = useStripe();
-	const elements = useElements();
-
-	const [succeeded, setSucceeded] = useState(false);
-	const [processing, setProcessing] = useState('');
-	const [error, setError] = useState(null);
-	const [disabled, setDisabled] = useState(true);
-	const [clientSecret, setClientSecret] = useState(true);
-
-	// useEffect(() => {
-	// 	//generate the stripe secret, which allows us to charge the user
-	// 	const getClientSecret = async () => {
-	// 		try {
-	// 			const response = await axios
-	// 		} catch (err) {
-	// 			console.log('getClientSecret error', err)
-	// 		}
-	// 	}
-	// }, /*[basket, cart, etc] */)
-
-	const handleChange = (evt) => {
-		//listen for changes in the PaymentElement
-		//and display any errors as user types their card details
-		setDisabled(evt.empty);
-		setError(evt.error ? evt.error.message : '');
-	};
-
-	const handleSubmit = (evt) => {
-		evt.preventDefault();
-		setProcessing(true);
-
-		// const payload = await stripe
-
-		// DON'T TOUCH YET:
-		// 	// We don't want to let default form submission happen here,
-		// 	// which would refresh the page.
-		// 	evt.preventDefault();
-		// 	if (!stripe || !elements) {
-		// 		// Stripe.js has not yet loaded.
-		// 		// Make sure to disable form submission until Stripe.js has loaded.
-		// 		return;
-		// 	}
-		// };
-
-		// const result = await stripe.confirmPayment({
-		// 	//`Elements` instance that was used to create the Payment Element
-		// 	elements,
-		// 	confirmParams: {
-		// 		return_url: 'https://my-site.com/order/123/complete',
-		// 	},
-		// });
-
-		// if (result.error) {
-		// 	// Show error to your customer (for example, payment details incomplete)
-		// 	console.log(result.error.message);
-		// } else {
-		// 	// Your customer will be redirected to your `return_url`. For some payment
-		// 	// methods like iDEAL, your customer will be redirected to an intermediate
-		// 	// site first to authorize the payment, then redirected to the `return_url`.
-	};
-
 	return (
 		<div className="checkout">
 			<div className="checkout-container">
@@ -106,20 +46,9 @@ export default function CheckoutMain() {
 						<h4>Payment Method</h4>
 					</div>
 					<div className="checkout-details">
-						{/*STRIPE!!!*/}
-
-						<form onSubmit={handleSubmit}>
-							<PaymentElement onChange={handleChange} />
-
-							<div className="checkout-priceContainer">
-								<h4>Order Total:</h4>
-								<button disabled={processing || disabled || succeeded}>
-									<span>{processing ? <p>Processing...</p> : 'Buy Now'}</span>
-								</button>
-							</div>
-							{/*ERRORS */}
-							{error && <div>{error}</div>}
-						</form>
+						<Elements stripe={stripePromise}>
+							<PaymentForm />
+						</Elements>
 					</div>
 				</div>
 			</div>
