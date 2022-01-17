@@ -1,6 +1,7 @@
 "use strict";
 const { generateMovies } = require("./generateMovies");
 const { generateUsers } = require("./generateUsers");
+const faker = require("faker");
 
 const {
   db,
@@ -54,14 +55,35 @@ async function seed() {
   const users = await User.bulkCreate(dataUsers);
   console.log(`seeded ${users.length} users`);
 
-  // Create Orders
-  const dataOrders = [];
-  for (let i = 0; i < users.length; i++) {
-    const order = await Order.create({ status: "PROCESSING" });
-    dataOrders.push(order);
-    await order.setUser(users[i]);
-  }
-  console.log(`seeded ${dataOrders.length} orders`);
+  // Create Orders - Random 50/50 split with orders
+  /**
+   * U
+   */
+   const dataOrders = [];
+   for (let i = 0; i < users.length; i++) {
+     let num = Math.floor(Math.random() * (users.length + 1))
+     if (num % 2) {
+       const order = await Order.create({status: "CREATED"})
+       dataOrders.push(order)
+       await order.setUser(users[i])
+     } else {
+       const order = await Order.create({status: "PROCESSING"})
+       dataOrders.push(order)
+       await order.setUser(users[i])
+     }
+
+   }
+   // half of users already completed purchase and therefore have order history
+   const ordersCheckout = dataOrders.filter(order => order.status === "PROCESSING")
+
+   // half of users have items in their cart but have not checkout out yet -> this allows us to test for cart persistence when user login/logout and completes the purchase lifecycle
+   const ordersInCartOnly = dataOrders.filter(order => order.status === "CREATED")
+
+   // confirming order distribution
+   console.log(`seeded ${dataOrders.length} orde vcvnm   nmvgkbcxdvb mhgfrwedcvb rs`)
+   console.log(`seeded ${ordersCheckout.length} orders with status ${ordersCheckout[0].status}`)
+   console.log(`seeded ${ordersInCartOnly.length} orders with status ${ordersInCartOnly[0].status}`)
+
 
   // Create Associations: Products &&  Users
   let productArr = [];
@@ -77,10 +99,39 @@ async function seed() {
       productArr.push(orderProduct);
       num += 1;
     }
+    // we assign a random number of products and random assortment of items to each userOrder => simulation of consumer behavior improves external validity of our engineering
+    // user order now has two key value pairs:
     userOrder = { ...userOrder, productArr };
+
+    /**isolate checkout out items and add model features */
+
+
+    for (let i = 0; i <ordersCheckout.length; i++) {
+      let userOrder = ordersCheckout[i];
+      // magic method
+      let user = await userOrder.getUser()
+      let customerEmail = user.email;
+      let customerName = user.name;
+      let customerAddress = faker.address.streetAddress();
+      let customerCity = faker.address.city();
+      let customerState = faker.address.state();
+      let customerZip = faker.address.zipCode();
+      let customerPhone = faker.phone.phoneNumber();
+      let orderNumber = faker.number.digits(6)
+
+      // use spread operator to insert new key/value pairs into current userOrder
+      userOrder = {...userOrder, customerName, customerEmail, customerAddress, customerCity, customerState, customerZip, customerPhone, orderNumber }
+
+    }
+
+
+
+    // force create for two users [0][1]
   }
 
-  console.log(`${users[0].userOrder}`);
+  //
+
+  console.log(`Nicole (admin) order: ${users[0].userOrder}`);
 
   console.log(`seeded successfully`);
 }
