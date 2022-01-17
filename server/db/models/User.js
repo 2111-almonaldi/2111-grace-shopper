@@ -3,6 +3,7 @@ const { STRING, VIRTUAL, BOOLEAN } = Sequelize;
 const db = require("../db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const { Order } = require("./Order");
 const axios = require("axios");
 
 const SALT_ROUNDS = 5;
@@ -84,7 +85,17 @@ User.authenticate = async function ({ username, password }) {
 User.findByToken = async function (token) {
   try {
     const { id } = await jwt.verify(token, process.env.JWT);
-    const user = User.findByPk(id);
+    const user = User.findOne({
+      where: {
+        id,
+      },
+      include: [
+        {
+          model: Order,
+          where: { status: "CREATED" },
+        },
+      ],
+    });
     if (!user) {
       throw "Unable to find user";
     }

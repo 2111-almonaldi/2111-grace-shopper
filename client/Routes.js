@@ -16,18 +16,18 @@ import { me } from './store';
  */
 class Routes extends Component {
 	componentDidMount() {
-		// this.props.loadInitialData();
+		this.props.loadInitialData();
 	}
-
 	render() {
 		const { isLoggedIn } = this.props;
-
 		return (
 			<div>
 				{isLoggedIn ? (
 					<Switch>
 						<Route path="/home" component={Home} />
 						<Route path="/cart" component={Cart} />
+						<Route exact path="/products" component={AllProducts} />
+						<Route path="/products/:id" component={SingleProduct} />
 					</Switch>
 				) : (
 					<Switch>
@@ -39,7 +39,6 @@ class Routes extends Component {
 						<Route path="/products/:id/update" component={UpdateProduct} />
 						<Route path="/products/:id" component={SingleProduct} />
 						<Route path="/cart" component={Cart} />
-						<Route path="/checkout" component={CheckoutMain} />
 					</Switch>
 				)}
 			</div>
@@ -55,6 +54,7 @@ const mapState = (state) => {
 		// Being 'logged in' for our purposes will be defined has having a state.auth that has a truthy id.
 		// Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
 		isLoggedIn: !!state.auth.id,
+		priorCart: state.auth.orders,
 	};
 };
 
