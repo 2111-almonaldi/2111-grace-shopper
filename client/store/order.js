@@ -4,6 +4,7 @@ import { clearCart } from "./cart";
 const CREATE_ORDER = "CREATE_ORDER";
 const CLEAR_ORDER = "CLEAR_ORDER";
 const FETCH_ORDERS = "FETCH_ORDERS";
+const UPDATE_ORDER = "UPDATE_ORDER";
 
 const _createOrder = (order) => ({
   type: CREATE_ORDER,
@@ -17,6 +18,11 @@ const _clearOrder = () => ({
 const setOrders = (orders) => ({
   type: FETCH_ORDERS,
   orders,
+});
+
+export const _updateOrder = (order) => ({
+  type: UPDATE_ORDER,
+  order,
 });
 
 export const createOrder = (order) => {
@@ -46,6 +52,20 @@ export const fetchOrders = () => {
   };
 };
 
+export const updateOrder = (order) => {
+  return async (dispatch) => {
+    try {
+      const { data: updated } = await axios.put(
+        `/api/orders/${order.id}`,
+        order
+      );
+      dispatch(_updateOrder(updated));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 const initialState = {};
 
 export default function orderReducer(state = initialState, action) {
@@ -56,6 +76,12 @@ export default function orderReducer(state = initialState, action) {
       return { order: null };
     case FETCH_ORDERS:
       return { orders: action.orders };
+    case UPDATE_ORDER:
+      return {
+        orders: state.map((order) =>
+          order.id === action.order.id ? action.order : order
+        ),
+      };
     default:
       return state;
   }
