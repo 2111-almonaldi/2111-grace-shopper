@@ -12,7 +12,7 @@ export class SingleProduct extends Component {
 
 	componentWillUnmount() {
 		this.props.clearProduct();
-	  }
+	}
 
 	render() {
 		const { singleProduct } = this.props;
@@ -32,10 +32,22 @@ export class SingleProduct extends Component {
 					</button>
 				</div>
 				<div>
-					<Link className="page_links" to={`/products/${singleProduct.id}/update`}>Update</Link>
-					<button type="button" className="deleteBtn" onClick={() => {this.props.removeProduct(singleProduct.id)}}>Delete</button>
+					<Link
+						className="page_links"
+						to={`/products/${singleProduct.id}/update`}
+					>
+						Update
+					</Link>
+					<button
+						type="button"
+						className="deleteBtn"
+						onClick={() => {
+							this.props.removeProduct(singleProduct.id);
+						}}
+					>
+						Delete
+					</button>
 				</div>
-
 			</div>
 		);
 	}
@@ -48,7 +60,7 @@ const mapState = (state) => ({
 const mapDispatch = (dispatch, { history }) => ({
 	getProduct: (id) => dispatch(fetchSingleProduct(id)),
 	removeProduct: (id) => dispatch(removeProduct(id, history)),
-    clearProduct: () => dispatch(setSingleProduct({}))
+	clearProduct: () => dispatch(setSingleProduct({})),
 });
 
 export default connect(mapState, mapDispatch)(SingleProduct);
