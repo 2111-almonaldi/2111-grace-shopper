@@ -85,8 +85,13 @@ export class Cart extends Component {
 }
 
 const mapState = (state) => {
+  const stateCart = state.cart.cartItems.length
+    ? state.cart.cartItems
+    : state.auth.orders
+    ? state.auth.orders[0].items
+    : state.cart.cartItems;
   return {
-    cart: state.cart.cartItems,
+    cart: stateCart,
   };
 };
 
