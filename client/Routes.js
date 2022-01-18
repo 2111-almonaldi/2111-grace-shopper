@@ -6,10 +6,10 @@ import SingleProduct from './components/SingleProduct';
 import AddProduct from './components/AddProduct';
 import UpdateProduct from './components/UpdateProduct';
 import { Login, Signup } from './components/AuthForm';
-// import AccountEdit from './components/AccountEdit';
+// import AccountEdit from './components/User/AccountEdit';
 import Orders from './components/User/Orders';
-// import OrderDetails from './components/OrderDetails';
-// import UserMain from './components/UserMain';
+// import OrderDetails from './components/User/OrderDetails';
+import UserMain from './components/User/UserMain';
 import Home from './components/Home';
 import Cart from './components/Cart';
 import { me } from './store';
@@ -29,6 +29,7 @@ class Routes extends Component {
 					<Switch>
 						<Route path="/home" component={Home} />
 						<Route path="/cart" component={Cart} />
+						<Route path="/users/:id" component={UserMain} />
 						<Route exact path="/products" component={AllProducts} />
 						<Route path="/products/:id" component={SingleProduct} />
 					</Switch>
