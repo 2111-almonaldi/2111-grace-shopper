@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { fetchSingleProduct, setSingleProduct } from "../store/singleProduct";
 import { removeProduct } from "../store/products";
 import { addToCart } from "../store/cart";
-import "../../public/singleProduct.css";
+// import "../../public/singleProduct.css";
 
 export class SingleProduct extends Component {
   componentDidMount() {

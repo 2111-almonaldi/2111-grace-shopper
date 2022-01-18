@@ -77,3 +77,58 @@ form .update {
   font-size: 12px;
   color: red;
 }
+
+.newProductLink {
+  display: block;
+  /* right: 0;
+  position: absolute; */
+  background-color: blue;
+  color: white;
+  border-radius: 3px;
+  width: 100px;
+  padding: 3px;
+  text-align: center;
+}
+
+img {
+  height: 200px;
+  width: 220px;
+  border: gray 1px solid;
+  border-radius: 5px;
+}
+
+.products {
+  min-width: 100vw;
+}
+
+.product {
+  display: inline-flex;
+  max-width: 400px;
+  min-width: 400px;
+  min-height: 200px;
+  max-height: 220px;
+  margin: 10px;
+  padding: 10px;
+  color: black;
+  border: gray 3px solid;
+  border-radius: 5px;
+}
+
+.product-info {
+  display: flex;
+  margin-left: 30px;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.description {
+  display: -webkit-box;
+   -webkit-line-clamp: 4;
+   -webkit-box-orient: vertical;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+
+.product-price {
+  font-size: 12px;
+}
