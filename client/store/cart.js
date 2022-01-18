@@ -57,7 +57,6 @@ export const addToCart = (product) => (dispatch, getState) => {
   }
   dispatch(addItem(cartItems));
   const order = getState().orders.order;
-  console.log(order);
   if (userId) {
     if (cartItems.length === 1 || !order) {
       dispatch(createOrder({ items: cartItems, userId }));
