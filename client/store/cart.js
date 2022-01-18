@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createOrder, updateOrder } from "./order";
+import { createOrder, updateOrder, deleteOrder } from "./order";
 
 const SET_CART = "SET_CART";
 const ADD_TO_CART = "ADD_TO_CART";
@@ -37,7 +37,7 @@ export const fetchCart = (userId) => {
   };
 };
 
-export const clearCart = () => (dispatch) => {
+export const clearCart = () => (dispatch, getState) => {
   dispatch(setCart([]));
   window.localStorage.setItem("cart", JSON.stringify([]));
 };
@@ -58,7 +58,7 @@ export const addToCart = (product) => (dispatch, getState) => {
   dispatch(addItem(cartItems));
   const order = getState().orders.order;
   if (userId) {
-    if (cartItems.length === 1 || !order) {
+    if (cartItems.reduce((a, c) => a + c.count, 0) === 1 || !order) {
       dispatch(createOrder({ items: cartItems, userId }));
     } else {
       const id = getState().orders.order.id;
@@ -69,11 +69,21 @@ export const addToCart = (product) => (dispatch, getState) => {
 };
 
 export const decreaseItem = (product) => (dispatch, getState) => {
+  const userId = getState().auth.id;
+  const id = getState().orders.order.id;
+
   if (product.count === 1) {
     const cartItems = getState()
       .cart.cartItems.slice()
       .filter((item) => item.name !== product.name);
     dispatch(removeItem(cartItems));
+    if (userId) {
+      if (cartItems.length === 0) {
+        dispatch(deleteOrder(id));
+      } else {
+        dispatch(updateOrder({ id, items: cartItems }));
+      }
+    }
     window.localStorage.setItem("cart", JSON.stringify(cartItems));
   } else {
     const cartItems = getState().cart.cartItems.slice();
@@ -83,6 +93,15 @@ export const decreaseItem = (product) => (dispatch, getState) => {
       }
     });
     dispatch(_decreaseItem(cartItems));
+    const id = getState().orders.order.id;
+    if (userId) {
+      console.log(cartItems.length);
+      if (cartItems.length === 0) {
+        dispatch(deleteOrder(id));
+      } else {
+        dispatch(updateOrder({ id, items: cartItems }));
+      }
+    }
     window.localStorage.setItem("cart", JSON.stringify(cartItems));
   }
 };

@@ -92,6 +92,17 @@ export const updateOrder = (order) => {
   };
 };
 
+export const deleteOrder = (id) => {
+  return async (dispatch) => {
+    try {
+      const { data: order } = await axios.delete(`/api/products/${id}`);
+      dispatch(_clearOrder());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 const initialState = {};
 
 export default function orderReducer(state = initialState, action) {
@@ -103,11 +114,7 @@ export default function orderReducer(state = initialState, action) {
     case FETCH_ORDERS:
       return { orders: action.orders };
     case UPDATE_ORDER:
-      return {
-        orders: state.map((order) =>
-          order.id === action.order.id ? action.order : order
-        ),
-      };
+      return { order: action.order };
     default:
       return state;
   }
