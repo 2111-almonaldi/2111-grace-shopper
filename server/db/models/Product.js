@@ -12,7 +12,12 @@ const Product = db.define("product", {
   imageUrl: {
     type: STRING,
     allowNull: false,
+<<<<<<< HEAD
     defaultValue: "/images/defaultProduct.jpg",
+=======
+    defaultValue:
+      "https://media.istockphoto.com/vectors/coming-soon-lettering-coming-soon-for-promotion-advertisement-sale-vector-id1221240925?k=20&m=1221240925&s=612x612&w=0&h=HX77CIwJ34u7qUMpI_W5z4dDnEbHGv66mGXVTpIccv8=",
+>>>>>>> main
     validate: {
       isUrl: true,
     },

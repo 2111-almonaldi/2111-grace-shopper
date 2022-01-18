@@ -22,6 +22,7 @@ const Order = db.define("order", {
 					})
 					.reduce((a, b) => a + b, 0);
 			}
+      else return 0
 		},
 	},
   orderQty: {
@@ -33,6 +34,7 @@ const Order = db.define("order", {
         })
         .reduce((a, b) => a + b, 0)
       }
+      else return 0;
     }
   },
   customerName: {
@@ -58,7 +60,8 @@ const Order = db.define("order", {
   },
 
   orderNumber: {
-    type: STRING
+    type: INTEGER,
+
   }
 });
 

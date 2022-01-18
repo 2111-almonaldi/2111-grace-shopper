@@ -55,6 +55,93 @@ async function seed() {
   const users = await User.bulkCreate(dataUsers);
   console.log(`seeded ${users.length} users`);
 
+<<<<<<< HEAD
+=======
+  // Create Orders
+  const orders = await Promise.all([
+    Order.create({
+      status: "PROCESSING",
+      items: [{ name: "L.A. Confidential", count: 1, id: 1, price: 25.0 }],
+      customerName: "Nicole DeSantis",
+      customerEmail: "nd13@gmail.com",
+      customerAddress: "1385 York Ave, New York, NY 10021",
+      customerPhone: "845-249-8407",
+      userId: 1,
+    }),
+    Order.create({
+      status: "FULFILLED",
+      items: [{ name: "The Last Samurai", count: 2, id: 2, price: 96.0 }],
+      subtotal: 47,
+      customerName: "Nicole DeSantis",
+      customerEmail: "nd13@gmail.com",
+      customerAddress: "1385 York Ave, New York, NY 10021",
+      customerPhone: "845-249-8407",
+      userId: 1,
+    }),
+    Order.create({
+      status: "CREATED",
+      items: [],
+      subtotal: 52,
+      customerName: "Nicole DeSantis",
+      customerEmail: "nd13@gmail.com",
+      customerAddress: "1385 York Ave, New York, NY 10021",
+      customerPhone: "845-249-8407",
+      userId: 1,
+    }),
+    Order.create({
+      status: "PROCESSING",
+      items: [],
+      subtotal: 60,
+      customerName: "Brendan Kennedy",
+      customerEmail: "bk35@gmail.com",
+      customerAddress: "1385 York Ave, New York, NY 10021",
+      customerPhone: "845-236-3620",
+      userId: 2,
+    }),
+    Order.create({
+      status: "FULFILLED",
+      items: [],
+      subtotal: 78,
+      customerName: "Brendan Kennedy",
+      customerEmail: "bk35@gmail.com",
+      customerAddress: "1385 York Ave, New York, NY 10021",
+      customerPhone: "845-236-3620",
+      userId: 2,
+    }),
+  ]);
+
+  console.log(`seeded ${orders.length} orders`);
+
+  /*
+  for (let i = 3; i < users.length; i++) {
+    let uIdx = Math.floor(Math.random() * users.length);
+    let num = Math.floor(Math.random() * (users.length + 1));
+    if (num % 2) {
+      const order = await Order.create({ status: "CREATED" });
+      dataOrders.push(order);
+      await order.setUser(users[i]);
+    } else {
+      const order = await Order.create({ status: "PROCESSING" });
+      dataOrders.push(order);
+      await order.setUser(users[i]);
+    }
+  }
+
+  const orderCheckedout = dataOrders.filter(
+    (order) => order.status === "PROCESSING"
+  );
+  const orderInCartOnly = dataOrders.filter(
+    (order) => order.status === "CREATED"
+  );
+  console.log(`seeded ${dataOrders.length} orders`);
+  console.log(
+    `seeded ${orderCheckedout.length} orders with status ${orderCheckedout[0].status}`
+  );
+  console.log(
+    `seeded ${orderInCartOnly.length} orders with status ${orderInCartOnly[0].status}`
+  );
+  */
+>>>>>>> main
 
   // Create Orders => At least one order per User
 
@@ -108,8 +195,8 @@ async function seed() {
         let customerAddress = faker.address.streetAddress();
         let customerCity = faker.address.city();
         let customerState = faker.address.state();
-        let customerZip = faker.address.zipCode();
-        let customerPhone = faker.phone.phoneNumber();
+        let customerZip = faker.address.zipCode(5);
+        let customerPhone = String(faker.phone.phoneNumber(9));
         let orderNumber = faker.finance.mask(6, false, false)
 
         // use spread operator to insert new key/value pairs into current userOrder: orderProcessed
