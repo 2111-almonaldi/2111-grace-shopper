@@ -23,6 +23,7 @@ const Navbar = ({ handleClick, isLoggedIn, cart }) => (
               {/*<ShoppingCartRoundedIcon />*/}
             </Link>
           )}
+          <Link to="/cart/pendingcarts"> Pending Carts </Link>
           <a href="#" onClick={handleClick}>
             Logout
           </a>

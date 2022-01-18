@@ -1,4 +1,5 @@
 import axios from "axios";
+import { createOrder, updateOrder } from "./order";
 
 const SET_CART = "SET_CART";
 const ADD_TO_CART = "ADD_TO_CART";
@@ -43,6 +44,7 @@ export const clearCart = () => (dispatch) => {
 
 export const addToCart = (product) => (dispatch, getState) => {
   const cartItems = getState().cart.cartItems.slice();
+  const userId = getState().auth.id;
   let inCart = false;
   cartItems.forEach((item) => {
     if (item.name === product.name) {
@@ -54,6 +56,16 @@ export const addToCart = (product) => (dispatch, getState) => {
     cartItems.push({ ...product, count: 1 });
   }
   dispatch(addItem(cartItems));
+  const order = getState().orders.order;
+  console.log(order);
+  if (userId) {
+    if (cartItems.length === 1 || !order) {
+      dispatch(createOrder({ items: cartItems, userId }));
+    } else {
+      const id = getState().orders.order.id;
+      dispatch(updateOrder({ id, items: cartItems }));
+    }
+  }
   window.localStorage.setItem("cart", JSON.stringify(cartItems));
 };
 

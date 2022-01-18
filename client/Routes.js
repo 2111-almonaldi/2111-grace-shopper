@@ -5,6 +5,7 @@ import AllProducts from "./components/AllProducts";
 import SingleProduct from "./components/SingleProduct";
 import AddProduct from "./components/AddProduct";
 import UpdateProduct from "./components/UpdateProduct";
+import PendingCarts from "./components/User/PendingCarts";
 import { Login, Signup } from "./components/AuthForm";
 import Home from "./components/Home";
 import Cart from "./components/Cart";
@@ -24,7 +25,9 @@ class Routes extends Component {
         {isLoggedIn ? (
           <Switch>
             <Route path="/home" component={Home} />
-            <Route path="/cart" component={Cart} />
+            <Route exact path="/cart" component={Cart} />
+            <Route exact path="/cart" component={Cart} />
+            <Route path="/cart/pendingcarts" component={PendingCarts} />
             <Route exact path="/products" component={AllProducts} />
             <Route path="/products/:id" component={SingleProduct} />
           </Switch>

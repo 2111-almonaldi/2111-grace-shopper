@@ -22,4 +22,13 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+router.put("/:id", async (req, res, next) => {
+  try {
+    const order = await Order.findByPk(req.params.id);
+    res.send(await order.update(req.body));
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

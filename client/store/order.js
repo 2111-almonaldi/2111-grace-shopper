@@ -64,7 +64,6 @@ export const logoutOrder = () => {
     }
   };
 };
-
 export const clearOrder = () => (dispatch) => {
   dispatch(_clearOrder());
 };
