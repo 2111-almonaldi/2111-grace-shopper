@@ -56,7 +56,7 @@ const User = db.define("user", {
   },
 });
 
-module.exports = { User, userSort };
+
 
 /**
  * instanceMethods
@@ -206,3 +206,4 @@ User.beforeBulkCreate((users) => Promise.all(users.map(guestNameToProperCase)));
 User.beforeCreate(guestEmailToLowerCase)
 User.beforeBulkCreate((users) => Promise.all(users.map(guestEmailToLowerCase)));
 
+module.exports = { User, userSort };

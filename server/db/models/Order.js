@@ -3,7 +3,7 @@ const { ENUM, ARRAY, VIRTUAL, STRING, INTEGER, LITERAL} = Sequelize;
 const db = require("../db");
 const { Product } = require("./Product");
 const { User } = require("./User");
-const { Op } = require("se")
+const { Op } = require("sequelize")
 
 const Order = db.define("order", {
   status: {

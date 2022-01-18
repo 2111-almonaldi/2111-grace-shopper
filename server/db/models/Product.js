@@ -42,7 +42,7 @@ const Product = db.define("product", {
   },
 });
 
-module.exports = { Product };
+
 
 /**
  * instanceMethods
@@ -81,6 +81,7 @@ const categoryFilter = ({ categories }) => {
           [Op.in]: categories
       }
     }
+   }
   }
 }
 
@@ -94,3 +95,5 @@ const categoryFilter = ({ categories }) => {
 //     }
 //   }
 // }
+
+module.exports = { Product, categoryFilter };
