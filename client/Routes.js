@@ -19,33 +19,6 @@ class Routes extends Component {
   }
   render() {
     const { isLoggedIn } = this.props;
-<<<<<<< HEAD
-    //@@ CARLY TODO: add isAdmin to props and configure jsx conditional routing
-
-    return (
-        <div>
-          {isLoggedIn ? (
-            <Switch>
-              <Route path="/home" component={Home} />
-              <Route path="/cart" component={Cart} />
-              <Route exact path="/products" component={AllProducts} />
-              <Route path="/products/:id" component={SingleProduct} />
-              {/* <Route path="/logout" component={Logout} /> */}
-              {/* <Route path="/wishlist" component={Wishlist} /> */}
-              {/* <Route path="/me/Account component={UserAccount} /> */}
-            </Switch>
-          ) : (
-            <Switch>
-              <Route path="/" exact component={Login} />
-              <Route path="/login" component={Login} />
-              <Route path="/signup" component={Signup} />
-              <Route exact path="/products" component={AllProducts} />
-              <Route path="/products/:id" component={SingleProduct} />
-              <Route path="/cart" component={Cart} />
-            </Switch>
-          )}
-        </div>
-=======
     return (
       <div>
         {isLoggedIn ? (
@@ -68,7 +41,6 @@ class Routes extends Component {
           </Switch>
         )}
       </div>
->>>>>>> main
     );
   }
 }
