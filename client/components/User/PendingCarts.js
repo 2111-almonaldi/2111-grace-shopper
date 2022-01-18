@@ -10,7 +10,7 @@ export class PendingCarts extends React.Component {
   }
 
   render() {
-    const { orders } = this.props;
+    const { cart, orders } = this.props;
     return (
       <div>
         {orders.length === 0 ? (
@@ -31,8 +31,10 @@ export class PendingCarts extends React.Component {
                       </p>
                       <p> Order created: {order.createdAt}</p>
                       <button
-                        onClick={() =>
-                          order.items.forEach((item) => this.props.add(item))
+                        onClick={
+                          () => console.log(cart.cartItems, order.items)
+
+                          //order.items.forEach((item) => this.props.add(item))
                         }
                       >
                         Keep Shopping
