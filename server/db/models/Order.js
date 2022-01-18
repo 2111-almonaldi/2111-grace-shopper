@@ -11,6 +11,10 @@ const Order = db.define("order", {
     allowNull: false,
     defaultValue: "CREATED",
   },
+  items: {
+    type: ARRAY(JSON.stringify),
+    //allowNull: false
+  },
 
   subtotal: {
 		type: VIRTUAL,
@@ -85,7 +89,7 @@ Order.checkout = async (user) => {
     })
   )[0];
   await order.update({ status: "PROCESSING"});
-  await user.createOrder(); // for next order => { status: "CREATED"}
+  // await user.createOrder(); // for next order => { status: "CREATED"}
   const items = await order.getItems();
   for (let i = 0; i < items.length; i++) {
     await items[i].priceAtCheckout()
@@ -112,22 +116,27 @@ Order.guestCheckout = async (guestUser) => {
 }
 
 
-Order.prototype.getUserOrderHistory = async function(userId, productId){
+Order.prototype.getUserOrderHistory = async function(userId){
   const user = await User.findByPk(userId)
   const orderHistory = await user.getOrders({
     where: { status: "PROCESSING" || "COMPLETED" || "CANCELLED" }
 
   })
-  return orderHistory[0].getItems(productId ? { where: { id: productId } } : {})
+  if (orderHistory.items.length > 0){
+    return orderHistory.map(order => order.getUserItems())
+  } else return []
 }
 
-Order.prototype.continueShopping = async function (userId, productId) {
+Order.prototype.continueShopping = async function (userId) {
   const user = await User.findByPk(userId)
   const ordersInCartOnly = await user.getOrders({
     where: { status: "CREATED"}
+    // only return orders that have items in cart otherwise return {}
 
   })
-  return ordersInCartOnly[0].getItems(productId ? { where: {id: productId }} : {})
+  if (ordersInCartOnly.items.length > 0) {
+    return ordersInCartOnly.map(order => order.getUserItems())
+  } else return []
 }
 
 
