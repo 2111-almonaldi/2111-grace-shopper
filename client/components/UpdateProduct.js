@@ -85,8 +85,8 @@ class UpdateProduct extends React.Component {
                 <div>
                   <button type='submit'>Save</button>
                 </div><br/>
-            </form> <br/>
             <Link className='cancel' to='/products'>Click Here to Cancel</Link>
+            </form>
       </div>
     );
   }

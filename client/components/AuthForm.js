@@ -10,7 +10,7 @@ const AuthForm = (props) => {
 
   if (displayName === "Login") {
     return (
-      <div>
+      <div className="form-container">
         <form onSubmit={handleSubmit} name={name}>
           <div>
             <label htmlFor="username">
@@ -33,7 +33,7 @@ const AuthForm = (props) => {
     );
   }
   return (
-    <div>
+    <div className="form-container">
       <form onSubmit={handleSubmit} name={name}>
         <div>
           <label htmlFor="email">
