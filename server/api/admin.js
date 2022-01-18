@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { models: { User, Order, Product } } = require("../db");
-const { requireToken, isAdmin } = require("../gateKeepingMiddleware");
+const { requireToken, isAdmin } = require("./gateKeepingMiddleware");
 const {orderHistoryFilter, paginate, orderSort, orderSearch } = require("../db/models/User")
 const {userSort} = require("../db/models/User")
 
