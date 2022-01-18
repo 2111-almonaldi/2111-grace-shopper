@@ -8,11 +8,9 @@ import {
 	clearCart,
 } from '../store/cart';
 import '../../public/cart.css';
-import '../../public/subtotal.css';
 import DeleteIcon from '@mui/icons-material/Delete';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
-//import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 export class Cart extends Component {
 	constructor(props) {
@@ -27,25 +25,30 @@ export class Cart extends Component {
 		return (
 			<div>
 				<h3>Cart Details</h3>
-				<div>
+				<div className="cart">
 					{cart.length === 0 ? (
-						<div className="cart-container">
-							Cart is Empty<Link to="/products">Start Browsing!</Link>
+						<div className="cart-empty">
+							<p>Cart is Empty</p>
+							<p>
+								<Link to="/products">Start Browsing!</Link>
+							</p>
 						</div>
 					) : (
-						<div className="cart">
+						<div>
 							<div className="cart-container">
 								{cart.map((item, idx) => (
 									<div key={idx}>
 										<img className="cart-itemImage" src={item.imageUrl}></img>
-										<strong className="cart-itemName">{item.name}</strong>
+										<div className="cart-itemName">{item.name}</div>
 										<div>
-											<IndeterminateCheckBoxIcon
+											<RemoveIcon
+												fontSize="small"
 												className="cart-itemQty"
 												onClick={() => this.props.remove(item)}
 											/>
 											{item.count}
-											<AddBoxIcon
+											<AddIcon
+												fontSize="small"
 												className="cart-itemQty"
 												onClick={() => this.props.add(item)}
 											/>
@@ -59,36 +62,31 @@ export class Cart extends Component {
 									</div>
 								))}
 							</div>
+
 							<div>
 								{cart.length !== 0 && (
-									<div>
-										<hr />
-										<div className="subtotal">
-											<div className="subtotal-container">
-												<strong>Subtotal:</strong> ${itemsPrice.toFixed(2)}
-											</div>
-											<div>
-												{cart.reduce((a, c) => a + c.count, 0)} items in Cart:
-											</div>
+									<div className="subtotal">
+										<div>
+											<strong>Subtotal:</strong> ${itemsPrice.toFixed(2)}
+											<div>{cart.reduce((a, c) => a + c.count, 0)} items</div>
 											<div>
 												<strong>Tax:</strong> ${tax.toFixed(2)}
 											</div>
-											<hr />
 											<div>
 												<strong>Order Total:</strong> ${totalPrice.toFixed(2)}
 											</div>
 											<button className="subtotal-button">
 												<Link to={`/checkout`}>Proceed to Checkout</Link>
 											</button>
+											<button
+												className="clearCart-button"
+												onClick={() => this.props.clearCart()}
+											>
+												Clear Cart
+											</button>
 										</div>
 									</div>
 								)}
-								<button
-									className="subtotal-button"
-									onClick={() => this.props.clearCart()}
-								>
-									Clear Cart
-								</button>
 							</div>
 						</div>
 					)}

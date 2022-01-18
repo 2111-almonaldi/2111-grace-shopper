@@ -1,0 +1,51 @@
+.header {
+	height: 100px;
+	display: flex;
+	align-items: center;
+	background: linear-gradient(to bottom, rgb(51, 111, 240), white);
+	position: sticky;
+	align-self: flex-start;
+	top: 0;
+	z-index: 100;
+}
+
+.header-image {
+	width: 100px;
+	flex: 0.8;
+	object-fit: contain;
+	margin: 0 40px;
+	margin-top: 18px;
+}
+
+.header-nav {
+	display: flex;
+	justify-content: space-evenly;
+	position: sticky;
+	align-self: flex-start;
+	top: 0;
+	z-index: 100;
+}
+
+.header-option {
+	display: flex;
+	flex: 0.2;
+	flex-direction: row;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+.header-optionBasket {
+	display: flex;
+	align-items: center;
+	color: white;
+}
+
+.header-basketCount {
+	margin-left: 10px;
+	margin-right: 10px;
+	color: white;
+}
+
+/* a {
+	color: white;
+} */
