@@ -72,6 +72,18 @@ Product.updateInventory = async function (purchasedProducts) {
  * Sequelize helper functions
  */
 
+const categoryFilter = ({ categories }) => {
+  if (categories) {
+    categories = categories.split("|");
+    return {
+      where: {
+        name: {
+          [Op.in]: categories
+      }
+    }
+  }
+}
+
 // const filterByCategory = ({ categories }) => {
 //   if (categories) {
 //     categories = categories.split("|")

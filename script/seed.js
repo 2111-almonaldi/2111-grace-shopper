@@ -1,7 +1,6 @@
 "use strict";
 const { generateMovies } = require("./generateMovies");
 const { generateUsers } = require("./generateUsers");
-const faker = require("faker");
 
 const {
   db,
@@ -55,85 +54,109 @@ async function seed() {
   const users = await User.bulkCreate(dataUsers);
   console.log(`seeded ${users.length} users`);
 
+  // Create Orders
+  const orders = await Promise.all([
+    Order.create({
+      status: "PROCESSING",
+      items: [{ name: "L.A. Confidential", count: 1, id: 1, price: 25.0 }],
+      customerName: "Nicole DeSantis",
+      customerEmail: "nd13@gmail.com",
+      customerAddress: "1385 York Ave, New York, NY 10021",
+      customerPhone: "845-249-8407",
+      userId: 1,
+    }),
+    Order.create({
+      status: "FULFILLED",
+      items: [{ name: "The Last Samurai", count: 2, id: 2, price: 96.0 }],
+      subtotal: 47,
+      customerName: "Nicole DeSantis",
+      customerEmail: "nd13@gmail.com",
+      customerAddress: "1385 York Ave, New York, NY 10021",
+      customerPhone: "845-249-8407",
+      userId: 1,
+    }),
+    Order.create({
+      status: "CREATED",
+      items: [],
+      subtotal: 52,
+      customerName: "Nicole DeSantis",
+      customerEmail: "nd13@gmail.com",
+      customerAddress: "1385 York Ave, New York, NY 10021",
+      customerPhone: "845-249-8407",
+      userId: 1,
+    }),
+    Order.create({
+      status: "PROCESSING",
+      items: [],
+      subtotal: 60,
+      customerName: "Brendan Kennedy",
+      customerEmail: "bk35@gmail.com",
+      customerAddress: "1385 York Ave, New York, NY 10021",
+      customerPhone: "845-236-3620",
+      userId: 2,
+    }),
+    Order.create({
+      status: "FULFILLED",
+      items: [],
+      subtotal: 78,
+      customerName: "Brendan Kennedy",
+      customerEmail: "bk35@gmail.com",
+      customerAddress: "1385 York Ave, New York, NY 10021",
+      customerPhone: "845-236-3620",
+      userId: 2,
+    }),
+  ]);
 
-  // Create Orders => At least one order per User
+  console.log(`seeded ${orders.length} orders`);
+
+  /*
+  for (let i = 3; i < users.length; i++) {
+    let uIdx = Math.floor(Math.random() * users.length);
+    let num = Math.floor(Math.random() * (users.length + 1));
+    if (num % 2) {
+      const order = await Order.create({ status: "CREATED" });
+      dataOrders.push(order);
+      await order.setUser(users[i]);
+    } else {
+      const order = await Order.create({ status: "PROCESSING" });
+      dataOrders.push(order);
+      await order.setUser(users[i]);
+    }
+  }
+  const orderCheckedout = dataOrders.filter(
+    (order) => order.status === "PROCESSING"
+  );
+  const orderInCartOnly = dataOrders.filter(
+    (order) => order.status === "CREATED"
+  );
+  console.log(`seeded ${dataOrders.length} orders`);
+  console.log(
+    `seeded ${orderCheckedout.length} orders with status ${orderCheckedout[0].status}`
+  );
+  console.log(
+    `seeded ${orderInCartOnly.length} orders with status ${orderInCartOnly[0].status}`
+  );
+  */
+
+  // Create Associations: Products &&  Users
+  let productArr = [];
 
   for (let i = 0; i < users.length; i++) {
     let user = users[i];
-    let num = Math.floor(Math.random() * users.length)
-     // ordersInCartOnly
-     if (num % 2) {
+    let userOrder = await user.getOrders();
+    let num = Math.floor(Math.random() * (products.length + 1));
+    let pIdx = Math.floor(Math.random() * products.length);
 
-      let orderCreated = {status: "CREATED"}
-
-      // Create Associations: Products &&  Orders
-      let productsCreated = [];
-
-      let numCreated = Math.floor(Math.random() * (products.length + 1));
-      let pIdxCreated = Math.floor(Math.random() * products.length);
-
-      while (numCreated > 0 ) {
-        let orderProduct = products[pIdxCreated];
-        productsCreated.push(orderProduct);
-        numCreated--;
-
-      }
-
-      orderCreated = { ...orderCreated, productsCreated };
-      const order = await Order.create(orderCreated)
-      await user.setOrders([order]);
-      await order.setProducts(productsCreated);
-
-
-
-    } else {
-        // create new order for empty cart
-        let orderCreated = {status: "CREATED"}
-        let orderProcessed = {status: "PROCESSING"}
-
-
-        // Create Associations: Products &&  Orders
-        let productsProcessed = [];
-        let numProcessed = Math.floor(Math.random() * (products.length + 1));
-        let pIdxProcessed = Math.floor(Math.random() * products.length)
-
-        while (numProcessed > 0) {
-          let orderProduct = products[pIdxProcessed]
-          productsProcessed.push(orderProduct)
-          numProcessed--
-        }
-
-        let customerEmail = user.email;
-        let customerName = user.fullName;
-        let customerAddress = faker.address.streetAddress();
-        let customerCity = faker.address.city();
-        let customerState = faker.address.state();
-        let customerZip = faker.address.zipCode(5);
-        let customerPhone = String(faker.phone.phoneNumber(9));
-        let orderNumber = faker.finance.mask(6, false, false)
-
-        // use spread operator to insert new key/value pairs into current userOrder: orderProcessed
-        orderProcessed = {...orderProcessed, productsProcessed, customerName, customerEmail, customerAddress, customerCity, customerState, customerZip, customerPhone, orderNumber }
-        const order = await Order.create(orderCreated);
-        const orderHistory = await Order.create(orderProcessed);
-        await user.setOrders([order, orderHistory]);
-        await order.setProducts(productsProcessed)
+    while (num <= products.length) {
+      let orderProduct = products[pIdx];
+      productArr.push(orderProduct);
+      num += 1;
     }
-
+    userOrder = { ...userOrder, productArr };
   }
 
-  // half of users have items in their cart but have not checkout out yet -> this allows us to test for cart persistence when user login/logout and completes the purchase lifecycle
-  const ordersInCart = users.map(user => user.getOrders({where: {status: "CREATED"}}))
-  const ordersInProcess = users.map(user => user.getOrders({where: {status: "PROCESSING"}}))
-  const orders = users.map(user => user.getOrders());
-
-  // confirming order distribution
-  console.log(`seeded ${orders.length} orders`)
-  console.log(`seeded ${ordersInProcess.length} orders with status "PROCESSING"`)
-  console.log(`seeded ${ordersInCart.length} orders with status "CREATED"`)
-
+  console.log(`seeded successfully`);
 }
-
 
 /*
  We've separated the `seed` function from the `runSeed` function.

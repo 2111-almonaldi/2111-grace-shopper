@@ -22,7 +22,7 @@ router.get("/", requireToken, async (req, res, next) => {
 
 
 
-// GET /orders/:id
+// GET api/orders/:id
 router.get("/:id", requireToken, async (req, res, next) => {
   try {
     const order = await Order.findByPk(req.params.id, {
@@ -37,6 +37,8 @@ router.get("/:id", requireToken, async (req, res, next) => {
   }
 })
 
+
+// GET api/orders/:id
 router.get("/:status", requireToken, async (req, res, next) => {
   try {
     const orders = await req.user.getOrders({
@@ -53,6 +55,8 @@ router.get("/:status", requireToken, async (req, res, next) => {
   }
 });
 
+
+// GET api/orders/:id/items
 router.get("/:id/items", requireToken, async (req, res, next) => {
   try {
     const order = await Order.findByPk(req.params.id)
@@ -63,6 +67,7 @@ router.get("/:id/items", requireToken, async (req, res, next) => {
   }
 });
 
+// GET api/orders/:id/confirmation
 router.get("/:id/confirmation", requireToken, async (req, res, next) =>{
   try {
     const order = await Order.findByPk(req.params.id, {

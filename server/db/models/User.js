@@ -56,7 +56,7 @@ const User = db.define("user", {
   },
 });
 
-module.exports = { User };
+module.exports = { User, userSort };
 
 /**
  * instanceMethods
@@ -138,8 +138,15 @@ User.lookupByEmail =  async function ({ customerName, customerEmail}) {
   }
 }
 
-// @@ add userSort function
-
+// @@ add userSort function -> returns a sequelize fragment for user sorting operations
+const userSort = ({ sort, dir = "asc" }) => {
+  if (sort && sort !== "none") {
+    return {
+      order: [[sort, dir.toUpperCase()]]
+    }
+  }
+  return {}
+}
 /**
  * hooks
  */

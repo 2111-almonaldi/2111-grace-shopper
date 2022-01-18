@@ -49,7 +49,7 @@ router.get("/orders", requireToken, isAdmin, async (req, res, next) => {
 });
 
 
-//
+// POST /api/admin/products
 router.post("/products", async (req, res, next) => {
   try {
 
@@ -62,6 +62,7 @@ router.post("/products", async (req, res, next) => {
   }
 });
 
+// DELETE /api/admin/products
 router.delete("/products/:id", async (req, res, next) => {
   try {
     const rowsDeleted = await Product.destroy({
@@ -80,10 +81,11 @@ router.delete("/products/:id", async (req, res, next) => {
   }
 });
 
+
+// PUT /api/admin/products
 router.put("/products/:id", async (req, res, next) => {
   try {
-    await idSchema.validate(req.params);
-    await productSchema.validate(req.body);
+
     const { name, price, imageUrl, quantity, description } = req.body;
     const [rowsUpdated, products] = await Product.update(
       { name, price, imageUrl, quantity, description },
@@ -108,15 +110,15 @@ router.put("/products/:id", async (req, res, next) => {
 //PUT /api/admin/users/:id - update a user with the given id
 router.put("/users/:id", async (req, res, next) => {
   try {
-    await idSchema.validate(req.params);
-    //@todo: userSchema.validate()
-    const { firstName, lastName, email, isAdmin } = req.body;
+
+
+    const { firstName, lastName, username, email, isAdmin } = req.body;
     const user = await User.findByPk(req.params.id);
     if (user) {
       await user.update(
-        { firstName, lastName, email, isAdmin },
+        { firstName, lastName, email, isAdmin, username },
         {
-          attributes: ["firstName", "lastName", "email", "isAdmin"]
+          attributes: ["firstName", "lastName", "email", "isAdmin", "username"]
         }
       );
       res.json(user);
