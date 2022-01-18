@@ -12,7 +12,7 @@ const Order = db.define("order", {
     defaultValue: "CREATED",
   },
   items: {
-    type: ARRAY(JSON.stringify),
+    type: ARRAY(Sequelize.JSON),
     //allowNull: false
   },
 
