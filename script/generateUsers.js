@@ -9,7 +9,7 @@ function generateUsers() {
       firstName: "Nicole",
       lastName: "DeSantis",
       fullName: "Nicole DeSantis",
-      isAdmin: "t",
+      isAdmin: true,
     },
     {
       username: "brendan_kennedy",
@@ -18,11 +18,11 @@ function generateUsers() {
       firstName: "Brendan",
       lastName: "Kennedy",
       fullName: "Brendan Kennedy",
-      isAdmin: "f",
+      isAdmin: false,
     },
   ];
 
-  for (let id = 1; id <= 100; id++) {
+  for (let i=0; i <=100 ; i++) {
     let firstName = faker.name.firstName();
     let lastName = faker.name.lastName();
     let email = faker.internet.email(firstName);
