@@ -4,6 +4,8 @@ const db = require("../db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const axios = require("axios");
+const { Order } = require("./Order")
+const { Product } = require("./Product")
 
 const SALT_ROUNDS = 5;
 
@@ -97,27 +99,30 @@ User.findByToken = async function (token) {
 };
 
 // Lookup user by email: If no user, create a user -> Look up order history!
-User.lookupByEmail = async function ({ firstName, lastName, username, email, password }) {
+User.lookupByEmail =  async function ({ customerName, customerEmail}) {
   try {
-    let user = await User.findOne({
+    const order = await Order.findOne({
       where: {
-      email: email,
-      username: username
+        status: "PROCESSING",
+        customerEmail: customerEmail,
+        customerName: customerName
       }
     });
-    if (!user) {
-      user = await User.create({
-        firstName,
-        lastName,
-        email,
-        username,
-        password
-
+    if (!order.userId) {
+      const guestUser = await User.create({
+        firstName: customerName.split(' ')[0],
+        lastName: customerName.split(' ')[1],
+        email: customerEmail,
+        username: "Guest",
+        password: "N/A",
+        fullName: customerName,
+        isAdmin: false
       })
+
+    return guestUser;
     }
-    return user
-  } catch (ex) {
-    const error = Error('Username or Email is not valid')
+  } catch (err) {
+    const error = new Error("Email is not a valid Email Address")
     error.status = 401
     throw error
   }
@@ -140,6 +145,21 @@ const emailToLowerCase = async (user) => {
   }
 };
 
+const guestEmailToLowerCase = async (guestUser) => {
+  if (guestUser.username === "Guest") {
+    guestUser.username = guestUser.username.toLowerCase();
+  }
+
+}
+
+const guestNameToProperCase = async (guestUser) => {
+  if (guestUser.username === "Guest") {
+    guestUser.firstName === guestUser.firstName[0].toUpperCase();
+    guestUser.lastName === guestUser.lastName[0].toUpperCase();
+    guestUser.fullName === guestUser.firstName + " " + guestUser.lastName;
+  }
+}
+
 const usernameToLowerCase = async (user) => {
   if (user.changed("username")) {
     user.username = user.username.toLowerCase();
@@ -156,3 +176,15 @@ User.beforeBulkCreate((users) => Promise.all(users.map(emailToLowerCase)));
 
 User.beforeUpdate(usernameToLowerCase)
 User.beforeBulkCreate((users) => Promise.all(users.map(usernameToLowerCase)));
+
+User.beforeCreate(guestNameToProperCase)
+User.beforeBulkCreate((users) => Promise.all(users.map(guestNameToProperCase)));
+
+
+User.beforeCreate(guestNameToProperCase)
+User.beforeBulkCreate((users) => Promise.all(users.map(guestNameToProperCase)));
+
+
+User.beforeCreate(guestEmailToLowerCase)
+User.beforeBulkCreate((users) => Promise.all(users.map(guestEmailToLowerCase)));
+

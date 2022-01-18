@@ -55,87 +55,85 @@ async function seed() {
   const users = await User.bulkCreate(dataUsers);
   console.log(`seeded ${users.length} users`);
 
-  // Create Orders - Random 50/50 split with orders
-  const dataOrders = [];
+
+  // Create Orders => At least one order per User
+
   for (let i = 0; i < users.length; i++) {
-    let num = Math.floor(Math.random() * (users.length + 1))
-    if (num % 2) {
-      const order = await Order.create({status: "CREATED"})
-      dataOrders.push(order)
-      await order.setUser(users[i])
+    let user = users[i];
+    let num = Math.floor(Math.random() * users.length)
+     // ordersInCartOnly
+     if (num % 2) {
+
+      let orderCreated = {status: "CREATED"}
+
+      // Create Associations: Products &&  Orders
+      let productsCreated = [];
+
+      let numCreated = Math.floor(Math.random() * (products.length + 1));
+      let pIdxCreated = Math.floor(Math.random() * products.length);
+
+      while (numCreated > 0 ) {
+        let orderProduct = products[pIdxCreated];
+        productsCreated.push(orderProduct);
+        numCreated--;
+
+      }
+
+      orderCreated = { ...orderCreated, productsCreated };
+      const order = await Order.create(orderCreated)
+      await user.setOrders([order]);
+      await order.setProducts(productsCreated);
+
+
+
     } else {
-      const order = await Order.create({status: "PROCESSING"})
-      dataOrders.push(order)
-      await order.setUser(users[i])
+        // create new order for empty cart
+        let orderCreated = {status: "CREATED"}
+        let orderProcessed = {status: "PROCESSING"}
+
+
+        // Create Associations: Products &&  Orders
+        let productsProcessed = [];
+        let numProcessed = Math.floor(Math.random() * (products.length + 1));
+        let pIdxProcessed = Math.floor(Math.random() * products.length)
+
+        while (numProcessed > 0) {
+          let orderProduct = products[pIdxProcessed]
+          productsProcessed.push(orderProduct)
+          numProcessed--
+        }
+
+        let customerEmail = user.email;
+        let customerName = user.fullName;
+        let customerAddress = faker.address.streetAddress();
+        let customerCity = faker.address.city();
+        let customerState = faker.address.state();
+        let customerZip = faker.address.zipCode();
+        let customerPhone = faker.phone.phoneNumber();
+        let orderNumber = faker.finance.mask(6, false, false)
+
+        // use spread operator to insert new key/value pairs into current userOrder: orderProcessed
+        orderProcessed = {...orderProcessed, productsProcessed, customerName, customerEmail, customerAddress, customerCity, customerState, customerZip, customerPhone, orderNumber }
+        const order = await Order.create(orderCreated);
+        const orderHistory = await Order.create(orderProcessed);
+        await user.setOrders([order, orderHistory]);
+        await order.setProducts(productsProcessed)
     }
 
-    // Create Associations: Products &&  Users
-    let productArr = [];
-
-    for (let i = 0; i < users.length; i++) {
-      let user = users[i];
-      let userOrder = await user.getOrders();
-      let num = Math.floor(Math.random() * (products.length + 1));
-      let pIdx = Math.floor(Math.random() * products.length);
-
-      while (num <= products.length) {
-        let orderProduct = products[pIdx];
-        productArr.push(orderProduct);
-        num += 1;
-      }
-      // we assign a random number of products and random assortment of items to each userOrder => simulation of consumer behavior improves external validity of our engineering
-      // user order now has two key value pairs:
-      userOrder = { ...userOrder, productArr };
-
   }
-  // Define Orders in Cart vs Orders Purchased (Order History)
-  // half of users already completed purchase and therefore have order history
-  const ordersCheckout = dataOrders.filter(order => order.status === "PROCESSING")
 
   // half of users have items in their cart but have not checkout out yet -> this allows us to test for cart persistence when user login/logout and completes the purchase lifecycle
-  const ordersInCartOnly = dataOrders.filter(order => order.status === "CREATED")
+  const ordersInCart = users.map(user => user.getOrders({where: {status: "CREATED"}}))
+  const ordersInProcess = users.map(user => user.getOrders({where: {status: "PROCESSING"}}))
+  const orders = users.map(user => user.getOrders());
 
+  // confirming order distribution
+  console.log(`seeded ${orders.length} orders`)
+  console.log(`seeded ${ordersInProcess.length} orders with status "PROCESSING"`)
+  console.log(`seeded ${ordersInCart.length} orders with status "CREATED"`)
 
-
-
-   // confirming order distribution
-   console.log(`seeded ${dataOrders.length} orde vcvnm   nmvgkbcxdvb mhgfrwedcvb rs`)
-   console.log(`seeded ${ordersCheckout.length} orders with status ${ordersCheckout[0].status}`)
-   console.log(`seeded ${ordersInCartOnly.length} orders with status ${ordersInCartOnly[0].status}`)
-
-
-
-
-    /**isolate checkout out items and add model features */
-
-
-    for (let i = 0; i <ordersCheckout.length; i++) {
-      let userOrder = ordersCheckout[i];
-      // magic method
-      let user = await userOrder.getUser()
-      let customerEmail = user.email;
-      let customerName = user.name;
-      let customerAddress = faker.address.streetAddress();
-      let customerCity = faker.address.city();
-      let customerState = faker.address.state();
-      let customerZip = faker.address.zipCode();
-      let customerPhone = faker.phone.phoneNumber();
-      let orderNumber = faker.number.digits(6)
-
-      // use spread operator to insert new key/value pairs into current userOrder
-      userOrder = {...userOrder, customerName, customerEmail, customerAddress, customerCity, customerState, customerZip, customerPhone, orderNumber }
-
-    }
-
-    // force create for two users [0][1]
-  }
-
-  //
-
-  console.log(`Nicole (admin) order: ${users[0].userOrder}`);
-
-  console.log(`seeded successfully`);
 }
+
 
 /*
  We've separated the `seed` function from the `runSeed` function.
