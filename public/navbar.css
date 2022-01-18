@@ -20,10 +20,6 @@
 .header-nav {
 	display: flex;
 	justify-content: space-evenly;
-	position: sticky;
-	align-self: flex-start;
-	top: 0;
-	z-index: 100;
 }
 
 .header-option {
@@ -34,17 +30,25 @@
 	margin-right: 20px;
 }
 
-.header-optionBasket {
+.header-space {
 	display: flex;
+	flex: 1;
 	align-items: center;
-	/* color: white; */
+	border-radius: 24px;
+	width: 100%;
 }
 
-.header-basketCount {
+/* .header-optionBasket {
+	display: flex;
+	align-items: center;
+	/* color: white;
+}*/
+
+/* .header-basketCount {
 	margin-left: 10px;
 	margin-right: 10px;
-	/* color: white; */
-}
+  color: white;
+} */
 
 /* a {
 	color: white;
