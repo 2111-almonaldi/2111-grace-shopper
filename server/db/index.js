@@ -5,14 +5,13 @@ const db = require("./db");
 const { User } = require("./models/User");
 const { Product } = require("./models/Product");
 const { ProductCategory } = require("./models/ProductCategory");
-// const { OrderDetails } = require('./models/OrderDetails');
 const { Order } = require("./models/Order");
 
 //associations could go here!
 
 // USER VS ORDER
 User.hasMany(Order);
-Order.belongsTo(User);
+Order.belongsTo(User); // [{}, {}]
 
 // ORDER VS PRODUCT
 Order.hasMany(Product);
@@ -26,13 +25,8 @@ User.belongsToMany(Product, { through: "join-product-user", as: "wishlist" });
 Product.belongsToMany(User, { through: "join-product-user", as: "wishlist" });
 
 // PRODUCT VS PRODUCTCATEGORY
-Product.belongsToMany(ProductCategory, {
-  through: "join-product-category",
-  as: "categories",
-});
-ProductCategory.belongsToMany(Product, {
-  through: "join-product-category",
-  as: "categories",
+Product.belongsToMany(ProductCategory, {through: "join-product-category", as: "categories"});
+ProductCategory.belongsToMany(Product, {through: "join-product-category", as: "categories",
 });
 
 module.exports = {

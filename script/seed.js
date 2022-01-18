@@ -123,7 +123,6 @@ async function seed() {
       await order.setUser(users[i]);
     }
   }
-
   const orderCheckedout = dataOrders.filter(
     (order) => order.status === "PROCESSING"
   );
