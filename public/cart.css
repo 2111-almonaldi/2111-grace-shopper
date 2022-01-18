@@ -1,0 +1,40 @@
+.cart {
+	background-color: white;
+}
+
+.cart-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding: 20px;
+	height: max-content;
+	margin: 0 10px;
+}
+
+h3 {
+	margin-right: 10px;
+	padding: 10px;
+	border-bottom: 1px solid lightgray;
+}
+
+.cart-itemImage {
+	object-fit: contain;
+	padding: 10px;
+	width: 180px;
+	height: 180px;
+}
+
+.cart-itemName,
+.cart-itemQty,
+.cart-itemPrice,
+.cart-itemDelete {
+	flex: 0.4;
+}
+
+.subtotal {
+	padding: 20px;
+	flex-direction: row;
+	justify-content: right;
+	border-bottom: 1px solid lightgray;
+	border-radius: 3px;
+}
