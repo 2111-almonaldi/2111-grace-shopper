@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { Order } = require("./Order");
 const axios = require("axios");
-const { Order } = require("./Order")
 const { Product } = require("./Product")
 
 const SALT_ROUNDS = 5;
@@ -139,6 +138,7 @@ User.lookupByEmail =  async function ({ customerName, customerEmail}) {
   }
 }
 
+// @@ add userSort function
 
 /**
  * hooks
