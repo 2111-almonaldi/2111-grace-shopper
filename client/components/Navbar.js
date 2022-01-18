@@ -10,7 +10,7 @@ import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 const Navbar = ({ handleClick, isLoggedIn, cart }) => (
 	<div className="header">
 		{isLoggedIn ? (
-			<div>
+			<div className="header">
 				<Link to="/home">
 					<img
 						className="header-image"
@@ -18,35 +18,26 @@ const Navbar = ({ handleClick, isLoggedIn, cart }) => (
 						alt=""
 					/>
 				</Link>
-				<div className="header-space"></div>
 				<div className="header-nav">
-					<div className="header-option">
-						{/* The navbar will show these links after you log in */}
-						<span className="header-optionLineOne">Hello, User</span>
-
-						<span className="header-optionLineTwo">Account Details</span>
-
-						<Link to="/products">
-							<span className="header-optionLineThree">Products</span>
+					{/* The navbar will show these links after you log in */}
+					<span>Hello, User</span>
+					<span>Account Details</span>
+					<Link to="/products">
+						<span>Products</span>
+					</Link>
+					<a href="#" onClick={handleClick}>
+						<span>Logout</span>
+					</a>
+					{cart.length === 0 ? (
+						<Link to="/cart">
+							<ShoppingCartRoundedIcon />
 						</Link>
-
-						<a href="#" onClick={handleClick}>
-							<span className="header-optionLineFour">Logout</span>
-						</a>
-
-						<div className="header-optionBasket">
-							{cart.length === 0 ? (
-								<Link to="/cart">
-									<ShoppingCartRoundedIcon />
-								</Link>
-							) : (
-								<Link to="/cart">
-									<ShoppingCartRoundedIcon />(
-									{cart.reduce((a, c) => a + c.count, 0)})
-								</Link>
-							)}
-						</div>
-					</div>
+					) : (
+						<Link to="/cart">
+							<ShoppingCartRoundedIcon />(
+							{cart.reduce((a, c) => a + c.count, 0)})
+						</Link>
+					)}
 				</div>
 			</div>
 		) : (
@@ -58,39 +49,29 @@ const Navbar = ({ handleClick, isLoggedIn, cart }) => (
 						alt=""
 					/>
 				</Link>
-				<div className="header-nav"></div>
-				<div className="header-option">
+				<div className="header-nav">
 					{/* The navbar will show these links before you log in */}
-					<span className="header-optionLineOne">
+					<span>
 						<Link to="/login">Login</Link>
 					</span>
-
-					<span className="header-optionLineTwo">
+					<span>
 						<Link to="/signup">Sign Up</Link>
 					</span>
-
-					<span className="header-optionLineThree">
+					<span>
 						<Link to="/products">Products</Link>
 					</span>
-				</div>
-
-				<div className="header-optionBasket">
-					{cart.length === 0 ? (
-						<Link
-							to="/cart"
-							className="header-optionLineTwo header-basketCount"
-						>
-							<ShoppingCartRoundedIcon />
-						</Link>
-					) : (
-						<Link
-							to="/cart"
-							className="header-optionLineTwo header-basketCount"
-						>
-							<ShoppingCartRoundedIcon />(
-							{cart.reduce((a, c) => a + c.count, 0)})
-						</Link>
-					)}
+					<span>
+						{cart.length === 0 ? (
+							<Link to="/cart">
+								<ShoppingCartRoundedIcon />
+							</Link>
+						) : (
+							<Link to="/cart">
+								<ShoppingCartRoundedIcon />(
+								{cart.reduce((a, c) => a + c.count, 0)})
+							</Link>
+						)}
+					</span>
 				</div>
 			</div>
 		)}
