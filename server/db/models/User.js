@@ -94,6 +94,7 @@ User.findByToken = async function (token) {
         {
           model: Order,
           where: { status: "CREATED" },
+          required: false,
         },
       ],
     });
