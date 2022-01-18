@@ -23,7 +23,7 @@ export class AllProducts extends React.Component {
         {products.map((product, index) => {
           return (
             <div className="product" key={index}>
-              <img src={product.imageUrl} />
+              <img className="product-img" src={product.imageUrl} />
               <div className="product-info">
                 <div className="product-desc">
                   <h5>

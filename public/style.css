@@ -91,10 +91,13 @@ form .update {
 }
 
 img {
-  height: 200px;
-  width: 220px;
   border: gray 1px solid;
   border-radius: 5px;
+}
+
+.product-img {
+  height: 200px;
+  width: 220px;
 }
 
 .products {
@@ -114,6 +117,13 @@ img {
   border-radius: 5px;
 }
 
+.single-product .product {
+  max-width: 600px;
+  min-width: 600px;
+  min-height: 250px;
+  max-height: 250px;
+}
+
 .product-info {
   display: flex;
   margin-left: 30px;
@@ -123,12 +133,40 @@ img {
 
 .description {
   display: -webkit-box;
-   -webkit-line-clamp: 4;
-   -webkit-box-orient: vertical;
-   overflow: hidden;
-   text-overflow: ellipsis;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .product-price {
   font-size: 12px;
+}
+
+.page_links {
+  font-size: 14px;
+}
+
+.single-product-data-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.single-product-pricing, .admin-update-div {
+  width: 40%;
+}
+
+.admin-update-div {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-top: 15px;
+}
+
+.deleteBtn:hover {
+  background-color: red;
+  border:red;
+  border-radius: 3px;
+  padding: 3px;
 }
