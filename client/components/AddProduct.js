@@ -43,7 +43,7 @@ class AddProduct extends React.Component {
 
           <div>
           <label htmlFor='imageUrl'>Image</label><br/>
-          <textarea name='imageUrl' onChange={handleChange} value={imageUrl}  rows="2" cols="41" />
+          <textarea name='imageUrl' onChange={handleChange} value={imageUrl}  rows="3" />
           </div>
 
           <div>
@@ -58,7 +58,7 @@ class AddProduct extends React.Component {
 
           <div>
           <label htmlFor='description'>Description</label><br/>
-          <textarea name='description' onChange={handleChange} value={description} rows="2" cols="41" />
+          <textarea name='description' onChange={handleChange} value={description} rows="2" />
           </div>
 
           <br/>
