@@ -28,7 +28,7 @@ export class SingleProduct extends Component {
           <div className="single-product-info">
             <div className="single-product-desc">
               <h1>{singleProduct.name}</h1>
-              <div>{singleProduct.description}</div>
+              <p>{singleProduct.description}</p>
             </div>
             <div className="single-product-data-bottom">
               <div className="single-product-pricing">
@@ -51,7 +51,7 @@ export class SingleProduct extends Component {
                   this.props.removeProduct(singleProduct.id);
                 }}
               >
-                Permanently Delete
+                Delete Permanently
               </button>
             </div>
           </div>
