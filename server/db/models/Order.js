@@ -10,10 +10,7 @@ const Order = db.define("order", {
     type: ENUM("CREATED", "PROCESSING", "CANCELLED", "FULFILLED"),
     allowNull: false,
     defaultValue: "CREATED",
-  },
-  items: {
-    type: ARRAY(Sequelize.JSON),
-    //allowNull: false
+
   },
 
   subtotal: {
@@ -89,7 +86,7 @@ Order.checkout = async (user) => {
     })
   )[0];
   await order.update({ status: "PROCESSING"});
-  // await user.createOrder(); // for next order => { status: "CREATED"}
+  await user.createOrder(); // for next order => { status: "CREATED"}
   const items = await order.getItems();
   for (let i = 0; i < items.length; i++) {
     await items[i].priceAtCheckout()
@@ -154,7 +151,7 @@ const paginate = ({ page }, pageSize = 5) => {
   return {}
 };
 
-const orderHistoryFilter = ({ orders }) => {
+const orderStatusFilter = ({ orders }) => {
   if (orders.length)  {
     orders = orders.split("|");
     return {
@@ -169,6 +166,19 @@ const orderHistoryFilter = ({ orders }) => {
 
   return {};
 };
+
+const orderHistoryFilter = ({ orders }) => {
+  if (orders.length) {
+    orders = orders.split("|");
+    return {
+      where: {
+        orderNumber: {
+          [Op.in]: orders.map(order => order.orderNumber)
+        }
+      }
+    }
+  }
+}
 
 
 
@@ -215,4 +225,4 @@ CREATE INDEX order_orderNumber_idx ON products USING gin (name gin_trgm_ops);
 */
 
 
-module.exports = { Order, paginate, orderHistoryFilter, orderSort, orderSearch };
+module.exports = { Order, paginate, orderHistoryFilter, orderStatusFilter, orderSort, orderSearch };

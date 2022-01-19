@@ -2,13 +2,14 @@ const router = require('express').Router();
 const {
 	models: { User, Order, Product },
 } = require('../db');
-const { requireToken, isAdmin } = require('./gatekeepingMiddleware');
+const { requireToken } = require('./gatekeepingMiddleware');
 const {
 	orderHistoryFilter,
 	paginate,
 	orderSort,
-	orderSearch,
+  orderStatusFilter
 } = require('../db/models/User');
+const { DEFAULT_PAGE_SIZE } = require("../../constants")
 
 module.exports = router;
 
@@ -16,9 +17,18 @@ module.exports = router;
 router.get('/', requireToken, async (req, res, next) => {
 	try {
 		const orders = await req.user.getOrders({
-			include: {
-				model: Product,
-			},
+			include: [
+        {
+          model: Product,
+          as: 'items',
+
+        }
+      ],
+      ...orderHistoryFilter(req.query),
+      ...orderStatusFilter(req.query),
+      ...orderSort(req.query),
+      ...paginate(req.query, DEFAULT_PAGE_SIZE),
+      distinct: true
 		});
 		res.json(orders);
 	} catch (err) {
@@ -40,7 +50,7 @@ router.get('/:id', requireToken, async (req, res, next) => {
 	}
 });
 
-// GET api/orders/:id
+// GET api/orders/:status
 router.get('/:status', requireToken, async (req, res, next) => {
 	try {
 		const orders = await req.user.getOrders({
