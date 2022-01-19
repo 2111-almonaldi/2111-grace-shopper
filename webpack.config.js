@@ -1,5 +1,4 @@
-const { resolve } = require('path')
-
+const { resolve } = require("path");
 
 module.exports = {
   entry: ["babel-polyfill", "./client/index.js"],
@@ -9,7 +8,7 @@ module.exports = {
   },
   devtool: "source-map",
   resolve: {
-    extensions: [".js", ".jsx"]
+    extensions: [".js", ".jsx", ".css", ".scss"],
   },
   module: {
     rules: [
@@ -23,28 +22,24 @@ module.exports = {
         },
       },
       {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader',
-        ]
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.svg$|\.ttf?|\.woff$|\.woff2|\.eof|\.eot/,
-        loader: 'file-loader'
+        loader: "file-loader",
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         use: [
           {
-            loader:'url-loader',
+            loader: "url-loader",
             options: {
-              limit: 10000
-            }
+              limit: 10000,
+            },
           },
-        ]
-      }
-
+        ],
+      },
     ],
   },
   devServer: {
@@ -52,5 +47,5 @@ module.exports = {
     inline: true,
     port: "8080",
     allowedHosts: [".amazonaws.com"],
-  }
+  },
 };

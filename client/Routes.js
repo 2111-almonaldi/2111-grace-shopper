@@ -5,6 +5,7 @@ import AllProducts from "./components/AllProducts";
 import SingleProduct from "./components/SingleProduct";
 import AddProduct from "./components/AddProduct";
 import UpdateProduct from "./components/UpdateProduct";
+import PendingCarts from "./components/User/PendingCarts";
 import { Login, Signup } from "./components/AuthForm";
 import Home from "./components/Home";
 import Cart from "./components/Cart";
@@ -24,7 +25,8 @@ class Routes extends Component {
         {isLoggedIn ? (
           <Switch>
             <Route path="/home" component={Home} />
-            <Route path="/cart" component={Cart} />
+            <Route exact path="/cart" component={Cart} />
+            <Route path="/cart/pendingcarts" component={PendingCarts} />
             <Route exact path="/products" component={AllProducts} />
             <Route path="/products/:id" component={SingleProduct} />
           </Switch>
@@ -33,6 +35,7 @@ class Routes extends Component {
             <Route path="/" exact component={Login} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
+            <Route path="home" component={Home} />
             <Route exact path="/products" component={AllProducts} />
             <Route path="/products/create" component={AddProduct} />
             <Route path="/products/:id/update" component={UpdateProduct} />
@@ -53,7 +56,6 @@ const mapState = (state) => {
     // Being 'logged in' for our purposes will be defined has having a state.auth that has a truthy id.
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
     isLoggedIn: !!state.auth.id,
-    priorCart: state.auth.orders,
   };
 };
 
