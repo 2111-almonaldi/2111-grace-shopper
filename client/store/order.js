@@ -5,7 +5,6 @@ const CREATE_ORDER = "CREATE_ORDER";
 const CLEAR_ORDER = "CLEAR_ORDER";
 const FETCH_ORDERS = "FETCH_ORDERS";
 const UPDATE_ORDER = "UPDATE_ORDER";
-const LOGOUT_ORDER = "LOGOUT_ORDER";
 
 const _createOrder = (order) => ({
   type: CREATE_ORDER,
@@ -44,14 +43,21 @@ export const logoutOrder = () => {
     try {
       const orderItems = getState().cart.cartItems;
       const userId = getState().auth.id;
-      if (orderItems.length) {
-        const id = getState().orders.order.id;
-        const { data: updated } = await axios.put(`/api/orders/${id}`, {
+      const order = getState().orders.order;
+      if (orderItems.length !== 0 && order !== null) {
+        const id = order.id;
+        const { data } = await axios.put(`/api/orders/${id}`, {
           items: orderItems,
           id,
         });
+      } else if (orderItems.length !== 0) {
+        const { data: created } = await axios.post("/api/orders", {
+          items: orderItems,
+          userId,
+        });
       }
       dispatch(clearOrder());
+      dispatch(clearCart());
     } catch (error) {
       console.log(error);
     }

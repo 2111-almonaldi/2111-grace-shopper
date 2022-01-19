@@ -64,7 +64,7 @@ const mapDispatch = (dispatch) => {
     handleClick() {
       dispatch(logoutOrder());
       dispatch(logout());
-      dispatch(clearCart());
+      //dispatch(clearCart());
     },
   };
 };
