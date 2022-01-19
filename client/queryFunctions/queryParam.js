@@ -1,21 +1,20 @@
-export const getQueryParam = (location, key) => {
-  const query = new URLSearchParams(location.search);
-  return query.get(key);
+export const getParam = (location, key) => {
+  return new URLSearchParams(location.search).has(key);
+
 };
 
-export const hasQueryParam = (location, key) => {
-  const query = new URLSearchParams(location.search);
-  return query.has(key);
+export const hasParam = (location, key) => {
+  return new URLSearchParams(location.search).has(key);
 };
 
-export const setQueryParam = (location, key, val) => {
-  let rawQuery = typeof location === 'object' ? location.search : location;
-  const query = new URLSearchParams(rawQuery);
+export const setParam = (location, key, value) => {
+  let userQuery = typeof location === 'object' ? location.search : location;
+  const query = new URLSearchParams(userQuery).has(key)
   if (query.has(key)) {
     query.delete(key);
-    query.append(key, val);
+    query.append(key, value);
   } else {
-    query.append(key, val);
+    query.append(key, value);
   }
   query.sort();
   return query.toString();
