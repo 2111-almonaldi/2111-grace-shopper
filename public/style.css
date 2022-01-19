@@ -23,7 +23,7 @@ nav a {
   background-color: white;
 }
 
-form {
+.main-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -36,12 +36,12 @@ form {
   padding: 20px;
 }
 
-form label {
+.form-label {
   font-size: 22px;
   color: black;
 }
 
-form input, textarea {
+.form-input, form-textarea {
   width: 450px;
   margin: 0.5em 0;
   padding: 5px;
@@ -53,7 +53,7 @@ form input, textarea {
   height: 150px;
 }
 
-form button {
+.form-button {
   width: 120px;
   padding: 5px 10px;
   background-color: #59A9C2;
@@ -65,7 +65,7 @@ form button {
   outline: none;
 }
 
-form button:hover {
+.form-button:hover {
   background-color: #65878F;
 }
 
@@ -80,8 +80,6 @@ form .update {
 
 .newProductLink {
   display: block;
-  /* right: 0;
-  position: absolute; */
   background-color: blue;
   color: white;
   border-radius: 3px;
@@ -104,6 +102,7 @@ img {
 
 .products {
   min-width: 100vw;
+  max-width: 100vh;
 }
 
 .product {
@@ -171,4 +170,57 @@ img {
   border:red;
   border-radius: 3px;
   padding: 3px;
+}
+
+/* BREAKPOINTS */
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .product-img {
+    min-height: 250px;
+    min-width: 100%;
+    max-height: 350px;
+    max-width: 100%;
+  }
+  
+  .product {
+    display: block;
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 450px;
+    max-height: 520px;
+    margin: 0;
+    margin-top: 5px;
+    padding: 0;
+    padding-bottom: 5px;
+    border-radius: 5px;
+  }
+  
+  .product-info {
+    margin-left: 5px;
+  }
+  
+  .product-price {
+    font-size: 14px;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+
 }
