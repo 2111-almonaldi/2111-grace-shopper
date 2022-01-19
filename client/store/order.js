@@ -30,14 +30,37 @@ export const createOrder = (order) => {
     try {
       const { data: created } = await axios.post("/api/orders", order);
       dispatch(_createOrder(created));
-      window.localStorage.clear("cart");
-      dispatch(clearCart);
     } catch (error) {
       console.log(error, "order creation error");
     }
   };
 };
 
+export const logoutOrder = () => {
+  return async (dispatch, getState) => {
+    try {
+      const orderItems = getState().cart.cartItems;
+      const userId = getState().auth.id;
+      const order = getState().orders.order;
+      if (orderItems.length !== 0 && Object.keys(order).length !== 0) {
+        const id = order.id;
+        const { data } = await axios.put(`/api/orders/${id}`, {
+          items: orderItems,
+          id,
+        });
+      } else if (orderItems.length !== 0) {
+        const { data: created } = await axios.post("/api/orders", {
+          items: orderItems,
+          userId,
+        });
+      }
+      dispatch(clearOrder());
+      dispatch(clearCart());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 export const clearOrder = () => (dispatch) => {
   dispatch(_clearOrder());
 };
@@ -66,22 +89,44 @@ export const updateOrder = (order) => {
   };
 };
 
-const initialState = {};
+export const deleteOrder = (id) => {
+  return async (dispatch) => {
+    try {
+      const { data: order } = await axios.delete(`/api/orders/${id}`);
+      dispatch(_clearOrder());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const loadPending = () => {
+  return async (dispatch, getState) => {
+    try {
+      const id = getState().auth.id;
+      const { data: pending } = await axios.get(`/api/orders/${id}/pending`);
+      return dispatch(setOrders(pending));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const initialState = {
+  orders: [],
+  order: {},
+};
 
 export default function orderReducer(state = initialState, action) {
   switch (action.type) {
     case CREATE_ORDER:
-      return { order: action.order };
+      return { ...state, order: action.order };
     case CLEAR_ORDER:
-      return { order: null };
+      return { ...state, order: {} };
     case FETCH_ORDERS:
-      return { orders: action.orders };
+      return { ...state, orders: action.orders };
     case UPDATE_ORDER:
-      return {
-        orders: state.map((order) =>
-          order.id === action.order.id ? action.order : order
-        ),
-      };
+      return { ...state, order: action.order };
     default:
       return state;
   }
