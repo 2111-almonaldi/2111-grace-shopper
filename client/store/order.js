@@ -44,7 +44,7 @@ export const logoutOrder = () => {
       const orderItems = getState().cart.cartItems;
       const userId = getState().auth.id;
       const order = getState().orders.order;
-      if (orderItems.length !== 0 && order !== null) {
+      if (orderItems.length !== 0 && !!order) {
         const id = order.id;
         const { data } = await axios.put(`/api/orders/${id}`, {
           items: orderItems,

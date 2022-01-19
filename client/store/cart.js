@@ -117,14 +117,40 @@ export const removeFromCart = (product) => (dispatch, getState) => {
 export const combineCarts = (oldOrder, orderId) => {
   return async (dispatch, getState) => {
     const cartItems = getState().cart.cartItems.slice();
+    const userId = getState().auth.id;
+    const order = getState().orders.order;
     const combinedCarts = cartItems.concat(oldOrder);
     try {
       if (!cartItems.length) {
+        dispatch(setCart(combinedCarts));
+        dispatch(createOrder({ items: combinedCarts, userId }));
         const { data: order } = await axios.delete(`/api/orders/${orderId}`);
         window.localStorage.setItem("cart", JSON.stringify(combinedCarts));
       } else {
-        oldOrder.forEach((item) => dispatch(addToCart(item)));
-        const { data: order } = await axios.delete(`/api/orders/${orderId}`);
+        const reducedCart = combinedCarts.reduce((a, item) => {
+          const exists = a.find((product) => product.name === item.name);
+          if (exists) {
+            exists.count += item.count;
+            return a;
+          }
+          a.push(item);
+          return a;
+        }, []);
+        dispatch(setCart(reducedCart));
+        if (order) {
+          if (order !== null) {
+            const id = getState.orders.order.id;
+            dispatch(updateOrder({ items: reducedCart, id }));
+            const { data: order } = await axios.delete(
+              `/api/orders/${orderId}`
+            );
+          }
+        } else {
+          dispatch(setCart(reducedCart));
+          dispatch(createOrder({ items: reducedCart, userId }));
+          const { data: order } = await axios.delete(`/api/orders/${orderId}`);
+          window.localStorage.setItem("cart", JSON.stringify(reducedCart));
+        }
       }
     } catch (error) {
       console.log(error);
