@@ -176,14 +176,14 @@ img {
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
-  .product-img {
+  .product-img, .single-product img {
     min-height: 250px;
     min-width: 100%;
     max-height: 350px;
     max-width: 100%;
   }
   
-  .product {
+  .product, .single-product {
     display: block;
     max-width: 99%;
     min-width: 99%;
@@ -202,6 +202,29 @@ img {
   
   .product-price {
     font-size: 14px;
+  }
+
+  /* single product */
+  
+  .single-product-data-bottom {
+    flex-direction: column;
+  }
+  
+  .single-product-pricing, .admin-update-div {
+    width: 100%;
+  }
+  
+  .admin-update-div {
+    margin-top: 15px;
+    border-top: gray 3px solid;
+  }
+
+  .single-product-pricing button {
+    max-width: 85px;
+  }
+
+  .deleteBtn {
+    max-width: 177px;
   }
 }
 

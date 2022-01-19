@@ -19,14 +19,14 @@ export class SingleProduct extends Component {
     const { singleProduct } = this.props;
 
     return (
-      <div className="single-product">
-        <div className="product" key={singleProduct.id}>
+      <div>
+        <div className="single-product" key={singleProduct.id}>
           <img
             src={singleProduct.imageUrl}
             style={{ width: "200px", height: "200px" }}
           />
-          <div className="product-info">
-            <div className="product-desc">
+          <div className="single-product-info">
+            <div className="single-product-desc">
               <h1>{singleProduct.name}</h1>
               <div>{singleProduct.description}</div>
             </div>
