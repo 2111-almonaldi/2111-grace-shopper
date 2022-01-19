@@ -2,27 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
-//PERHAPS MOVE TO ANOTHER FILE FOR ORGANIZATION
-const CARD_OPTIONS = {
-	iconStyle: 'solid',
-	style: {
-		base: {
-			iconColor: 'c4f0ff',
-			color: '#fff',
-			fontWeight: 500,
-			fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
-			fontSize: '16px',
-			fontSmoothing: 'antialiased',
-			':-webkit-autofill': { color: '#fce883' },
-			// ': :placeholder': { color: '#87bbfd' },
-		},
-		invalid: {
-			iconColor: '#ffc7ee',
-			color: '#ffc7ee',
-		},
-	},
-};
-
 export default function PaymentForm() {
 	const [success, setSuccess] = useState(false);
 	const stripe = useStripe();
@@ -40,7 +19,7 @@ export default function PaymentForm() {
 			try {
 				const { id } = paymentMethod;
 				const response = await axios.post('http://localhost:8080/checkout', {
-					amount,
+					amount: totalPrice.toFixed(2),
 					id,
 				});
 
@@ -60,11 +39,9 @@ export default function PaymentForm() {
 		<>
 			{!success ? (
 				<form onSubmit={handleSubmit}>
-					<fieldset className="paymentForm">
-						<div className="paymentForm-Row">
-							<CardElement />
-						</div>
-					</fieldset>
+					<div className="paymentForm">
+						<CardElement />
+					</div>
 					<button>Pay</button>
 				</form>
 			) : (

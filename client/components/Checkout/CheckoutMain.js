@@ -55,6 +55,11 @@ const CheckoutMain = ({ isLoggedIn, cart }) => {
 				</div>
 
 				{/*checkout section - payment */}
+				<div className="checkout-section">
+					<div className="checkout-header">
+						<h4>Payment Method</h4>
+					</div>
+				</div>
 				<div>
 					{cart.length !== 0 && (
 						<div className="subtotal">
@@ -71,14 +76,12 @@ const CheckoutMain = ({ isLoggedIn, cart }) => {
 						</div>
 					)}
 				</div>
-
-				<div className="checkout-header">
-					<h4>Payment Method</h4>
-				</div>
-				<div className="checkout-details">
-					<Elements stripe={stripePromise}>
-						<PaymentForm />
-					</Elements>
+				<div className="checkout-section">
+					<div className="checkout-header">
+						<Elements stripe={stripePromise}>
+							<PaymentForm />
+						</Elements>
+					</div>
 				</div>
 			</div>
 		</div>
