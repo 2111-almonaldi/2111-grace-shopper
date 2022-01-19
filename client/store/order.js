@@ -44,21 +44,14 @@ export const logoutOrder = () => {
     try {
       const orderItems = getState().cart.cartItems;
       const userId = getState().auth.id;
-      if (!getState().orders.order) {
-        if (orderItems.length) {
-          const { data: created } = await axios.post("/api/orders", {
-            items: orderItems,
-            userId,
-          });
-        }
-      } else {
+      if (orderItems.length) {
         const id = getState().orders.order.id;
         const { data: updated } = await axios.put(`/api/orders/${id}`, {
           items: orderItems,
           id,
         });
       }
-      return dispatch(clearOrder());
+      dispatch(clearOrder());
     } catch (error) {
       console.log(error);
     }
@@ -95,7 +88,7 @@ export const updateOrder = (order) => {
 export const deleteOrder = (id) => {
   return async (dispatch) => {
     try {
-      const { data: order } = await axios.delete(`/api/products/${id}`);
+      const { data: order } = await axios.delete(`/api/orders/${id}`);
       dispatch(_clearOrder());
     } catch (error) {
       console.log(error);

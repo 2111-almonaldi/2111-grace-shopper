@@ -114,6 +114,33 @@ export const removeFromCart = (product) => (dispatch, getState) => {
   window.localStorage.setItem("cart", JSON.stringify(cartItems));
 };
 
+export const combineCarts = (oldOrder, orderId) => {
+  return async (dispatch, getState) => {
+    const cartItems = getState().cart.cartItems.slice();
+    const combinedCarts = cartItems.concat(oldOrder);
+    try {
+      if (!cartItems.length) {
+        const { data: order } = await axios.delete(`/api/orders/${orderId}`);
+        window.localStorage.setItem("cart", JSON.stringify(combinedCarts));
+      } else {
+        oldOrder.forEach((item) => dispatch(addToCart(item)));
+        const { data: order } = await axios.delete(`/api/orders/${orderId}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const deleteCart = () => (dispatch, getState) => {
+  dispatch(setCart([]));
+  const order = getState().orders.order;
+  if (order) {
+    dispatch(deleteOrder(order.id));
+  }
+  window.localStorage.setItem("cart", JSON.stringify([]));
+};
+
 const initialState = {
   cartItems: JSON.parse(window.localStorage.getItem("cart") || "[]"),
 };

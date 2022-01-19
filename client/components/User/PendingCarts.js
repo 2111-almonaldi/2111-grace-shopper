@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { Link } from "react-router-dom";
-import { addToCart } from "../../store/cart";
+import { addToCart, combineCarts } from "../../store/cart";
 
 export class PendingCarts extends React.Component {
   constructor(props) {
@@ -32,7 +32,7 @@ export class PendingCarts extends React.Component {
                       <p> Order created: {order.createdAt}</p>
                       <button
                         onClick={
-                          () => console.log(cart.cartItems, order.items)
+                          () => this.props.combineCarts(order.items, order.id)
 
                           //order.items.forEach((item) => this.props.add(item))
                         }
@@ -61,6 +61,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     add: (product) => dispatch(addToCart(product)),
+    combineCarts: (orderItems, orderId) =>
+      dispatch(combineCarts(orderItems, orderId)),
   };
 };
 
