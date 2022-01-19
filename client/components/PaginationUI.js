@@ -7,8 +7,8 @@ import { getParam, setParam } from "../utility-funcs/query";
 import { DEFAULT_PAGE_SIZE} from "../../constants";
 
 const PaginationUI = (props) => {
-  const {item, ttlItems} = props;
-  const ttlPages = Math.floor( ttlItems / DEFAULT_PAGE_SIZE) + (ttlItems % DEFAULT_PAGE_SIZE < 0 ? 0 : 1)
+  const {arr, total} = props;
+  const ttlPages = Math.floor( total / DEFAULT_PAGE_SIZE) + (total % DEFAULT_PAGE_SIZE < 0 ? 0 : 1)
   return (
     <Route>
       {({ location }) => {

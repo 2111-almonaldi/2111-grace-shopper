@@ -1,8 +1,8 @@
 import React from "react"
 import { connect } from "react-redux"
 import { Link } from "react-router-dom"
-import User from './AdminUserList'
-import Product from './AdminProductList'
+import User from './AdminUsers'
+import Product from './AdminProducts'
 import Order from './AdminOrderHistory'
 
 // import React, { useState, useEffect } from "react";

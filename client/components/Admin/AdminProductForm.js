@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ProductFormStyling = (props) => {
+const AdminProductForm = (props) => {
   const classes = useStyles(props)
   const { errors } = props
   const {dialogMode} = props;
@@ -83,10 +83,8 @@ const ProductFormStyling = (props) => {
     const storeThunk = () => {
       if ( dialogMode === 'edit') {
       () => dispatch(adminUpdateProductThunk(product.id, formState))
-      } else if ( dialogMode === 'add') {
+      } else {
         () => dispatch(adminAddProductThunk(product.id, formState))
-      } else if ( dialogMode === 'delete') {
-        () => dispatch(adminDeleteProductThunk(product.id, formState))
       }
     }
     const success = await storeThunk()
@@ -133,7 +131,7 @@ return (
                 type="text"
                 variant="outlined"
                 fullWidth
-                value={formState.price / 100} // @@ call out to change price to pennies for all components
+                value={formState.price} // @@ call out to change price to pennies for all components
                 name="price"
                 onChange={handleChange}
                 error={formState.errors.price}
@@ -151,7 +149,7 @@ return (
                 name="Inventory"
                 onChange={handleChange}
                 error={formState.errors.quantity}
-                helperText={formState.errors.quantity ? formState.errors.price : quantity}
+                helperText={formState.errors.quantity ? formState.errors.quanity : false}
               />
           </Grid>
           <Grid item xs={12}>
@@ -165,7 +163,7 @@ return (
                 name="imageUrl"
                 onChange={handleChange}
                 error={formState.errors.imageUrl}
-                helperText={formState.errors.imageUrl ? formState.errors.price : imageUrl}
+                helperText={formState.errors.imageUrl ? formState.errors.imageUrl : false}
               />
           </Grid>
           <Grid item xs={12}>
@@ -190,7 +188,7 @@ return (
             <Button
               classes={{ root: classes.addButton, label: classes.buttonLabel }}
               onClick={() => handleClick(product.id, formState)}>
-                {dialogMode === "edit" ? "Update" : "Add" || "Delete"}
+                {dialogMode === "edit" ? "Update" : "Add" }
             </Button>
             <Button
               classes={{ root: classes.deleteButton, label: classes.buttonLabel }}
@@ -205,4 +203,4 @@ return (
 }
 
 
-export default ProductFormStyling
+export default AdminProductForm
