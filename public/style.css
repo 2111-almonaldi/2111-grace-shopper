@@ -103,6 +103,7 @@ img {
 .products {
   min-width: 100%;
   max-width: 100%;
+  margin-top: 5px;
 }
 
 .product {
@@ -236,26 +237,24 @@ img {
     max-height: 250px;
     max-width: 100%;
   }
-
-  .products {
-    margin-top: 5px;
-  }
-  
   .product {
     display: inline-block;
-    max-width: 49%;
-    min-width: 49%;
+    max-width: 46%;
+    min-width: 46%;
     min-height: 520px;
     max-height: 520px;
-    margin: 0;
+    margin: 5px;
     margin-top: 5px;
-    padding: 0;
+    padding: 5px;
     padding-bottom: 5px;
     border-radius: 5px;
   }
   
   .product-info {
     margin-left: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
   
   .product-price {
