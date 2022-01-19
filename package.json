@@ -54,6 +54,7 @@
     "axios": "^0.21.1",
     "axios-mock-adapter": "^1.16.0",
     "babel-loader": "^8.2.2",
+    "babel-polyfill": "^6.26.0",
     "chai": "^4.2.0",
     "css-loader": "^6.5.1",
     "enzyme": "^3.9.0",
