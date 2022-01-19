@@ -146,14 +146,10 @@ export const combineCarts = (oldOrder, orderId) => {
           return a;
         }, []);
         dispatch(setCart(reducedCart));
-        if (order) {
-          if (order !== null) {
-            const id = getState.orders.order.id;
-            dispatch(updateOrder({ items: reducedCart, id }));
-            const { data: order } = await axios.delete(
-              `/api/orders/${orderId}`
-            );
-          }
+        if (Object.keys(order).length !== 0) {
+          const id = getState.orders.order.id;
+          dispatch(updateOrder({ items: reducedCart, id }));
+          const { data: order } = await axios.delete(`/api/orders/${orderId}`);
         } else {
           dispatch(setCart(reducedCart));
           dispatch(createOrder({ items: reducedCart, userId }));

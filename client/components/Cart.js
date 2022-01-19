@@ -7,8 +7,10 @@ import {
   decreaseItem,
   deleteCart,
 } from "../store/cart";
-//import DeleteIcon from "@mui/icons-material/Delete";
-//import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
+import DeleteIcon from "@mui/icons-material/Delete";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
+import formatPrice from "../formatPrice";
 
 export class Cart extends Component {
   constructor(props) {
@@ -22,41 +24,47 @@ export class Cart extends Component {
     const totalPrice = itemsPrice + tax;
     return (
       <div>
-        <h3>Cart Details</h3>
+        <div className="cart-header">Cart Details</div>
         <div>
           {cart.length === 0 ? (
-            <div>
+            <h3>
               Cart is Empty—<Link to="/products">Start Browsing!</Link>
-            </div>
+            </h3>
           ) : (
-            <div>
-              <div>{cart.reduce((a, c) => a + c.count, 0)} items in Cart:</div>
-              <div>
+            <div className="cart">
+              <h3>{cart.reduce((a, c) => a + c.count, 0)} items in Cart:</h3>
+              <div className="cart-items">
                 {cart.map((item, idx) => (
                   <div key={idx}>
                     <div>
                       <img src={item.imageUrl}></img>
                     </div>
                     <div>
-                      <div>{item.name}</div>
+                      <h4>{item.name}</h4>
                       <div>
                         <button onClick={() => this.props.remove(item)}>
-                          -
+                          <RemoveIcon />
                         </button>{" "}
                         {item.count}{" "}
-                        <button onClick={() => this.props.add(item)}>+</button>{" "}
-                        <strong>{item.price}</strong>
+                        <button onClick={() => this.props.add(item)}>
+                          <AddIcon />
+                        </button>{" "}
+                        <strong>
+                          <strong>Price:</strong> {formatPrice(item.price)}
+                        </strong>
                         <button onClick={() => this.props.removeFromCart(item)}>
-                          Remove
+                          <DeleteIcon />
                         </button>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
+              <button onClick={() => this.props.deleteCart()}>
+                Clear Cart
+              </button>
               {cart.length !== 0 && (
-                <div>
-                  <hr />
+                <div className="total">
                   <div>
                     <div>
                       <strong>Subtotal:</strong> ${itemsPrice.toFixed(2)}
@@ -74,9 +82,6 @@ export class Cart extends Component {
                   </div>
                 </div>
               )}
-              <button onClick={() => this.props.deleteCart()}>
-                Clear Cart
-              </button>
             </div>
           )}
         </div>

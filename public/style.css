@@ -16,7 +16,6 @@ nav a {
 }
 
 
-
 .form-container {
   height: 100%;
   max-width: 700px;
@@ -93,6 +92,58 @@ form .update {
 img {
   border: gray 1px solid;
   border-radius: 5px;
+}
+
+.cart-header {
+  border-bottom: 0.1rem #c0c0c0 solid;
+  padding-top: 1rem;
+}
+
+.cart-items {
+  width: 100%;
+  list-style-type: none;
+  margin: 10px;
+  padding: 10px;
+}
+.cart-items img {
+  width: 10rem;
+}
+
+.cart-items div {
+  padding: 0.5rem;
+}
+
+.order {
+  display: inline-flex;
+  max-width: 400px;
+  min-width: 400px;
+  min-height: 220px;
+  max-height: 220px;
+  margin: 10px;
+  padding: 10px;
+  color: black;
+  border: gray 3px solid;
+  border-radius: 5px;
+}
+
+.center {
+  text-align: center;
+}
+
+.total {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+  margin-top: 15px;
+  color: black;
+  border: gray 3px solid;
+  border-radius: 5px;
+}
+
+.total div {
+  width: 100%;
 }
 
 .product-img {
