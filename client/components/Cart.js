@@ -5,12 +5,10 @@ import {
 	addToCart,
 	removeFromCart,
 	decreaseItem,
-	clearCart,
+	deleteCart,
 } from '../store/cart';
-import '../../public/cart.css';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
+//import DeleteIcon from "@mui/icons-material/Delete";
+//import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 
 export class Cart extends Component {
 	constructor(props) {
@@ -25,69 +23,60 @@ export class Cart extends Component {
 		return (
 			<div>
 				<h3>Cart Details</h3>
-				<div className="cart">
+				<div>
 					{cart.length === 0 ? (
-						<div className="cart-empty">
-							<p>Cart is Empty</p>
-							<p>
-								<Link to="/products">Start Browsing!</Link>
-							</p>
+						<div>
+							Cart is Empty—<Link to="/products">Start Browsing!</Link>
 						</div>
 					) : (
 						<div>
-							<div className="cart-container">
+							<div>{cart.reduce((a, c) => a + c.count, 0)} items in Cart:</div>
+							<div>
 								{cart.map((item, idx) => (
 									<div key={idx}>
-										<img className="cart-itemImage" src={item.imageUrl}></img>
-										<div className="cart-itemName">{item.name}</div>
 										<div>
-											<RemoveIcon
-												fontSize="small"
-												className="cart-itemQty"
-												onClick={() => this.props.remove(item)}
-											/>
-											{item.count}
-											<AddIcon
-												fontSize="small"
-												className="cart-itemQty"
-												onClick={() => this.props.add(item)}
-											/>
+											<img src={item.imageUrl}></img>
 										</div>
-										<div className="cart-itemPrice">${item.price}</div>
-
-										<DeleteIcon
-											className="cart-itemDelete"
-											onClick={() => this.props.removeFromCart(item)}
-										/>
+										<div>
+											<div>{item.name}</div>
+											<div>
+												<button onClick={() => this.props.remove(item)}>
+													-
+												</button>{' '}
+												{item.count}{' '}
+												<button onClick={() => this.props.add(item)}>+</button>{' '}
+												<strong>{item.price}</strong>
+												<button onClick={() => this.props.removeFromCart(item)}>
+													Remove
+												</button>
+											</div>
+										</div>
 									</div>
 								))}
 							</div>
-
-							<div>
-								{cart.length !== 0 && (
+							{cart.length !== 0 && (
+								<div>
+									<hr />
 									<div>
 										<div>
 											<strong>Subtotal:</strong> ${itemsPrice.toFixed(2)}
-											<div>{cart.reduce((a, c) => a + c.count, 0)} items</div>
-											<div>
-												<strong>Tax:</strong> ${tax.toFixed(2)}
-											</div>
-											<div>
-												<strong>Order Total:</strong> ${totalPrice.toFixed(2)}
-											</div>
-											<button>
-												<Link to={`/checkout`}>Proceed to Checkout</Link>
-											</button>
-											<button
-												className="clearCart-button"
-												onClick={() => this.props.clearCart()}
-											>
-												Clear Cart
-											</button>
 										</div>
+										<div>
+											<strong>Tax:</strong> ${tax.toFixed(2)}
+										</div>
+										<hr />
+										<div>
+											<strong>Order Total:</strong> ${totalPrice.toFixed(2)}
+										</div>
+										<button>
+											<Link to={`/checkout`}>Proceed to Checkout</Link>
+										</button>
 									</div>
-								)}
-							</div>
+								</div>
+							)}
+							<button onClick={() => this.props.deleteCart()}>
+								Clear Cart
+							</button>
 						</div>
 					)}
 				</div>
@@ -97,13 +86,8 @@ export class Cart extends Component {
 }
 
 const mapState = (state) => {
-	const stateCart = state.cart.cartItems.length
-		? state.cart.cartItems
-		: state.auth.orders
-		? state.auth.orders[0].items
-		: state.cart.cartItems;
 	return {
-		cart: stateCart,
+		cart: state.cart.cartItems,
 	};
 };
 
@@ -112,7 +96,7 @@ const mapDispatch = (dispatch) => {
 		removeFromCart: (product) => dispatch(removeFromCart(product)),
 		add: (product) => dispatch(addToCart(product)),
 		remove: (product) => dispatch(decreaseItem(product)),
-		clearCart: () => dispatch(clearCart([])),
+		deleteCart: () => dispatch(deleteCart()),
 	};
 };
 

@@ -9,6 +9,11 @@ import { Login, Signup } from './components/AuthForm';
 import Home from './components/Home';
 import Cart from './components/Cart';
 import CheckoutMain from './components/Checkout/CheckoutMain';
+import AccountEdit from './components/User/AccountEdit';
+import Orders from './components/User/Orders';
+// import OrderDetails from './components/User/OrderDetails';
+import UserMain from './components/User/UserMain';
+import PendingCarts from './components/User/PendingCarts';
 import { me } from './store';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -31,7 +36,11 @@ class Routes extends Component {
 				{isLoggedIn ? (
 					<Switch>
 						<Route path="/home" component={Home} />
-						<Route path="/cart" component={Cart} />
+						<Route exact path="/cart" component={Cart} />
+						<Route path="/cart/pendingcarts" component={PendingCarts} />
+						<Route path="/users/:id" component={UserMain} />
+						<Route path="/users/:id/account" component={AccountEdit} />
+						<Route path="/users/:id/orders" component={Orders} />
 						<Route exact path="/products" component={AllProducts} />
 						<Route path="/products/:id" component={SingleProduct} />
 						<Elements stripe={stripePromise}>
@@ -66,7 +75,6 @@ const mapState = (state) => {
 		// Being 'logged in' for our purposes will be defined has having a state.auth that has a truthy id.
 		// Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
 		isLoggedIn: !!state.auth.id,
-		priorCart: state.auth.orders,
 	};
 };
 
