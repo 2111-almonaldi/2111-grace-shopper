@@ -168,12 +168,12 @@ export const adminAddProductThunk = (data) => {
   }
 }
 
-export const adminDelProductThunk = (productId) => {
+export const adminDelProductThunk = (data) => {
   return async dispatch => {
     try {
       const res = await axios.delete(`/api/admin/products/${productId}`);
       if (res.statusCode === 200) {
-        dispatch(adminDelProduct(productId));
+        dispatch(adminDelProduct(res.data));
         return true;
       }
       return true;
