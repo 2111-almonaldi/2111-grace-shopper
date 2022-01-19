@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 import { Link } from "react-router-dom"
 import User from './AdminUsers'
 import Product from './AdminProducts'
-import Order from './AdminOrderHistory'
+import Order from './AdminOrders'
 
 // import React, { useState, useEffect } from "react";
 // import Grid from "@material-ui/core/Grid";

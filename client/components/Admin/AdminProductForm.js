@@ -9,7 +9,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { useDispatch } from "react-redux";
-import { adminAddProductThunk, adminDeleteProductThunk, adminUpdateProductThunk } from "../store/adminInfo";
+import { adminAddProductThunk, adminUpdateProductThunk } from "../store/adminInfo";
 import {getErrors, resetErrors} from "../store/errors";
 const useStyles = makeStyles((theme) => ({
   addButton: {
@@ -55,11 +55,11 @@ const AdminProductForm = (props) => {
   }, [product])
 
   const [formState, setFormState] = useState({
-    name : "",
-    price : "",
-    imageUrl : "",
-    quantity : "",
-    description : "",
+    name : this.state.name ? this.state.name : "",
+    price : this.state.price ? this.state.price : "",
+    imageUrl : this.state.imageUrl? this.state.imageUrl : "",
+    quantity : this.state.quantity ? this.state.quantity : "",
+    description : this.state.description ? this.state.description : "",
     errors: {
       name: false,
       price: false,
@@ -82,9 +82,9 @@ const AdminProductForm = (props) => {
   const handleClick = async (product) => {
     const storeThunk = () => {
       if ( dialogMode === 'edit') {
-      () => dispatch(adminUpdateProductThunk(product.id, formState))
+      () => dispatch(adminUpdateProductThunk(product, formState))
       } else {
-        () => dispatch(adminAddProductThunk(product.id, formState))
+        () => dispatch(adminAddProductThunk(product, formState))
       }
     }
     const success = await storeThunk()
@@ -127,7 +127,7 @@ return (
           <Grid item xs={12}>
             <TextField
                 margin="dense"
-                label= "Price"
+                label= "Price ($)"
                 type="text"
                 variant="outlined"
                 fullWidth
@@ -141,15 +141,15 @@ return (
           <Grid item xs={12}>
             <TextField
                 margin="dense"
-                label= "Inventory"
+                label= "Inventory (U)"
                 type="text"
                 variant="outlined"
                 fullWidth
-                value={formState.quanity}
-                name="Inventory"
+                value={formState.quantity}
+                name="quantity"
                 onChange={handleChange}
                 error={formState.errors.quantity}
-                helperText={formState.errors.quantity ? formState.errors.quanity : false}
+                helperText={formState.errors.quantity ? formState.errors.quantity : false}
               />
           </Grid>
           <Grid item xs={12}>
@@ -187,7 +187,7 @@ return (
           <div className="buttons">
             <Button
               classes={{ root: classes.addButton, label: classes.buttonLabel }}
-              onClick={() => handleClick(product.id, formState)}>
+              onClick={() => handleClick(product, formState)}>
                 {dialogMode === "edit" ? "Update" : "Add" }
             </Button>
             <Button

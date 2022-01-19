@@ -69,9 +69,9 @@ router.get('/orders', async (req, res, next) => {
 // PUT /api/admin/orders/:id
 router.put("orders/:id", async (req, res, next) => {
   try {
-    const {status, subTotal, orderQty, orderNumber, customerName, customerAddress, customerCity, customerState, customerZip } = req.body;
+    const {status, subTotal, orderQty, orderNumber, customerEmail, customerName, customerAddress, customerCity, customerState, customerZip } = req.body;
     const [rowsUpdated, orders] = await Product.update(
-      {status, subTotal, orderQty, orderNumber, customerName, customerAddress, customerCity, customerState, customerZip},
+      {status, subTotal, orderQty, orderNumber, customerEmail, customerName, customerAddress, customerCity, customerState, customerZip},
       {
         where: {
           id: req.params.id

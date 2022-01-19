@@ -14,33 +14,14 @@ import Tooltip from "@material-ui/core/Tooltip";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import EditIcon from "@material-ui/icons/Edit";
 import { useDispatch, useSelector } from "react-redux";
-import { adminDeleteProductThunk, fetchAdminProducts } from "../store/adminInfo";
-import AdminProductForm from "./AdminProductForm"
+import { fetchAdminOrders } from "../store/adminInfo";
+import AdminOrderForm from "./AdminProductForm";
 import { useHistory, useLocation } from "react-router-dom";
 import { getParam, setParam } from "../utility-funcs/query";
 import PaginationUI from "./PaginationUI";
 
-
 const useStyles = makeStyles({
-  addButton: {
-    backgroundColor: "#fc9d03",
-    color: "white",
-    fontWeight: "bold",
-    "&:hover" : {
-      backgroundColor: "#fcf003"
-    }
-  },
-  deleteButton: {
-    backgroundColor: "#fc032c",
-    color: "white",
-    fontWeight: "bold",
-    "&:hover" : {
-      backgroundColor: "#fcf003"
-    }
-  },
-  buttonLabel: {
-    fontFamily: "Courier"
-  },
+
   iconButtonRoot: {
     color: "#3070e6",
     width: "90%"
@@ -59,16 +40,14 @@ const useStyles = makeStyles({
 });
 
 
-const AdminProducts = (props) => {
+const AdminOrders = (props) => {
   const { setSnackbarStatus, setSnackbarMessage, setSnackbarSeverity } = props;
   const classes = useStyles();
-
-  const products = useSelector((state) => state.admin.products) || [];
-  const total = useSelector((state) => state.admin.totalProducts);
+  const orders = useSelector((state) => state.admin.orders) || [];
+  const total = useSelector((state) => state.admin.totalOrders);
   const [formName, setFormName] = useState("Default");
   const [dialogStatus, setDialogStatus] = useState(false);
   const [selectedData, setSelectedData] = useState({});
-  const [dialogMode, setDialogMode] = useState("edit");
 
 
   const history = useHistory();
@@ -83,69 +62,50 @@ const AdminProducts = (props) => {
       query = setParam(query, "dir", "asc");
       history.replace(`${location.pathname}?${query}`);
     } else {
-      dispatch(fetchAdminProducts(location));
+      dispatch(fetchAdminOrders(location));
     }
   }, []);
 
 
   useEffect(() => {
-    dispatch(fetchAdminProducts(location));
+    dispatch(fetchAdminOrders(location));
   }, [location.search]);
 
   return (
     <React.Fragment>
-      <div className="buttons">
-        <Button
-          classes={{ root: classes.addButton, label: classes.buttonLabel }}
-          onClick={() => {
-            setSelectedData({});
-            setDialogStatus(true);
-            setFormName("Create New Movie");
-            setDialogMode("add");
-          }}>
-          Create New Movie
-        </Button>
-      </div>
       <TableContainer component={Paper}>
         <Table size="sm">
           <TableHead className={classes.tableHeader}>
             <TableRow>
-              <TableCell className={classes.headerCell}>Movie</TableCell>
-              <TableCell className={classes.headerCell}>Price</TableCell>
-              <TableCell className={classes.headerCell}>Quantity</TableCell>
+              <TableCell className={classes.headerCell}>Order Number</TableCell>
+              <TableCell className={classes.headerCell}>Order Status</TableCell>
+              <TableCell className={classes.headerCell}>SubTotal $</TableCell>
+              <TableCell className={classes.headerCell}>Total Items</TableCell>
+              <TableCell className={classes.headerCell}>Customer Email</TableCell>
               <TableCell className={classes.headerCell}>Options</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {products.map((product) => (
-              <TableRow key={product.id} hover>
-                <TableCell>{product.name}</TableCell>
-                <TableCell>${product.price}</TableCell>
-                <TableCell>{product.quantity}</TableCell>
+            {orders.map((order) => (
+              <TableRow key={order.id} hover>
+                <TableCell>{order.orderNumber}</TableCell>
+                <TableCell>{order.status}</TableCell>
+                <TableCell>{order.subTotal}</TableCell>
+                <TableCell>{order.orderQty}</TableCell>
+                <TableCell>{order.customerEmail}</TableCell>
                 <TableCell>
                   <Tooltip title="Edit">
                     <IconButton
                       onClick={() => {
-                        setSelectedData(product);
-                        setDialogMode("edit");
+                        setSelectedData(order);
                         setDialogStatus(true);
-                        setFormName("Edit Current Movie");
+                        setFormName("Edit Order");
                       }}
                       classes={{ root: classes.iconButtonRoot }}>
                       <EditIcon fontSize="small" />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip
-                    title="Delete"
-                    onClick={async () => {
-                      const success = await dispatch(adminDeleteProductThunk(product));
-                      if (success) {
-                        setSnackbarMessage(`Deleted: ${product.name}`);
-                      } else {
-                        setSnackbarMessage(`Failed to delete: ${product.name}`);
-                      }
-                      setSnackbarStatus(true);
-                    }}>
+                  <Tooltip title="Delete">
                     <IconButton classes={{ root: classes.iconButtonRoot }}>
                       <HighlightOffIcon fontSize="small" />
                     </IconButton>
@@ -163,11 +123,10 @@ const AdminProducts = (props) => {
         justifyContent="center"
         alignItems="flex-start">
         <Grid item>
-          <PaginationUI arr={products} total={total} />
+          <PaginationUI arr={orders} total={total} />
         </Grid>
       </Grid>
-      <AdminProductForm
-        dialogMode={dialogMode}
+      <AdminOrderForm
         setSnackbarStatus={setSnackbarStatus}
         setSnackbarMessage={setSnackbarMessage}
         dialogStatus={dialogStatus}
@@ -180,4 +139,4 @@ const AdminProducts = (props) => {
   );
 };
 
-export default AdminProducts;
+export default AdminOrders;

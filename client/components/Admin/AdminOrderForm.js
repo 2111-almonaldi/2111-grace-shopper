@@ -13,8 +13,9 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useDispatch } from "react-redux";
-import { adminUpdateUserThunk } from "../store/adminInfo";
+import { adminUpdateOrderThunk } from "../store/adminInfo";
 import {getErrors, resetErrors} from "../store/errors";
+
 const useStyles = makeStyles((theme) => ({
   addButton: {
     backgroundColor: "#008000",
@@ -40,11 +41,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const AdminUserForm = (props) => {
+const AdminOrderForm = (props) => {
   const classes = useStyles(props)
   const { errors } = props
   const {
-    user,
+    order,
     dialogStatus,
     setDialogStatus,
     setSnackbarStatus,
@@ -54,29 +55,28 @@ const AdminUserForm = (props) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    setFormState({...formState, ...user });
-  }, [user])
+    setFormState({...formState, ...order });
+  }, [order])
 
   const [formState, setFormState] = useState({
-    firstName: this.state.firstName ? this.state.firstName : "",
-    lastName: this.state.lastName ? this.state.lastName : "",
-    fullName: this.state.firstName + " " + this.state.lastName,
-    username: this.state.username ? this.state.username : "",
-    email: this.state.email ? this.state.email : "",
-    isAdmin: false,
+    status : this.state.status ? this.state.status : "",
+    subTotal : this.state.subTotal ? this.state.subTotal : "",
+    orderQty : this.state.orderQty ? this.state.orderQty : "",
+    orderNumber: this.state.orderNumber ? this.state.orderNumber : "",
+    customerEmail: this.state.customerEmail? this.state.customerEmail : "",
     errors: {
-      firstName: false,
-      lastName: false,
-      username: false,
-      email: false,
-      isAdmin: false
+      status: false,
+      subTotal: false,
+      orderQty: false,
+      orderNumber: false,
+      customerEmail: false
     }
   });
 
   useEffect(() => {
-    let newState = { ...formState, ...user };
+    let newState = { ...formState, ...order };
     setFormState(newState)
-  }, [user]);
+  }, [order]);
 
   const handleChange = (evt) => {
     const newState = { ...formState }
@@ -84,17 +84,17 @@ const AdminUserForm = (props) => {
     setFormState(newState)
   }
 
+  const handleClick = async (order) => {
 
-  const handleClick = async (user) => {
-    const success = await dispatch(adminUpdateUserThunk(user))
-    if (success) setSnackbarMessage(" Update Success!")
+    const success = await dispatch(adminUpdateOrderThunk(order))
+    if (success) setSnackbarMessage("Update Success!")
     else setSnackbarMessage("Update Error")
 
     setSnackbarStatus(true);
     setDialogStatus(false);
   }
 
-  if (!user) {
+  if (!order) {
     dispatch(getErrors(errors))
     return null;
   }
@@ -112,82 +112,81 @@ return (
           <Grid item xs={12}>
             <TextField
               margin="dense"
-              label= "Username"
+              label= "Order Number"
               type="text"
               variant="outlined"
               fullWidth
-              value={formState.username}
-              name="username"
+              value={formState.orderNumber}
+              name="orderNumber"
               onChange={handleChange}
-              error={formState.errors.username}
-              helperText={formState.errors.username ? formState.errors.username : false}
+              error={formState.errors.orderNumber}
+              helperText={formState.errors.orderNumber ? formState.errors.orderNumber : false}
             />
           </Grid>
-          <Grid item xs={12}>
-            <TextField
-                margin="dense"
-                label= "Email Address"
-                type="text"
-                variant="outlined"
-                fullWidth
-                value={formState.firstName}
-                name="Email Address"
-                onChange={handleChange}
-                error={formState.errors.email}
-                helperText={formState.errors.email ? formState.errors.email : false}
-              />
-          <Grid item xs={12}>
-            <TextField
-                margin="dense"
-                label= "First Name"
-                type="text"
-                variant="outlined"
-                fullWidth
-                value={formState.firstName}
-                name="firstName"
-                onChange={handleChange}
-                error={formState.errors.firstName}
-                helperText={formState.errors.firstName ? formState.errors.firstName : false}
-              />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-                margin="dense"
-                label= "Last Name"
-                type="text"
-                variant="outlined"
-                fullWidth
-                value={formState.lastName}
-                name="lastName"
-                onChange={handleChange}
-                error={formState.errors.lastName}
-                helperText={formState.errors.lastName ? formState.errors.lastName : false}
-              />
-          </Grid>
           <FormControl variant="outlined" className={classes.formControlRoot} margin="dense">
-              <InputLabel id="isAdmin">Admin Status</InputLabel>
+              <InputLabel id="status">Order Status</InputLabel>
               <Select
-                labelId="isAdmin"
-                label="Admin Status"
+                labelId="status"
+                label="Order Status"
                 fullWidth
-                value={formState.isAdmin}
-                name="isAdmin"
+                value={formState.status}
+                name="status"
                 onChange={handleChange}
-                error={formState.errors.isAdmin}
-                helperText={formState.errors.isAdmin ? formState.errors.isAdmin : false}>
-                <MenuItem value="true">Yes</MenuItem>
-                <MenuItem value="false">No</MenuItem>
+                error={formState.errors.status}
+                helperText={formState.errors.status ? formState.errors.status : false}>
+                <MenuItem value="PROCESSING">Processing</MenuItem>
+                <MenuItem value="COMPLETED"></MenuItem>
+                <MenuItem value="CANCELLED">Canceled</MenuItem>
               </Select>
             </FormControl>
+          <Grid item xs={12}>
+            <TextField
+                margin="dense"
+                label= "SubTotal ($)"
+                type="text"
+                variant="outlined"
+                fullWidth
+                value={formState.subTotal}
+                onChange={handleChange}
+                error={formState.errors.subTotal}
+                helperText={formState.errors.subTotal ? formState.errors.subTotal : false}
+              />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+                margin="dense"
+                label= "OrderQty"
+                type="text"
+                variant="outlined"
+                fullWidth
+                value={formState.quanity}
+                name="Total Items"
+                onChange={handleChange}
+                error={formState.errors.orderQty}
+                helperText={formState.errors.orderQty? formState.errors.orderQty : false}
+              />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+                margin="dense"
+                label= "Customer Email"
+                type="text"
+                variant="outlined"
+                fullWidth
+                value={formState.customerEmail}
+                name="customerEmail"
+                onChange={handleChange}
+                error={formState.errors.customerEmail}
+                helperText={formState.errors.customerEmail ? formState.errors.customerEmail : false}
+              />
+          </Grid>
         </Grid>
-      </Grid>
-    </DialogContent>
+        </DialogContent>
         <DialogActions>
           <div className="buttons">
             <Button
               classes={{ root: classes.addButton, label: classes.buttonLabel }}
-              onClick={() => handleClick(user, formState)}>
-              Update
+              onClick={() => handleClick(order, formState)}>
             </Button>
             <Button
               classes={{ root: classes.deleteButton, label: classes.buttonLabel }}
@@ -202,4 +201,4 @@ return (
 }
 
 
-export default AdminUserForm
+export default AdminOrderForm
