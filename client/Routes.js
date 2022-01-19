@@ -10,6 +10,12 @@ import Home from './components/Home';
 import Cart from './components/Cart';
 import CheckoutMain from './components/Checkout/CheckoutMain';
 import { me } from './store';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe(
+	'pk_test_51KIhdSBUe6p65tjNXtHN5NUIQVk30J1x34GqAuvZZZc4QYJ7m2FHOiEjIbfyIkNGXAT2Km74UYnJ5BYJfZ442nIQ00QqawjRra'
+);
 
 /**
  * COMPONENT
@@ -26,9 +32,11 @@ class Routes extends Component {
 					<Switch>
 						<Route path="/home" component={Home} />
 						<Route path="/cart" component={Cart} />
-						<Route path="/checkout" component={CheckoutMain} />
 						<Route exact path="/products" component={AllProducts} />
 						<Route path="/products/:id" component={SingleProduct} />
+						<Elements stripe={stripePromise}>
+							<Route path="/checkout" component={CheckoutMain} />
+						</Elements>
 					</Switch>
 				) : (
 					<Switch>
@@ -40,7 +48,9 @@ class Routes extends Component {
 						<Route path="/products/:id/update" component={UpdateProduct} />
 						<Route path="/products/:id" component={SingleProduct} />
 						<Route path="/cart" component={Cart} />
-						<Route path="/checkout" component={CheckoutMain} />
+						<Elements stripe={stripePromise}>
+							<Route path="/checkout" component={CheckoutMain} />
+						</Elements>
 					</Switch>
 				)}
 			</div>

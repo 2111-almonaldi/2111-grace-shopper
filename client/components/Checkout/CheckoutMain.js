@@ -1,17 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import PaymentForm from './PaymentForm';
 import UserCheckout from './UserCheckout';
 import GuestCheckout from './GuestCheckout';
+import CardForm from './CardForm';
 import '../../../public/checkoutMain.css';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
-const stripePromise = loadStripe(
-	'pk_test_51KIhdSBUe6p65tjNXtHN5NUIQVk30J1x34GqAuvZZZc4QYJ7m2FHOiEjIbfyIkNGXAT2Km74UYnJ5BYJfZ442nIQ00QqawjRra'
-);
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 const CheckoutMain = ({ isLoggedIn, cart }) => {
 	const itemsPrice = cart.reduce((a, c) => a + c.price * c.count, 0);
@@ -62,7 +57,7 @@ const CheckoutMain = ({ isLoggedIn, cart }) => {
 				</div>
 				<div>
 					{cart.length !== 0 && (
-						<div className="subtotal">
+						<div className="checkout-subtotal">
 							<div>
 								<strong>Subtotal:</strong> ${itemsPrice.toFixed(2)}
 								<div>{cart.reduce((a, c) => a + c.count, 0)} items</div>
@@ -75,13 +70,7 @@ const CheckoutMain = ({ isLoggedIn, cart }) => {
 							</div>
 						</div>
 					)}
-				</div>
-				<div className="checkout-section">
-					<div className="checkout-header">
-						<Elements stripe={stripePromise}>
-							<PaymentForm />
-						</Elements>
-					</div>
+					<CardForm />
 				</div>
 			</div>
 		</div>

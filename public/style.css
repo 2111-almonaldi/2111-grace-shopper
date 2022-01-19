@@ -1,4 +1,4 @@
-body {
+/* body {
   font-family: sans-serif;
 }
 
@@ -79,9 +79,10 @@ form .update {
 }
 
 .newProductLink {
-  display: block;
-  /* right: 0;
+  display: block;*/
+/* right: 0;
   position: absolute; */
+/*
   background-color: blue;
   color: white;
   border-radius: 3px;
@@ -171,4 +172,4 @@ img {
   border:red;
   border-radius: 3px;
   padding: 3px;
-}
+} */

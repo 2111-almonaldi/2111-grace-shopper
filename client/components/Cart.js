@@ -65,7 +65,7 @@ export class Cart extends Component {
 
 							<div>
 								{cart.length !== 0 && (
-									<div className="subtotal">
+									<div>
 										<div>
 											<strong>Subtotal:</strong> ${itemsPrice.toFixed(2)}
 											<div>{cart.reduce((a, c) => a + c.count, 0)} items</div>
@@ -75,7 +75,7 @@ export class Cart extends Component {
 											<div>
 												<strong>Order Total:</strong> ${totalPrice.toFixed(2)}
 											</div>
-											<button className="subtotal-button">
+											<button>
 												<Link to={`/checkout`}>Proceed to Checkout</Link>
 											</button>
 											<button
