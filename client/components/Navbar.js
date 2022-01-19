@@ -22,7 +22,9 @@ const Navbar = ({ handleClick, isLoggedIn, cart }) => (
 				<div className="header-nav">
 					{/* The navbar will show these links after you log in */}
 					<span>Hello, User</span>
-					<span>Account Details</span>
+					<Link to="/users/:id">
+						<span>Account Details</span>
+					</Link>
 					<Link to="/products">
 						<span>Products</span>
 					</Link>
