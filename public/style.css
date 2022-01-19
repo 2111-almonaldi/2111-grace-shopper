@@ -101,8 +101,8 @@ img {
 }
 
 .products {
-  min-width: 100vw;
-  max-width: 100vh;
+  min-width: 100%;
+  max-width: 100%;
 }
 
 .product {
@@ -185,8 +185,8 @@ img {
   
   .product {
     display: block;
-    max-width: 100%;
-    min-width: 100%;
+    max-width: 99%;
+    min-width: 99%;
     min-height: 450px;
     max-height: 520px;
     margin: 0;
