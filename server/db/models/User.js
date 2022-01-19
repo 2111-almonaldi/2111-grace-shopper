@@ -90,12 +90,7 @@ User.findByToken = async function (token) {
       where: {
         id,
       },
-      include: [
-        {
-          model: Order,
-          where: { status: "CREATED" },
-        },
-      ],
+      attributes: ["firstName", "lastName", "id", "isAdmin", "username"],
     });
     if (!user) {
       throw "Unable to find user";

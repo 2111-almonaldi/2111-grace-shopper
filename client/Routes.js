@@ -12,6 +12,7 @@ import Orders from './components/User/Orders';
 import UserMain from './components/User/UserMain';
 import Home from './components/Home';
 import Cart from './components/Cart';
+import PendingCarts from './components/User/PendingCarts';
 import { me } from './store';
 
 /**
@@ -28,7 +29,8 @@ class Routes extends Component {
 				{isLoggedIn ? (
 					<Switch>
 						<Route path="/home" component={Home} />
-						<Route path="/cart" component={Cart} />
+						<Route exact path="/cart" component={Cart} />
+						<Route path="/cart/pendingcarts" component={PendingCarts} />
 						<Route path="/users/:id" component={UserMain} />
 						<Route path="/users/:id/account" component={AccountEdit} />
 						<Route path="/users/:id/orders" component={Orders} />
@@ -38,6 +40,7 @@ class Routes extends Component {
 				) : (
 					<Switch>
 						<Route path="/" exact component={Login} />
+						<Route path="home" component={Home} />
 						<Route path="/login" component={Login} />
 						<Route path="/signup" component={Signup} />
 						<Route exact path="/products" component={AllProducts} />
@@ -60,7 +63,6 @@ const mapState = (state) => {
 		// Being 'logged in' for our purposes will be defined has having a state.auth that has a truthy id.
 		// Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
 		isLoggedIn: !!state.auth.id,
-		priorCart: state.auth.orders,
 	};
 };
 

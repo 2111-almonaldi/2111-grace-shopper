@@ -1,12 +1,12 @@
 const router = require('express').Router();
 const {
-	models: { User },
+	models: { User, Order },
 } = require('../db');
 const { requireToken, isAdmin } = require('./gatekeepingMiddleware');
 module.exports = router;
 
 // GET /api/users
-router.get('/', requireToken, async (req, res, next) => {
+router.get('/', requireToken, isAdmin, async (req, res, next) => {
 	try {
 		const users = await User.findAll({
 			attributes: ['id', 'username'],
@@ -18,7 +18,7 @@ router.get('/', requireToken, async (req, res, next) => {
 });
 
 // GET /api/users/:id
-router.get('/:id', requireToken, async (req, res, next) => {
+router.get('/:id', requireToken, isAdmin, async (req, res, next) => {
 	try {
 		const user = await User.findAll({
 			where: {
@@ -40,7 +40,7 @@ router.get('/:id', requireToken, async (req, res, next) => {
 });
 
 // POST /api/users
-router.post('/', requireToken, async (req, res, next) => {
+router.post('/', requireToken, isAdmin, async (req, res, next) => {
 	try {
 		const user = await User.create(req.body);
 		res.status(201).send(user);
@@ -50,7 +50,7 @@ router.post('/', requireToken, async (req, res, next) => {
 });
 
 // PUT /api/users/:id
-router.put('/:id', requireToken, async (req, res, next) => {
+router.put('/:id', requireToken, isAdmin, async (req, res, next) => {
 	try {
 		const user = await User.findByPk(req.params.id);
 		res.send(await user.update(req.body));
@@ -60,12 +60,26 @@ router.put('/:id', requireToken, async (req, res, next) => {
 });
 
 // DELETE /api/users/:id
-router.delete('/:id', requireToken, async (req, res, next) => {
+router.delete('/:id', requireToken, isAdmin, async (req, res, next) => {
 	try {
 		const user = await User.findByPk(req.params.id);
 		await user.destroy();
 		res.send(user);
 	} catch (error) {
 		next(error);
+	}
+});
+
+router.get('/:id/pendingcarts', requireToken, async (req, res, next) => {
+	try {
+		const userCreatedCarts = await Order.findAll({
+			where: {
+				userId: req.params.id,
+				status: 'CREATED',
+			},
+		});
+		res.send(userCreatedCarts);
+	} catch (err) {
+		next(err);
 	}
 });

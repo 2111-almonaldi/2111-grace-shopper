@@ -17,9 +17,9 @@ export class AllProducts extends React.Component {
 
     return (
       <div className="products">
-        <Link className="newProductLink" to="/products/create">
+        {/* <Link className="newProductLink" to="/products/create">
           Add Product
-        </Link>
+        </Link> <br/> */}
         {products.map((product, index) => {
           return (
             <div className="product" key={index}>
