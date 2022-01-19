@@ -1,4 +1,5 @@
 import axios from "axios";
+import history from "../history";
 import { createOrder, updateOrder, deleteOrder } from "./order";
 
 const SET_CART = "SET_CART";
@@ -58,7 +59,10 @@ export const addToCart = (product) => (dispatch, getState) => {
   dispatch(addItem(cartItems));
   const order = getState().orders.order;
   if (userId) {
-    if (cartItems.reduce((a, c) => a + c.count, 0) === 1 || !order) {
+    if (
+      cartItems.reduce((a, c) => a + c.count, 0) === 1 ||
+      Object.keys(order).length === 0
+    ) {
       dispatch(createOrder({ items: cartItems, userId }));
     } else {
       const id = getState().orders.order.id;
@@ -70,18 +74,22 @@ export const addToCart = (product) => (dispatch, getState) => {
 
 export const decreaseItem = (product) => (dispatch, getState) => {
   const userId = getState().auth.id;
-  const id = getState().orders.order.id;
-
+  const order = getState().orders.order;
   if (product.count === 1) {
     const cartItems = getState()
       .cart.cartItems.slice()
       .filter((item) => item.name !== product.name);
     dispatch(removeItem(cartItems));
-    if (userId) {
+    if (userId && Object.keys(order).length !== 0) {
+      const id = order.id;
       if (cartItems.length === 0) {
         dispatch(deleteOrder(id));
       } else {
         dispatch(updateOrder({ id, items: cartItems }));
+      }
+    } else if (userId && Object.keys(order).length === 0) {
+      if (cartItems.length !== 0) {
+        dispatch(createOrder({ items: cartItems, userId }));
       }
     }
     window.localStorage.setItem("cart", JSON.stringify(cartItems));
@@ -93,24 +101,25 @@ export const decreaseItem = (product) => (dispatch, getState) => {
       }
     });
     dispatch(_decreaseItem(cartItems));
-    const id = getState().orders.order.id;
-    if (userId) {
-      console.log(cartItems.length);
-      if (cartItems.length === 0) {
-        dispatch(deleteOrder(id));
-      } else {
-        dispatch(updateOrder({ id, items: cartItems }));
-      }
+    if (userId && Object.keys(order).length !== 0) {
+      const id = order.id;
+      dispatch(updateOrder({ id, items: cartItems }));
+    } else if (userId && Object.keys(order).length === 0) {
+      dispatch(createOrder({ items: cartItems, userId }));
     }
     window.localStorage.setItem("cart", JSON.stringify(cartItems));
   }
 };
 
 export const removeFromCart = (product) => (dispatch, getState) => {
+  const order = getState().orders.order;
   const cartItems = getState()
     .cart.cartItems.slice()
     .filter((item) => item.name !== product.name);
   dispatch(removeItem(cartItems));
+  if (cartItems.length === 0 && Object.keys(order).length !== 0) {
+    dispatch(deleteOrder(order.id));
+  }
   window.localStorage.setItem("cart", JSON.stringify(cartItems));
 };
 
@@ -152,6 +161,7 @@ export const combineCarts = (oldOrder, orderId) => {
           window.localStorage.setItem("cart", JSON.stringify(reducedCart));
         }
       }
+      history.push("/cart");
     } catch (error) {
       console.log(error);
     }
