@@ -1,6 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PaymentForm from './PaymentForm';
+import UserCheckout from './UserCheckout';
+import GuestCheckout from './GuestCheckout';
 import '../../../public/checkoutMain.css';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
@@ -10,9 +13,7 @@ const stripePromise = loadStripe(
 	'pk_test_51KIhdSBUe6p65tjNXtHN5NUIQVk30J1x34GqAuvZZZc4QYJ7m2FHOiEjIbfyIkNGXAT2Km74UYnJ5BYJfZ442nIQ00QqawjRra'
 );
 
-export default function CheckoutMain() {
-	const cart = JSON.parse(localStorage.getItem('cart'));
-
+const CheckoutMain = ({ isLoggedIn, cart }) => {
 	const itemsPrice = cart.reduce((a, c) => a + c.price * c.count, 0);
 	const tax = itemsPrice * 0.08;
 	const totalPrice = itemsPrice + tax;
@@ -32,10 +33,7 @@ export default function CheckoutMain() {
 						<h4>Delivery Address</h4>
 					</div>
 					<div className="checkout-address">
-						<p>Tiffany McNerlin</p>
-						<p>806 Burgandy Ct</p>
-						<p>Jacksonville, AR</p>
-						<p>72076</p>
+						{isLoggedIn ? <UserCheckout /> : <GuestCheckout />}
 					</div>
 				</div>
 
@@ -85,4 +83,11 @@ export default function CheckoutMain() {
 			</div>
 		</div>
 	);
-}
+};
+
+const mapState = (state) => ({
+	isLoggedIn: !!state.auth.id,
+	cart: state.cart.cartItems,
+});
+
+export default connect(mapState)(CheckoutMain);
