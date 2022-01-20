@@ -135,7 +135,7 @@ return (
                 error={formState.errors.status}
                 helperText={formState.errors.status ? formState.errors.status : false}>
                 <MenuItem value="PROCESSING">Processing</MenuItem>
-                <MenuItem value="COMPLETED"></MenuItem>
+                <MenuItem value="COMPLETED">Completed</MenuItem>
                 <MenuItem value="CANCELLED">Canceled</MenuItem>
               </Select>
             </FormControl>
