@@ -252,6 +252,7 @@ img {
 
 	.product-info {
 		margin-left: 5px;
+    height: 300px;
 	}
 
 	.product-price {
@@ -291,12 +292,13 @@ img {
 		max-height: 250px;
 		max-width: 100%;
 	}
+
 	.product {
 		display: inline-block;
 		max-width: 46%;
 		min-width: 46%;
 		min-height: 520px;
-		max-height: 520px;
+		/* max-height: 520px; */
 		margin: 5px;
 		margin-top: 5px;
 		padding: 5px;
