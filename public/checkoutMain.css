@@ -1,0 +1,43 @@
+.checkout {
+	background-color: white;
+}
+
+.checkout-container > h1 {
+	text-align: center;
+	padding: 10px;
+	font-weight: 400;
+	background: linear-gradient(to top, rgb(235, 235, 235), white);
+}
+
+.checkout-return {
+	color: black;
+}
+
+.checkout-section {
+	display: flex;
+	margin: 0 30px;
+}
+
+.checkout-header {
+	flex: 0.2;
+}
+
+.checkout-items {
+	display: flex;
+	flex-direction: row;
+	padding: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+	text-align: center;
+}
+
+.checkout-address,
+.checkout-items,
+.checkout-details {
+	flex: 0.6;
+}
+
+.checkout-subtotal {
+	justify-content: flex-start;
+	margin-left: 30px;
+}

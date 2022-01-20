@@ -6,14 +6,21 @@ import SingleProduct from './components/SingleProduct';
 import AddProduct from './components/AddProduct';
 import UpdateProduct from './components/UpdateProduct';
 import { Login, Signup } from './components/AuthForm';
+import Home from './components/Home';
+import Cart from './components/Cart';
+import CheckoutMain from './components/Checkout/CheckoutMain';
 import AccountEdit from './components/User/AccountEdit';
 import Orders from './components/User/Orders';
 // import OrderDetails from './components/User/OrderDetails';
 import UserMain from './components/User/UserMain';
-import Home from './components/Home';
-import Cart from './components/Cart';
 import PendingCarts from './components/User/PendingCarts';
 import { me } from './store';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe(
+	'pk_test_51KIhdSBUe6p65tjNXtHN5NUIQVk30J1x34GqAuvZZZc4QYJ7m2FHOiEjIbfyIkNGXAT2Km74UYnJ5BYJfZ442nIQ00QqawjRra'
+);
 
 /**
  * COMPONENT
@@ -36,11 +43,13 @@ class Routes extends Component {
 						<Route path="/users/:id/orders" component={Orders} />
 						<Route exact path="/products" component={AllProducts} />
 						<Route path="/products/:id" component={SingleProduct} />
+						<Elements stripe={stripePromise}>
+							<Route path="/checkout" component={CheckoutMain} />
+						</Elements>
 					</Switch>
 				) : (
 					<Switch>
 						<Route path="/" exact component={Login} />
-						<Route path="home" component={Home} />
 						<Route path="/login" component={Login} />
 						<Route path="/signup" component={Signup} />
 						<Route exact path="/products" component={AllProducts} />
@@ -48,6 +57,9 @@ class Routes extends Component {
 						<Route path="/products/:id/update" component={UpdateProduct} />
 						<Route path="/products/:id" component={SingleProduct} />
 						<Route path="/cart" component={Cart} />
+						<Elements stripe={stripePromise}>
+							<Route path="/checkout" component={CheckoutMain} />
+						</Elements>
 					</Switch>
 				)}
 			</div>
