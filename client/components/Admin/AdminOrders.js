@@ -19,6 +19,7 @@ import AdminOrderForm from "./AdminProductForm";
 import { useHistory, useLocation } from "react-router-dom";
 import { getParam, setParam } from "../utility-funcs/query";
 import PaginationUI from "./PaginationUI";
+import { FETCH_PENDING, FETCH_ERROR} from "../../../constants"
 
 const useStyles = makeStyles({
 
@@ -45,6 +46,7 @@ const AdminOrders = (props) => {
   const classes = useStyles();
   const orders = useSelector((state) => state.admin.orders) || [];
   const total = useSelector((state) => state.admin.totalOrders);
+  const fetchStatus = useSelector((state) => state.admin.getOrderStatus);
   const [formName, setFormName] = useState("Default");
   const [dialogStatus, setDialogStatus] = useState(false);
   const [selectedData, setSelectedData] = useState({});
@@ -70,6 +72,17 @@ const AdminOrders = (props) => {
   useEffect(() => {
     dispatch(fetchAdminOrders(location));
   }, [location.search]);
+
+  if (fetchStatus === FETCH_PENDING ) {
+    return (
+      <div className="loading">Loading :{orders}!</div>
+
+    )
+  } else if (fetchStatus === FETCH_ERROR ) {
+    return (
+      <div className="errors">Error Loading: {orders}!</div>
+    )
+  } else
 
   return (
     <React.Fragment>

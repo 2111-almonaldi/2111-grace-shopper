@@ -106,10 +106,10 @@ export const fetchAdminOrders = (location) => {
 
 
 
-export const adminUpdateUserThunk = (userId, data) => {
+export const adminUpdateUserThunk = (user, data) => {
   return async dispatch => {
     try {
-      const res = await axios.put(`api/admin/users/${userId}`, data)
+      const res = await axios.put(`api/admin/users/${user.id}`, data)
       dispatch(adminUpdateUser(res.data));
       return true;
     } catch (err) {
@@ -119,10 +119,10 @@ export const adminUpdateUserThunk = (userId, data) => {
   }
 }
 
-export const adminDelUserThunk = (userId) => {
+export const adminDelUserThunk = (user) => {
   return async dispatch => {
     try {
-      const { data } = await axios.delete(`/api/users/${userId}`);
+      const { data } = await axios.delete(`/api/users/${user.id}`);
       dispatch(adminDelUser(data));
     } catch (err) {
       dispatch(getErrors(err));
@@ -131,10 +131,10 @@ export const adminDelUserThunk = (userId) => {
   }
 }
 
-export const adminPromoteUserThunk = (userId) => {
+export const adminPromoteUserThunk = (user) => {
   return async dispatch => {
     try {
-      const { data } = await axios.put(`/api/users/${userId}`, {isAdmin: true})
+      const { data } = await axios.put(`/api/users/${user}`, {isAdmin: true})
       dispatch(adminPromoteUser(data));
     } catch (err) {
       dispatch(getErrors(err));
@@ -143,10 +143,10 @@ export const adminPromoteUserThunk = (userId) => {
   }
 }
 
-export const adminOrderStatusThunk = (orderId, data) => {
+export const adminOrderStatusThunk = (order, data) => {
   return async dispatch => {
     try {
-      const res = await axios.put(`/api/admin/orders/${orderId}`, data);
+      const res = await axios.put(`/api/admin/orders/${order.id}`, data);
       dispatch(adminUpdateOrder(res.data));
     } catch (err) {
       getErrors(err);
@@ -168,10 +168,10 @@ export const adminAddProductThunk = (data) => {
   }
 }
 
-export const adminDelProductThunk = (productId, data) => {
+export const adminDelProductThunk = (product, data) => {
   return async dispatch => {
     try {
-      const res = await axios.delete(`/api/admin/products/${productId}`, data);
+      const res = await axios.delete(`/api/admin/products/${product.id}`, data);
       if (res.statusCode === 200) {
         dispatch(adminDelProduct(res.data));
         return true;
@@ -184,10 +184,10 @@ export const adminDelProductThunk = (productId, data) => {
   }
 }
 
-export const adminUpdateProductThunk = (productId, data) => {
+export const adminUpdateProductThunk = (product, data) => {
   return async dispatch => {
     try {
-      const res = await axios.put(`/api/products/${productId}`, data);
+      const res = await axios.put(`/api/products/${product.id}`, data);
       dispatch(adminUpdateProduct(res.data));
       return true;
     } catch (err) {
@@ -205,9 +205,9 @@ const initialState = {
   users: [],
   orders: [],
   products: [],
-  GetUsersStatus: FETCH_PENDING,
-  GetOrdersStatus: FETCH_PENDING,
-  GetProductsStatus: FETCH_PENDING,
+  getUsersStatus: FETCH_PENDING,
+  getOrdersStatus: FETCH_PENDING,
+  getProductsStatus: FETCH_PENDING,
   totalUsers: 0,
   totalOrders: 0,
   totalProducts: 0
@@ -219,7 +219,7 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_ADMIN_USERS_FETCH_STATUS:
-      return { ...state, GetUsersStatus: action.status }
+      return { ...state, getUsersStatus: action.status }
     case ADMIN_GET_USERS:
       return { ...state, ...action.payload };
     case ADMIN_UPDATE_USER:
@@ -236,7 +236,7 @@ export default (state = initialState, action) => {
         })]
       }
     case SET_ADMIN_ORDERS_FETCH_STATUS:
-      return { ...state, GetOrdersStatus: action.status }
+      return { ...state, getOrdersStatus: action.status }
     case ADMIN_GET_ORDERS:
       return { ...state, ...action.payload };
     case ADMIN_UPDATE_ORDER:
@@ -245,7 +245,7 @@ export default (state = initialState, action) => {
         orders: [...state.orders.filter(order => order.id !== action.order.id), action.order]
       }
     case SET_ADMIN_PRODUCTS_FETCH_STATUS:
-      return { ...state, GetProductsStatus: action.status }
+      return { ...state, getProductsStatus: action.status }
     case ADMIN_GET_PRODUCTS:
       return { ...state, ...action.payload }
     case ADMIN_ADD_PRODUCT:

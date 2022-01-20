@@ -19,7 +19,7 @@ import AdminProductForm from "./AdminProductForm"
 import { useHistory, useLocation } from "react-router-dom";
 import { getParam, setParam } from "../utility-funcs/query";
 import PaginationUI from "./PaginationUI";
-
+import { FETCH_PENDING, FETCH_ERROR } from "../../../constants";
 
 const useStyles = makeStyles({
   addButton: {
@@ -69,7 +69,7 @@ const AdminProducts = (props) => {
   const [dialogStatus, setDialogStatus] = useState(false);
   const [selectedData, setSelectedData] = useState({});
   const [dialogMode, setDialogMode] = useState("edit");
-
+  const fetchStatus = useSelector((state) => state.admin.getProductsStatus)
 
   const history = useHistory();
   const location = useLocation();
@@ -91,6 +91,18 @@ const AdminProducts = (props) => {
   useEffect(() => {
     dispatch(fetchAdminProducts(location));
   }, [location.search]);
+
+  if (fetchStatus === FETCH_PENDING ) {
+    return (
+      <div className="loading">Loading :{products}!</div>
+
+    )
+  } else if (fetchStatus === FETCH_ERROR ) {
+    return (
+      <div className="errors">Error Loading: {products}!</div>
+    )
+  } else
+
 
   return (
     <React.Fragment>

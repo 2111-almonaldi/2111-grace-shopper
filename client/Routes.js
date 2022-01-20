@@ -9,6 +9,7 @@ import { Login, Signup } from "./components/AuthForm";
 import Home from "./components/Home";
 import Cart from "./components/Cart";
 import { me } from "./store";
+import AdminMain from "./components/Admin/AdminMain"
 
 /**
  * COMPONENT
@@ -18,7 +19,7 @@ class Routes extends Component {
     this.props.loadInitialData();
   }
   render() {
-    const { isLoggedIn } = this.props;
+    const { isLoggedIn, isAdmin } = this.props;
     return (
       <div>
         {isLoggedIn ? (
@@ -27,6 +28,9 @@ class Routes extends Component {
             <Route path="/cart" component={Cart} />
             <Route exact path="/products" component={AllProducts} />
             <Route path="/products/:id" component={SingleProduct} />
+            <Route path="/admin">
+              {isLoggedIn && isAdmin ? <AdminMain /> : <NotFound /> }
+            </Route>
           </Switch>
         ) : (
           <Switch>
@@ -54,6 +58,7 @@ const mapState = (state) => {
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
     isLoggedIn: !!state.auth.id,
     priorCart: state.auth.orders,
+    isAdmin: state.auth.isAdmin
   };
 };
 

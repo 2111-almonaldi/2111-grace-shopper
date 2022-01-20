@@ -14,11 +14,12 @@ import Tooltip from "@material-ui/core/Tooltip";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import EditIcon from "@material-ui/icons/Edit";
 import { useDispatch, useSelector } from "react-redux";
-import { adminUpdateUserThunk, fetchAdminUsers, adminDeleteUserThunk } from "../store/adminInfo";
-import AdminUserForm from "./AdminProductForm";
+import { fetchAdminUsers, adminDelUserThunk } from "../store/adminInfo";
+import AdminUserForm from "./AdminUserForm";
 import { useHistory, useLocation } from "react-router-dom";
 import { getParam, setParam } from "../utility-funcs/query";
 import PaginationUI from "./PaginationUI";
+import { FETCH_PENDING, FETCH_ERROR} from "../../../constants";
 
 const useStyles = makeStyles({
 
@@ -48,7 +49,7 @@ const AdminUsers = (props) => {
   const [formName, setFormName] = useState("Default");
   const [dialogStatus, setDialogStatus] = useState(false);
   const [selectedData, setSelectedData] = useState({});
-  // const [dialogMode, setDialogMode] = useState("edit");
+  const fetchStatus = useSelector((state) => state.admin.getUsersStatus)
 
   const history = useHistory();
   const location = useLocation();
@@ -71,6 +72,17 @@ const AdminUsers = (props) => {
     dispatch(fetchAdminUsers(location));
   }, [location.search]);
 
+  if (fetchStatus === FETCH_PENDING ) {
+    return (
+      <div className="loading">Loading :{users}!</div>
+
+    )
+  } else if (fetchStatus === FETCH_ERROR ) {
+    return (
+      <div className="errors">Error Loading: {users}!</div>
+    )
+  } else
+
   return (
     <React.Fragment>
       <TableContainer component={Paper}>
@@ -87,7 +99,8 @@ const AdminUsers = (props) => {
           </TableHead>
           <TableBody>
             {users.map((user) => (
-              <TableRow key={user.firstName} hover>
+              <TableRow key={user.id} hover>
+                <TableCell>{user.firstName}</TableCell>
                 <TableCell>{user.lastName}</TableCell>
                 <TableCell>${user.username}</TableCell>
                 <TableCell>{user.email}</TableCell>
@@ -107,7 +120,7 @@ const AdminUsers = (props) => {
                   <Tooltip
                     title="Delete"
                     onClick={async () => {
-                      const success = await dispatch(adminDeleteUserThunk(user));
+                      const success = await dispatch(adminDelUserThunk(user));
                       if (success) {
                         setSnackbarMessage(`Deleted: ${user.fullName}`);
                       } else {

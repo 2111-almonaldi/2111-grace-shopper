@@ -185,3 +185,23 @@ router.put('/users/:id', async (req, res, next) => {
 		next(err);
 	}
 });
+
+//DELETE /api/admin/users/:id
+
+router.delete('/users/:id', async (req, res, next) => {
+	try {
+		const rowsDeleted = await User.destroy({
+			where: {
+				id: req.params.id,
+			},
+		});
+		if (rowsDeleted) {
+			res.sendStatus(200);
+		} else {
+			throw { status: 401, message: 'User Not Found!' };
+		}
+	} catch (err) {
+		console.log(err);
+		next(err);
+	}
+});
