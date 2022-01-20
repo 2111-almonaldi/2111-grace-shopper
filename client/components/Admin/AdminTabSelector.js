@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import Paper from "@material-ui/core/Paper";
-import { makeStyles } from "@material-ui/core/styles";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
-import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
+import Paper from "@mui/material/Paper";
+import {makeStyles} from "@mui/styles/";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { useHistory } from "react-router-dom";
 

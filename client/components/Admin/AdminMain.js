@@ -1,14 +1,14 @@
 
 import React, { useState, useEffect } from "react";
-import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@mui/material/Grid";
+import {makeStyles} from "@mui/styles/";
 import AdminTabSelector from "./AdminTabSelector";
 import { Route, Router, Switch, useHistory } from "react-router-dom";
 import AdminUsers from "./AdminUsers";
-import AdminOrders from "./AminOrders";
+import AdminOrders from "./AdminOrders";
 import AdminProducts from "./AdminProducts"
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
   alertIcon: {
     color: "yellow"
+  }
 }));
 
 const AdminMain = () => {
@@ -69,7 +70,7 @@ const AdminMain = () => {
   const history = useHistory();
 
   useEffect(() => {
-    history.push("/admin/" + selectedTab);
+    history.push("/admin/" + selected);
   }, []);
 
   return (
@@ -81,7 +82,7 @@ const AdminMain = () => {
         <div className="page-body">
           <Grid container justifyContent="center">
             <Grid item xs={12} className={classes.tabsContainer}>
-              <AdminTabSelector selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+              <AdminTabSelector selected={selected} setSelectedTab={setSelected} />
             </Grid>
             <Grid item className={classes.listContainer}>
               <Route path="/admin/users">
@@ -130,5 +131,5 @@ const AdminMain = () => {
   );
 };
 
-export default Admin;
+export default AdminMain;
 

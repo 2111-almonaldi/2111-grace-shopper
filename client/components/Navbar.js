@@ -47,15 +47,18 @@ const Navbar = ({ handleClick, isLoggedIn, cart, isAdmin }) => (
 							</Link>
 						)}<br/>
 						<Link to="/cart/pendingcarts"> Pending Carts </Link>
+						{isAdmin ? (
+							<div>
+							<Link to="/admin">
+								<AdminPanelSettingsIcon />
+							</Link>
+						</div>
+						) : (
+							<NotFound />
+						)}
 					</div>
 				</div>
 			</div>
-  {isAdmin && (
-    <span>Admin Panel</span>
-						<Link to="/admin">
-							<AdminPanelSettingsIcon />
-						</Link>
-    )}
 		) : (
 			<div className="header headerDiv">
 				<Link to="/home">
