@@ -1,0 +1,73 @@
+.user-container {
+	display: flex;
+	flex-flow: wrap;
+	text-align: center;
+}
+
+.user-container > * {
+	padding: 5px;
+	margin-top: 15px;
+	flex: 1 100%;
+	border-radius: 10px;
+}
+
+.user-header {
+	background: pink;
+	height: 60px;
+}
+
+.user-aboutMe {
+	text-align: left;
+	background: deepskyblue;
+	height: 300px;
+	font-size: 15px;
+}
+
+.user-left {
+	list-style-type: none;
+	padding: 0;
+	border: 1px solid lightgray;
+	align-items: flex-start;
+}
+
+.sidebar-List {
+	text-align: left;
+}
+
+.sidebar-Icon {
+	font-size: small;
+	margin-right: 10px;
+}
+
+.user-right {
+	background: hotpink;
+}
+
+.user-footer {
+	background: lightgreen;
+	height: 40px;
+}
+
+@media all and (min-width: 800px) {
+	.user-aboutMe {
+		flex: 3;
+	}
+
+	.user-left {
+		order: 1;
+		flex: 1;
+	}
+
+	.user-right {
+		order: 2;
+		flex: 1;
+	}
+
+	.user-aboutMe {
+		order: 2;
+	}
+
+	.user-footer {
+		order: 4;
+	}
+}

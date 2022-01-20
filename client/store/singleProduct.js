@@ -7,7 +7,6 @@ export const setSingleProduct = (product) => ({
 	product,
 });
 
-//NOTE: REMEMBER TO Q.C. ROUTE BELOW ONCE API/DB IS SEEDED
 export const fetchSingleProduct = (id) => async (dispatch) => {
 	try {
 		const { data: product } = await axios.get(`/api/products/${id}`);

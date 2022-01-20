@@ -26,7 +26,9 @@ export const me = () => async (dispatch) => {
         authorization: token,
       },
     });
+    dispatch(setAdminStatus(res.data.isAdmin)); //@@
     return dispatch(setAuth(res.data));
+
   }
 };
 

@@ -1,5 +1,4 @@
-const { resolve } = require('path')
-
+const { resolve } = require('path');
 
 module.exports = {
   entry: ["babel-polyfill", "./client/index.js"],

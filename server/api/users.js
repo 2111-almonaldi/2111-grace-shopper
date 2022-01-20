@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {
-	models: { User },
+	models: { User, Order },
 } = require('../db');
 const { requireToken, isAdmin } = require('./gatekeepingMiddleware');
 module.exports = router;
@@ -68,5 +68,19 @@ router.delete('/:id', requireToken, isAdmin, async (req, res, next) => {
 		res.send(user);
 	} catch (error) {
 		next(error);
+	}
+});
+
+router.get('/:id/pendingcarts', requireToken, async (req, res, next) => {
+	try {
+		const userCreatedCarts = await Order.findAll({
+			where: {
+				userId: req.params.id,
+				status: 'CREATED',
+			},
+		});
+		res.send(userCreatedCarts);
+	} catch (err) {
+		next(err);
 	}
 });

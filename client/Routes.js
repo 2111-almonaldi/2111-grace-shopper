@@ -4,12 +4,19 @@ import { withRouter, Route, Switch, Redirect } from "react-router-dom";
 import AllProducts from "./components/AllProducts";
 import SingleProduct from "./components/SingleProduct";
 import AddProduct from "./components/AddProduct";
-import UpdateProduct from "./components/UpdateProduct";
+import UpdateProduct from "./components/old/UpdateProduct";
 import { Login, Signup } from "./components/AuthForm";
 import Home from "./components/Home";
 import Cart from "./components/Cart";
-import { me } from "./store";
+import { me, setAdminStatus } from "./store";
 import AdminMain from "./components/Admin/AdminMain"
+import AccountEdit from './components/User/AccountEdit';
+import Orders from './components/User/Orders';
+// import OrderDetails from './components/User/OrderDetails';
+import UserMain from './components/User/UserMain';
+import NotFound from "./components/NotFound"
+import PendingCarts from './components/User/PendingCarts';
+
 
 /**
  * COMPONENT
@@ -26,6 +33,10 @@ class Routes extends Component {
           <Switch>
             <Route path="/home" component={Home} />
             <Route path="/cart" component={Cart} />
+            <Route path="/cart/pendingcarts" component={PendingCarts} />
+						<Route path="/users/:id" component={UserMain} />
+						<Route path="/users/:id/account" component={AccountEdit} />
+						<Route path="/users/:id/orders" component={Orders} />
             <Route exact path="/products" component={AllProducts} />
             <Route path="/products/:id" component={SingleProduct} />
             <Route path="/admin">
@@ -35,6 +46,7 @@ class Routes extends Component {
         ) : (
           <Switch>
             <Route path="/" exact component={Login} />
+            <Route path="/home" exact component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
             <Route exact path="/products" component={AllProducts} />
@@ -63,11 +75,11 @@ const mapState = (state) => {
 };
 
 const mapDispatch = (dispatch) => {
-  return {
-    loadInitialData() {
-      dispatch(me());
-    },
-  };
+	return {
+		loadInitialData() {
+			dispatch(me());
+		},
+	};
 };
 
 // The `withRouter` wrapper makes sure that updates are not blocked

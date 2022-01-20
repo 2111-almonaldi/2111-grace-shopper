@@ -26,9 +26,9 @@ let middleware = [thunkMiddleware.withExtraArgument({ axios })];
 middleware = [...middleware, createLogger({ collapsed: true })];
 
 const store = createStore(
-  reducer,
-  composeWithDevTools(applyMiddleware(...middleware))
+	reducer,
+	composeWithDevTools(applyMiddleware(...middleware))
 );
 
 export default store;
-export * from "./auth";
+export * from './auth';

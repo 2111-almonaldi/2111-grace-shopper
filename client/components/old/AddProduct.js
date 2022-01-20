@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { addNewProduct, loadProducts } from '../store/products';
+import { addNewProduct, loadProducts } from '../../store/products';
 
 class AddProduct extends React.Component {
   constructor() {
@@ -17,7 +17,7 @@ class AddProduct extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  
+
   handleChange(evt) {
     this.setState({
       [evt.target.name]: evt.target.value
@@ -35,36 +35,36 @@ class AddProduct extends React.Component {
 
     return (
       <div className='form-container'>
-        <form className='product-form' onSubmit={handleSubmit}>
+        <form className='product-form main-form' onSubmit={handleSubmit}>
           <div>
-          <label htmlFor='name'>Movie Name</label><br/>
-          <input name='name' onChange={handleChange} value={name} />
+          <label className="form-label" htmlFor='name'>Movie Name</label><br/>
+          <input className="form-input" name='name' onChange={handleChange} value={name} />
           </div>
 
           <div>
-          <label htmlFor='imageUrl'>Image</label><br/>
-          <textarea name='imageUrl' onChange={handleChange} value={imageUrl}  rows="3" />
+          <label className="form-label" htmlFor='imageUrl'>Image</label><br/>
+          <textarea className="form-textarea" name='imageUrl' onChange={handleChange} value={imageUrl}  rows="3" />
           </div>
 
           <div>
-          <label htmlFor='price'>Price</label><br/>
-          <input name='price' onChange={handleChange} value={price} />
+          <label className="form-label" htmlFor='price'>Price</label><br/>
+          <input className="form-input" name='price' onChange={handleChange} value={price} />
           </div>
 
           <div>
-          <label htmlFor='quantity'>Quantity</label><br/>
-          <input name='quantity' onChange={handleChange} value={quantity} />
+          <label className="form-label" htmlFor='quantity'>Quantity</label><br/>
+          <input className="form-input" name='quantity' onChange={handleChange} value={quantity} />
           </div>
 
           <div>
-          <label htmlFor='description'>Description</label><br/>
-          <textarea name='description' onChange={handleChange} value={description} rows="2" />
+          <label className="form-label" htmlFor='description'>Description</label><br/>
+          <textarea className="form-textarea" name='description' onChange={handleChange} value={description} rows="2" />
           </div>
 
           <br/>
 
           <div>
-          <button type='submit'>Submit</button>
+          <button className="form-button" type='submit'>Submit</button>
           </div>
 
           <br/>

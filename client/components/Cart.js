@@ -5,7 +5,7 @@ import {
   addToCart,
   removeFromCart,
   decreaseItem,
-  clearCart,
+  deleteCart,
 } from "../store/cart";
 //import DeleteIcon from "@mui/icons-material/Delete";
 //import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
@@ -74,7 +74,9 @@ export class Cart extends Component {
                   </div>
                 </div>
               )}
-              <button onClick={() => this.props.clearCart()}>Clear Cart</button>
+              <button onClick={() => this.props.deleteCart()}>
+                Clear Cart
+              </button>
             </div>
           )}
         </div>
@@ -84,13 +86,8 @@ export class Cart extends Component {
 }
 
 const mapState = (state) => {
-  const stateCart = state.cart.cartItems.length
-    ? state.cart.cartItems
-    : state.auth.orders
-    ? state.auth.orders[0].items
-    : state.cart.cartItems;
   return {
-    cart: stateCart,
+    cart: state.cart.cartItems,
   };
 };
 
@@ -99,7 +96,7 @@ const mapDispatch = (dispatch) => {
     removeFromCart: (product) => dispatch(removeFromCart(product)),
     add: (product) => dispatch(addToCart(product)),
     remove: (product) => dispatch(decreaseItem(product)),
-    clearCart: () => dispatch(clearCart([])),
+    deleteCart: () => dispatch(deleteCart()),
   };
 };
 

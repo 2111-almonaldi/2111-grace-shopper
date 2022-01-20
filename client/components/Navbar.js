@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { logout } from '../store';
 import { clearCart } from '../store/cart';
 import { createOrder, updateOrder } from '../store/order';
+import { logoutOrder, clearOrder } from '../store/order';
 import '../../public/navbar.css';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
@@ -22,7 +23,9 @@ const Navbar = ({ handleClick, isLoggedIn, cart }) => (
 				<div className="header-nav">
 					{/* The navbar will show these links after you log in */}
 					<span>Hello, User</span>
-					<span>Account Details</span>
+					<Link to="/users/:id">
+						<span>Account Details</span>
+					</Link>
 					<Link to="/products">
 						<span>Products</span>
 					</Link>
@@ -39,6 +42,7 @@ const Navbar = ({ handleClick, isLoggedIn, cart }) => (
 							{cart.reduce((a, c) => a + c.count, 0)})
 						</Link>
 					)}
+					<Link to="/cart/pendingcarts"> Pending Carts </Link>
 				</div>
 			</div>
 		) : (
@@ -96,8 +100,9 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
 	return {
 		handleClick() {
+			dispatch(logoutOrder());
 			dispatch(logout());
-			dispatch(clearCart());
+			//dispatch(clearCart());
 		},
 	};
 };
