@@ -324,11 +324,13 @@ img {
     width: 100%;
   }
   .single-product-pricing button {
-    max-width: 85px;
+    max-width: 120px;
+    padding: 3px;
   }
 
   .deleteBtn {
-    max-width: 177px;
+    max-width: 200px;
+    padding: 3px;
   }
 
   .single-product-data-bottom {
@@ -370,11 +372,11 @@ img {
   }
 
   .single-product p, .single-product button {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .page_links {
-    font-size: 18px;
+    font-size: 16px;
   }
 }
 
@@ -382,8 +384,8 @@ img {
 @media only screen and (min-width: 1200px) {
   .product {
     display: inline-block;
-    max-width: 23%;
-    min-width: 23%;
+    max-width: 20%;
+    min-width: 20%;
   }
 
   /* single product */
@@ -397,5 +399,14 @@ img {
 
   .single-product-data-bottom {
     margin-top: 50px;
+  }
+
+  .single-product-container {
+    max-width: 1000px;
+  }
+
+  .main-container {
+    margin: 0 auto;
+    max-width: 1000px;
   }
 }
