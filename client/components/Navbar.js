@@ -59,8 +59,21 @@ const Navbar = ({ handleClick, isLoggedIn, cart }) => (
             alt=""
           />
         </Link>
+        <span>
+          {cart.length === 0 ? (
+            <Link to="/cart">
+              <ShoppingCartRoundedIcon />
+            </Link>
+          ) : (
+            <Link to="/cart">
+              <ShoppingCartRoundedIcon />(
+              {cart.reduce((a, c) => a + c.count, 0)})
+            </Link>
+          )}
+        </span>
         <div className="header-nav dropdown">
           {/* The navbar will show these links before you log in */}
+
           <MenuIcon />
           <div className="dropdown-content">
             <span>
@@ -75,18 +88,6 @@ const Navbar = ({ handleClick, isLoggedIn, cart }) => (
               <Link to="/products">Products</Link>
             </span>
             <br />
-            <span>
-              {cart.length === 0 ? (
-                <Link to="/cart">
-                  <ShoppingCartRoundedIcon />
-                </Link>
-              ) : (
-                <Link to="/cart">
-                  <ShoppingCartRoundedIcon />(
-                  {cart.reduce((a, c) => a + c.count, 0)})
-                </Link>
-              )}
-            </span>
           </div>
         </div>
       </div>
