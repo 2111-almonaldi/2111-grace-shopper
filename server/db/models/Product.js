@@ -47,8 +47,6 @@ const Product = db.define("product", {
 /**
  * instanceMethods
  */
-
-
  Product.prototype.decrementInventory = function (numPurchased) {
   this.quantity = numPurchased = Math.max(this.quantity - numPurchased, 0);
 }
@@ -81,9 +79,9 @@ const categoryFilter = ({ categories }) => {
       where: {
         name: {
           [Op.in]: categories
-        }
       }
     }
+   }
   }
 }
 
