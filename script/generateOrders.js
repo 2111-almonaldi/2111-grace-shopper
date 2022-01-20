@@ -16,9 +16,7 @@ const generateOrders = () => {
 
   const users = generateUsers()
   for (let i = 0; i < users.length; i++) {
-  const userOrders = users.map(user => user.createOrder({where: {status: "CREATED"}}))
-  userOrders[i].userId = users.id;
-
+  const users.map(user => user.createOrder({where: {status: ""}}))
 
 
 

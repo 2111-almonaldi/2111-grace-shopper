@@ -8,32 +8,11 @@ const {
   paginate,
   orderSort,
   orderSearch,
-  orderStatusFilter
 } = require("../db/models/User");
 
 module.exports = router;
 
 //GET /orders - returns list of userOrders with products
-// router.get('/', requireToken, async (req, res, next) => {
-// 	try {
-// 		const orders = await req.user.getOrders({
-// 			include: [
-//         {
-//           model: Product,
-//           as: 'items',
-
-//         }
-//       ],
-//       ...orderHistoryFilter(req.query),
-//       ...orderStatusFilter(req.query),
-//       ...orderSort(req.query),
-//       ...paginate(req.query, DEFAULT_PAGE_SIZE),
-//       distinct: true
-// 		});
-// 		res.json(orders);
-// 	} catch (err) {
-// 		next(err);
-// 	}
 router.get("/", requireToken, async (req, res, next) => {
   try {
     const orders = await req.user.getOrders({
@@ -62,12 +41,11 @@ router.get("/:id", requireToken, async (req, res, next) => {
 });
 
 // GET api/orders/:id
-router.get("/id:/:status", requireToken, async (req, res, next) => {
+router.get("/:status", requireToken, async (req, res, next) => {
   try {
     const orders = await req.user.getOrders({
       where: {
         status: req.params.status,
-        id: req.params.id
       },
       include: {
         model: Product,
