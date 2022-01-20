@@ -1,9 +1,9 @@
 import React from "react";
 import { Route } from "react-router-dom";
-import PaginationItem from "@material-ui/lab/PaginationItem";
+import PaginationItem from "@mui/material/PaginationItem";
 import { Link } from "react-router-dom";
-import Pagination from "@material-ui/lab/Pagination";
-import { getParam, setParam } from "../utility-funcs/query";
+import Pagination from "@mui/material/Pagination";
+import { getParam, setParam } from "../queryFunctions/queryParam";
 import { DEFAULT_PAGE_SIZE} from "../../constants";
 
 const PaginationUI = (props) => {

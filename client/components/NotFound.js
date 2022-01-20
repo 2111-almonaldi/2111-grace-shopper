@@ -1,10 +1,10 @@
 /* eslint-disable linebreak-style */
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import PriorityHighIcon from "@material-ui/icons/PriorityHigh";
+import {makeStyles} from "@mui/styles/";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 
 const useStyles = makeStyles((theme) => ({
   notFoundBody: {

@@ -19,7 +19,7 @@ export class SingleProduct extends Component {
     const { singleProduct } = this.props;
 
     return (
-      <div>
+      <div className="single-product-container">
         <div className="single-product" key={singleProduct.id}>
           <img
             src={singleProduct.imageUrl}

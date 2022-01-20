@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import { TextareaAutosize } from "@material-ui/core/TextareaAutosize";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Grid from "@material-ui/core/Grid";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Grid from "@mui/material/Grid";
+import {makeStyles} from "@mui/styles/";
 import { useDispatch } from "react-redux";
-import { adminAddProductThunk, adminUpdateProductThunk } from "../store/adminInfo";
-import {getErrors, resetErrors} from "../store/errors";
+import { adminAddProductThunk, adminUpdateProductThunk } from "../../store/adminInfo";
+import {getErrors, resetErrors} from "../../store/errors";
 const useStyles = makeStyles((theme) => ({
   addButton: {
     backgroundColor: "#008000",
