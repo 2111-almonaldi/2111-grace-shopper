@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { loadProducts } from "../store/products";
+import { Link } from "react-router-dom";
 import { addToCart } from "../store/cart";
 
 export class AllProducts extends React.Component {

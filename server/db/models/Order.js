@@ -11,10 +11,10 @@ const Order = db.define("order", {
     allowNull: false,
     defaultValue: "CREATED",
   },
-  // items: {
-  //   type: ARRAY(Sequelize.JSON),
-  //   //allowNull: false
-  // },
+  items: {
+    type: ARRAY(Sequelize.JSON),
+    //allowNull: false
+  },
 
   subtotal: {
     type: VIRTUAL,
@@ -22,11 +22,23 @@ const Order = db.define("order", {
       if (this.items.length) {
         return this.items
           .map((item) => {
-            item.count * item.price.priceAtCheckout();
+            item.count * item.price;
           })
           .reduce((a, b) => a + b, 0);
       }
     },
+    /*get() {
+			if (this.items.length) {
+				return this.items
+					.map((item) => {
+						item.quantity * this.item.priceAtCheckout()
+						//priceAtChcekout takes an entire order as an argument and returns a total, but
+						//we are calling priceAtCheckout on each individual item--doesn't make sense to me--need to discuss
+					})
+					.reduce((a, b) => a + b, 0);
+			}
+      else return 0
+		}, */
   },
 
   orderQty: {

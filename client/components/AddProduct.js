@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { addNewProduct, loadProducts } from '../../store/products';
+import { addNewProduct, loadProducts } from '../store/products';
 
 class AddProduct extends React.Component {
   constructor() {
@@ -17,7 +17,7 @@ class AddProduct extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
+  
   handleChange(evt) {
     this.setState({
       [evt.target.name]: evt.target.value
