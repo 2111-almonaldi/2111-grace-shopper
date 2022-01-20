@@ -38,6 +38,7 @@ const AdminTabSelector = (props) => {
         indicatorColor="primary"
         textColor="primary"
         aria-label="icon label tabs example">
+          <Tab icon={<AdminPanelSettingsIcon />} label="Admin Panel" />
           <Tab icon={<PeopleAltIcon />} label="Users" />
           <Tab icon={<MonetizationOnIcon />} label="Orders" />
           <Tab icon={<AddShoppingCartIcon />} label="Products" />

@@ -6,6 +6,7 @@ import { clearCart } from '../store/cart';
 import { createOrder, updateOrder } from '../store/order';
 import '../../public/navbar.css';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 const Navbar = ({ handleClick, isLoggedIn, cart }) => (
 	<div className="header">
@@ -60,6 +61,10 @@ const Navbar = ({ handleClick, isLoggedIn, cart }) => (
 					<span>
 						<Link to="/products">Products</Link>
 					</span>
+					<span>Admin Panel</span>
+						<Link to="/admin">
+							<AdminPanelSettingsIcon />
+						</Link>
 					<span>
 						{cart.length === 0 ? (
 							<Link to="/cart">
