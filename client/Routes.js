@@ -22,18 +22,19 @@ import PendingCarts from './components/User/PendingCarts';
  * COMPONENT
  */
 class Routes extends Component {
-  componentDidMount() {
-    this.props.loadInitialData();
-  }
-  render() {
-    const { isLoggedIn, isAdmin } = this.props;
-    return (
-      <div>
-        {isLoggedIn ? (
-          <Switch>
-            <Route path="/home" component={Home} />
-            <Route path="/cart" component={Cart} />
-            <Route path="/cart/pendingcarts" component={PendingCarts} />
+
+	componentDidMount() {
+		this.props.loadInitialData();
+	}
+	render() {
+		const { isLoggedIn,isAdmin } = this.props;
+		return (
+			<div className="main-container">
+				{isLoggedIn ? (
+					<Switch>
+						<Route path="/home" component={Home} />
+						<Route exact path="/cart" component={Cart} />
+						<Route path="/cart/pendingcarts" component={PendingCarts} />
 						<Route path="/users/:id" component={UserMain} />
 						<Route path="/users/:id/account" component={AccountEdit} />
 						<Route path="/users/:id/orders" component={Orders} />
@@ -69,7 +70,6 @@ const mapState = (state) => {
     // Being 'logged in' for our purposes will be defined has having a state.auth that has a truthy id.
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
     isLoggedIn: !!state.auth.id,
-    priorCart: state.auth.orders,
     isAdmin: state.auth.isAdmin
   };
 };
