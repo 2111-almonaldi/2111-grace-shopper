@@ -7,9 +7,10 @@ const {
 	orderHistoryFilter,
 	paginate,
 	orderSort,
-	orderSearch,
+	orderStatusFilter
 } = require('../db/models/User');
 const { userSort } = require('../db/models/User');
+const { DEFAULT_PAGE_SIZE } = require("../../constants")
 
 router.use(requireToken, isAdmin, (req, res, next) => {
 	next();
@@ -26,10 +27,11 @@ router.get('/users', async (req, res, next) => {
 				'email',
 				'firstName',
 				'lastName',
+        'FullName',
 				'isAdmin',
 			],
 			...userSort(req.query),
-			...paginate(req.query, 20),
+			...paginate(req.query, DEFAULT_PAGE_SIZE ),
 			distinct: true,
 		});
 		res.json({ users, totalUsers });
@@ -39,7 +41,7 @@ router.get('/users', async (req, res, next) => {
 });
 
 // GET /api/admin/orders
-router.get('/orders', requireToken, isAdmin, async (req, res, next) => {
+router.get('/orders', async (req, res, next) => {
 	try {
 		const { rows: orders, count: totalOrders } = await Order.findAndCountAll({
 			attributes: ['id', 'status', 'subtotal', 'orderQty', 'orderNumber'],
@@ -48,18 +50,57 @@ router.get('/orders', requireToken, isAdmin, async (req, res, next) => {
 					model: Product,
 					as: 'items',
 					// fix
-					...orderHistoryFilter(req.query),
+
 				},
 			],
+      ...orderHistoryFilter(req.query),
+      ...orderStatusFilter(req.query),
 			...orderSort(req.query),
-			...paginate(req.query, 5),
-			...orderSearch('order', 'orderNumber', req.query),
+			...paginate(req.query, DEFAULT_PAGE_SIZE),
+			// ...orderSearch('order', 'orderNumber', req.query),
 			distinct: true,
 		});
 		res.json({ orders, totalOrders });
 	} catch (err) {
 		next(err);
 	}
+});
+
+// PUT /api/admin/orders/:id
+router.put("orders/:id", async (req, res, next) => {
+  try {
+    const {status, subTotal, orderQty, orderNumber, customerEmail, customerName, customerAddress, customerCity, customerState, customerZip } = req.body;
+    const [rowsUpdated, orders] = await Product.update(
+      {status, subTotal, orderQty, orderNumber, customerEmail, customerName, customerAddress, customerCity, customerState, customerZip},
+      {
+        where: {
+          id: req.params.id
+        },
+        returning: true,
+        include: {
+          models: Product
+        }
+      }
+    )
+    if (rowsUpdated) {
+      res.json(orders[0])
+    } else {
+      throw { status: 401, message: "Order Not Found"}
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+// GET /api/admin/products
+router.get("/products", async (req, res, next) => {
+  try {
+    const products = await Product.findAll({
+      attributes: ["id", "name", "description", "price", "imageUrl", "quantity"]
+    });
+    res.json(products);
+  } catch (err) {
+    next(err);
+  }
 });
 
 // POST /api/admin/products
@@ -80,7 +121,7 @@ router.post('/products', async (req, res, next) => {
 	}
 });
 
-// DELETE /api/admin/products
+// DELETE /api/admin/products/:id
 router.delete('/products/:id', async (req, res, next) => {
 	try {
 		const rowsDeleted = await Product.destroy({
@@ -99,7 +140,7 @@ router.delete('/products/:id', async (req, res, next) => {
 	}
 });
 
-// PUT /api/admin/products
+// PUT /api/admin/products/:id
 router.put('/products/:id', async (req, res, next) => {
 	try {
 		const { name, price, imageUrl, quantity, description } = req.body;
@@ -136,6 +177,26 @@ router.put('/users/:id', async (req, res, next) => {
 				}
 			);
 			res.json(user);
+		} else {
+			throw { status: 401, message: 'User Not Found!' };
+		}
+	} catch (err) {
+		console.log(err);
+		next(err);
+	}
+});
+
+//DELETE /api/admin/users/:id
+
+router.delete('/users/:id', async (req, res, next) => {
+	try {
+		const rowsDeleted = await User.destroy({
+			where: {
+				id: req.params.id,
+			},
+		});
+		if (rowsDeleted) {
+			res.sendStatus(200);
 		} else {
 			throw { status: 401, message: 'User Not Found!' };
 		}

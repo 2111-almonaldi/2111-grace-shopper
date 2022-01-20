@@ -3,7 +3,13 @@ import { connect } from "react-redux";
 import { loadProducts } from "../store/products";
 import { Link } from "react-router-dom";
 import { addToCart } from "../store/cart";
-
+import Pagination from "@material-ui/lab/Pagination"
+import { Route } from "react-router-dom";
+import PaginationItem from "@material-ui/lab/PaginationItem";
+import { Link } from "react-router-dom";
+import Pagination from "@material-ui/lab/Pagination";
+import { getParam, setParam } from "../utility-funcs/query";
+import { DEFAULT_PAGE_SIZE} from "../../constants";
 export class AllProducts extends React.Component {
   constructor(props) {
     super(props);

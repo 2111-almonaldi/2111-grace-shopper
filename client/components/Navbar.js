@@ -7,9 +7,11 @@ import { createOrder, updateOrder } from '../store/order';
 import { logoutOrder, clearOrder } from '../store/order';
 import '../../public/navbar.css';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import MenuIcon from '@mui/icons-material/Menu';
 
-const Navbar = ({ handleClick, isLoggedIn, cart }) => (
+
+const Navbar = ({ handleClick, isLoggedIn, cart, isAdmin }) => (
 	<div className="header">
 		{isLoggedIn ? (
 			<div className="header headerDiv">
@@ -48,6 +50,12 @@ const Navbar = ({ handleClick, isLoggedIn, cart }) => (
 					</div>
 				</div>
 			</div>
+  {isAdmin && (
+    <span>Admin Panel</span>
+						<Link to="/admin">
+							<AdminPanelSettingsIcon />
+						</Link>
+    )}
 		) : (
 			<div className="header headerDiv">
 				<Link to="/home">
@@ -96,6 +104,7 @@ const mapState = (state) => {
 	return {
 		isLoggedIn: !!state.auth.id,
 		cart: state.cart.cartItems,
+    isAdmin: state.auth.isAdmin
 	};
 };
 

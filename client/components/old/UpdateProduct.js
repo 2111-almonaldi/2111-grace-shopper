@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { updateProduct } from '../store/products';
-import { setSingleProduct, fetchSingleProduct } from '../store/singleProduct';
+import { updateProduct } from '../../store/products';
+import { setSingleProduct, fetchSingleProduct } from '../../store/singleProduct';
 
 class UpdateProduct extends React.Component {
   constructor(props) {
