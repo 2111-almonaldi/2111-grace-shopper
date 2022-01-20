@@ -86,7 +86,7 @@ const AdminOrders = (props) => {
 
   return (
     <React.Fragment>
-      <TableContainer component={Paper}>
+      <TableContainer >
         <Table size="sm">
           <TableHead className={classes.tableHeader}>
             <TableRow>
