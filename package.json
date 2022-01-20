@@ -25,6 +25,8 @@
     "@emotion/styled": "^11.6.0",
     "@mui/icons-material": "^5.2.5",
     "@mui/material": "^5.2.8",
+    "@stripe/react-stripe-js": "^1.7.0",
+    "@stripe/stripe-js": "^1.22.0",
     "acorn": "^8.7.0",
     "axios": "^0.21.1",
     "babel-preset-es2015": "^6.24.1",
@@ -41,8 +43,10 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
     "pg": "^8.5.1",
+    "react-hook-form": "^7.24.1",
     "react-bootstrap": "^2.1.1",
     "sequelize": "^6.3.5",
+    "stripe": "^8.197.0",
     "style-loader": "^3.3.1"
   },
   "devDependencies": {
@@ -54,6 +58,7 @@
     "babel-loader": "^8.2.2",
     "babel-polyfill": "^6.26.0",
     "chai": "^4.2.0",
+    "css-loader": "^6.5.1",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
     "esm": "^3.2.25",
