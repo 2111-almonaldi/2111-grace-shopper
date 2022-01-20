@@ -1,4 +1,3 @@
-'use strict'
 const { resolve } = require('path');
 
 module.exports = {
@@ -19,7 +18,7 @@ module.exports = {
 				loader: 'babel-loader',
 				include: resolve(__dirname, './client'),
 				options: {
-				presets: ['@babel/preset-react'],
+					presets: ['@babel/preset-react'],
 				},
 			},
 			{

@@ -15,13 +15,13 @@ router.post("/login", async (req, res, next) => {
 
 router.post("/signup", async (req, res, next) => {
   try {
-    const { username, email, firstName, lastName, password} = req.body;
+    const { username, email, firstName, lastName, password } = req.body;
     const user = await User.create({
       username,
       email,
       firstName,
       lastName,
-      password
+      password,
     });
     res.send({ token: await user.generateToken() });
   } catch (err) {

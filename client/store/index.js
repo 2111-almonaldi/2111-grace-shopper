@@ -8,8 +8,6 @@ import axios from 'axios';
 import singleProductReducer from './singleProduct';
 import cartReducer from './cart';
 import orderReducer from './order';
-import admin from './adminInfo';
-import errors from './errors';
 
 const reducer = combineReducers({
 	auth,
@@ -17,8 +15,6 @@ const reducer = combineReducers({
 	singleProduct: singleProductReducer,
 	cart: cartReducer,
 	orders: orderReducer,
-	admin,
-	errors
 });
 
 let middleware = [thunkMiddleware.withExtraArgument({ axios })];
