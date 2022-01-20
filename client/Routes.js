@@ -1,15 +1,13 @@
-import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
-import { withRouter, Route, Switch, Redirect } from "react-router-dom";
-import AllProducts from "./components/AllProducts";
-import SingleProduct from "./components/SingleProduct";
-// import AddProduct from "./components/old/AddProduct";
-// import UpdateProduct from "./components/old/UpdateProduct";
-import { Login, Signup } from "./components/AuthForm";
-import Cart from "./components/Cart";
-import { me } from "./store";
-import AdminMain from "./components/Admin/AdminMain"
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
+import AllProducts from './components/AllProducts';
+import SingleProduct from './components/SingleProduct';
+// import AddProduct from './components/AddProduct';
+// import UpdateProduct from './components/UpdateProduct';
+import { Login, Signup } from './components/AuthForm';
 import Home from './components/Home';
+import Cart from './components/Cart';
 import CheckoutMain from './components/Checkout/CheckoutMain';
 import AccountEdit from './components/User/AccountEdit';
 import Orders from './components/User/Orders';
@@ -19,6 +17,9 @@ import PendingCarts from './components/User/PendingCarts';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import NotFound from './components/NotFound'
+import { me } from './store';
+
+
 const stripePromise = loadStripe(
 	'pk_test_51KIhdSBUe6p65tjNXtHN5NUIQVk30J1x34GqAuvZZZc4QYJ7m2FHOiEjIbfyIkNGXAT2Km74UYnJ5BYJfZ442nIQ00QqawjRra'
 );
@@ -49,6 +50,9 @@ class Routes extends Component {
 							<Route path="/checkout" component={CheckoutMain} />
 						</Elements>
 						<Route path="*" component={NotFound} />
+						<Elements stripe={stripePromise}>
+							<Route path="/checkout" component={CheckoutMain} />
+						</Elements>
 					</Switch>
 				) : (
 					<Switch>

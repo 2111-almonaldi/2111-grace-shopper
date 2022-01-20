@@ -45,6 +45,7 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
     "pg": "^8.5.1",
+    "react-hook-form": "^7.24.1",
     "react-bootstrap": "^2.1.1",
     "react-hook-form": "^7.24.1",
     "sequelize": "^6.3.5",
