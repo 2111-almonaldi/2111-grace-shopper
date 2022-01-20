@@ -29,18 +29,27 @@ export class PendingCarts extends React.Component {
                   return (
                     <div className="order" key={index}>
                       <div className="order-info">
-                        <h5>Order Number: {order.id}</h5>
                         <p>
                           {" "}
                           {order.items.reduce((a, c) => a + c.count, 0)} items
                           in cart
                         </p>
+                        <h5>Cart Preview:</h5>
+                        {order.items.map((item, idx) => {
+                          if (idx < 3) {
+                            return (
+                              <div key={idx}>
+                                <div>
+                                  <ul>{item.name}</ul>
+                                </div>
+                              </div>
+                            );
+                          }
+                        })}
                         <p> Order created: {order.createdAt}</p>
                         <button
-                          onClick={
-                            () => this.props.combineCarts(order.items, order.id)
-
-                            //order.items.forEach((item) => this.props.add(item))
+                          onClick={() =>
+                            this.props.combineCarts(order.items, order.id)
                           }
                         >
                           Keep Shopping

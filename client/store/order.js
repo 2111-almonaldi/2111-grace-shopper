@@ -1,10 +1,12 @@
 import axios from "axios";
 import { clearCart } from "./cart";
+import history from "../history";
 
 const CREATE_ORDER = "CREATE_ORDER";
 const CLEAR_ORDER = "CLEAR_ORDER";
 const FETCH_ORDERS = "FETCH_ORDERS";
 const UPDATE_ORDER = "UPDATE_ORDER";
+const CHECKOUT_ORDER = "CHECKOUT_ORDER";
 
 const _createOrder = (order) => ({
   type: CREATE_ORDER,
@@ -110,6 +112,47 @@ export const loadPending = () => {
       console.log(error);
     }
   };
+};
+
+export const checkoutOrder = (order) => {
+  return async (dispatch, getState) => {
+    try {
+      const {
+        customerAddress,
+        customerCity,
+        customerEmail,
+        customerName,
+        customerPhone,
+        customerState,
+        customerZip,
+      } = order;
+      const stateOrder = getState().orders.order;
+      const cartItems = getState().cart.cartItems.slice();
+      console.log(Object.keys(stateOrder));
+      if (Object.keys(stateOrder).length !== 0) {
+        const { data: updated } = await axios.put(
+          `/api/orders/${stateOrder.id}`,
+          { ...order, items: cartItems, status: "PROCESSING" }
+        );
+        dispatch(_clearOrder());
+        dispatch(clearCart());
+      } else {
+        const { data: created } = await axios.post("/api/orders", {
+          ...order,
+          status: "PROCESSING",
+          items: cartItems,
+        });
+        dispatch(_clearOrder());
+        dispatch(clearCart());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const checkout = () => {
+  history.push("/products");
 };
 
 const initialState = {
