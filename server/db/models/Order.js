@@ -10,7 +10,10 @@ const Order = db.define("order", {
     type: ENUM("CREATED", "PROCESSING", "CANCELLED", "FULFILLED"),
     allowNull: false,
     defaultValue: "CREATED",
-
+  },
+  items: {
+    type: ARRAY(Sequelize.JSON),
+    //allowNull: false
   },
 
   subtotal: {
@@ -80,7 +83,13 @@ const Order = db.define("order", {
 // add in skus -> product details / order details
 // orderdetails
 
-
+Order.prototype.priceAtCheckout = async (order) => {
+  const items = await order.getItems();
+  const itemPrice = items.reduce((a, c) => a + c.price * c.quantity, 0);
+  const tax = itemPrice * 0.08;
+  const totalPrice = itemPrice + tax;
+  return totalPrice;
+};
 Order.checkout = async (user) => {
   const order = (
     await user.getOrders({
@@ -89,8 +98,8 @@ Order.checkout = async (user) => {
       },
     })
   )[0];
-  await order.update({ status: "PROCESSING"});
-  await user.createOrder(); // for next order => { status: "CREATED"}
+  await order.update({ status: "PROCESSING" });
+  // await user.createOrder(); // for next order => { status: "CREATED"}
   const items = await order.getItems();
   for (let i = 0; i < items.length; i++) {
     await items[i].priceAtCheckout();
@@ -150,8 +159,8 @@ const paginate = ({ page }, pageSize = 5) => {
   return {};
 };
 
-const orderStatusFilter = ({ orders }) => {
-  if (orders.length)  {
+const orderHistoryFilter = ({ orders }) => {
+  if (orders.length) {
     orders = orders.split("|");
     return {
       where: {
@@ -165,20 +174,7 @@ const orderStatusFilter = ({ orders }) => {
   return {};
 };
 
-const orderHistoryFilter = ({ orders }) => {
-  if (orders.length) {
-    orders = orders.split("|");
-    return {
-      where: {
-        orderNumber: {
-          [Op.in]: orders.map(order => order.orderNumber)
-        }
-      }
-    }
-  }
-}
-
-const orderSort = ({ sort, dir = "asc"}) => {
+const orderSort = ({ sort, dir = "asc" }) => {
   if (sort && sort !== "none") {
     return {
       order: [[sort, dir.toUpperCase()]],
@@ -217,5 +213,10 @@ CREATE INDEX order_orderNumber_idx ON products USING gin (name gin_trgm_ops);
 ------------------------------------------------------------------
 */
 
-
-module.exports = { Order, paginate, orderHistoryFilter, orderStatusFilter, orderSort, orderSearch };
+module.exports = {
+  Order,
+  paginate,
+  orderHistoryFilter,
+  orderSort,
+  orderSearch,
+};
