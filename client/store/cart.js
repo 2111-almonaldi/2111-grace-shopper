@@ -167,7 +167,7 @@ export const combineCarts = (oldOrder, orderId) => {
 export const deleteCart = () => (dispatch, getState) => {
   dispatch(setCart([]));
   const order = getState().orders.order;
-  if (order) {
+  if (Object.keys(order).length !== 0) {
     dispatch(deleteOrder(order.id));
   }
   window.localStorage.setItem("cart", JSON.stringify([]));
