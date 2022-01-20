@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function GuestCheckout() {
@@ -15,7 +15,9 @@ export default function GuestCheckout() {
 			})}
 		>
 			<input
-				{...register('customerEmail', { required: 'This field is required' })}
+				{...register('customerEmail', {
+					required: 'This field is required',
+				})}
 				placeholder="Email"
 			/>
 			<div>{errors.customerEmail?.message}</div>
@@ -25,7 +27,9 @@ export default function GuestCheckout() {
 			/>
 			<div>{errors.customerName?.message}</div>
 			<input
-				{...register('customerAddress', { required: 'This field is required' })}
+				{...register('customerAddress', {
+					required: 'This field is required',
+				})}
 				placeholder="Address Line 1"
 			/>
 			<div>{errors.customerAddress?.message}</div>

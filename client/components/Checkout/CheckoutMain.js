@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import UserCheckout from './UserCheckout';
+// import UserCheckout from './UserCheckout';
 import GuestCheckout from './GuestCheckout';
 import CardForm from './CardForm';
 import '../../../public/checkoutMain.css';
-
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 const CheckoutMain = ({ isLoggedIn, cart }) => {
@@ -28,7 +27,7 @@ const CheckoutMain = ({ isLoggedIn, cart }) => {
 						<h4>Delivery Address</h4>
 					</div>
 					<div className="checkout-address">
-						{isLoggedIn ? <UserCheckout /> : <GuestCheckout />}
+						<GuestCheckout />
 					</div>
 				</div>
 
@@ -70,8 +69,8 @@ const CheckoutMain = ({ isLoggedIn, cart }) => {
 							</div>
 						</div>
 					)}
-					<CardForm />
 				</div>
+				<CardForm />
 			</div>
 		</div>
 	);

@@ -52,7 +52,11 @@ const CardForm = () => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form
+			onSubmit={handleSubmit}
+			action="/create-checkout-session"
+			method="POST"
+		>
 			<label>
 				Card details
 				<CardElement
@@ -71,9 +75,10 @@ const CardForm = () => {
 					}}
 				/>
 			</label>
-			<button type="submit" disabled={!stripe}>
+			<button type="submit" id="checkout-button" disabled={!stripe}>
 				Pay
 			</button>
+			;
 		</form>
 	);
 };
