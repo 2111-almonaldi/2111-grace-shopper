@@ -8,13 +8,13 @@ const TOKEN = "token";
  * ACTION TYPES
  */
 const SET_AUTH = "SET_AUTH";
-// const SET_ADMIN_STATUS = "SET_ADMIN_STATUS";
+
 
 /**
  * ACTION CREATORS
  */
 const setAuth = (auth) => ({ type: SET_AUTH, auth });
-// export const setAdminStatus = status => ({ type: SET_ADMIN_STATUS, status})
+
 /**
  * THUNK CREATORS
  */
@@ -26,15 +26,9 @@ export const me = () => async (dispatch) => {
         authorization: token,
       },
     });
-    if (!res.data.isAdmin) {
-      return res.status(403).send("User is not an admin");
-    }
-      else {
-        next()
-      }
-    }
-    return dispatch(setAuth(res.data));
+    dispatch(setAuth(res.data));
   }
+}
 
 
 export const authenticate =
@@ -50,7 +44,7 @@ export const authenticate =
       });
       window.localStorage.setItem(TOKEN, res.data.token);
       dispatch(me());
-      history.push("/home");
+      history.push("/products");
     } catch (authError) {
       return dispatch(setAuth({ error: authError }));
     }
@@ -73,8 +67,6 @@ export default function (state = {}, action) {
   switch (action.type) {
     case SET_AUTH:
       return action.auth;
-    case SET_ADMIN_STATUS:
-
     default:
       return state;
   }

@@ -13,10 +13,10 @@ const PaginationUI = (props) => {
   return (
     <Route>
       {({ location }) => {
-        const pgNum = parseInt(getParam(location, "page")) || 1;
+        const page = parseInt(getParam(location, "page")) || 1;
         return (
           <Pagination
-            page={pgNum}
+            page={page}
             count={ttlPages}
             renderItem={(item) => {
               const query = setParam(location, "page", item.pgNum)

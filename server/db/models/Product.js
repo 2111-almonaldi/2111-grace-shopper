@@ -13,9 +13,6 @@ const Product = db.define("product", {
     type: STRING,
     allowNull: false,
     defaultValue: "/images/defaultProduct.jpg",
-    validate: {
-      isUrl: true,
-    },
   },
   price: {
     type: FLOAT,

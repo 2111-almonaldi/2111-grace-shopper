@@ -1,16 +1,16 @@
 import axios from "axios";
 import history from "../history";
 import { getErrors, resetErrors } from "./errors"
-// import { FETCH_PENDING, FETCH_ERROR, FETCH_COMPLETE } from "../constants";
+import { FETCH_PENDING, FETCH_ERROR, FETCH_SUCCESS } from "../constants";
 
 
 /**
  * ACTION TYPES
  */
 
-// export const SET_ADMIN_USERS_FETCH_STATUS = "SET_ADMIN_USERS_FETCH_STATUS";
-// export const SET_ADMIN_PRODUCTS_FETCH_STATUS = "SET_ADMIN_PRODUCTS_FETCH_STATUS"
-// export const SET_ADMIN_ORDERS_FETCH_STATUS = "SET_ADMIN_ORDERS_FETCH_STATUS";
+export const SET_ADMIN_USERS_FETCH_STATUS = "SET_ADMIN_USERS_FETCH_STATUS";
+export const SET_ADMIN_PRODUCTS_FETCH_STATUS = "SET_ADMIN_PRODUCTS_FETCH_STATUS"
+export const SET_ADMIN_ORDERS_FETCH_STATUS = "SET_ADMIN_ORDERS_FETCH_STATUS";
 const ADMIN_GET_USERS = "ADMIN_GET_USERS";
 const ADMIN_DEL_USERS = "ADMIN_DEL_USERS";
 const ADMIN_UPDATE_USER = "ADMIN_UPDATE_USER";
@@ -21,13 +21,14 @@ const ADMIN_GET_PRODUCTS = "ADMIN_GET_PRODUCTS";
 const ADMIN_ADD_PRODUCT = "ADMIN_ADD_PRODUCT";
 const ADMIN_UPDATE_PRODUCT = "ADMIN_EDIT_PRODUCT";
 const ADMIN_DEL_PRODUCT = "ADMIN_DEL_PRODUCT";
+const SET_ADMIN_STATUS = "SET_ADMIN_STATUS";
 
 /**
  * ACTION CREATORS
  */
-// export const fetchAdminUserStatus = status => ({ type: SET_ADMIN_USERS_FETCH_STATUS, status: status });
-// export const fetchAdminProductsStatus = status => ({ type: SET_ADMIN_PRODUCTS_FETCH_STATUS, status: status });
-// export const fetchAdminOrdersStatus = status => ({ type: SET_ADMIN_ORDERS_FETCH_STATUS, status})
+export const fetchAdminUserStatus = status => ({ type: SET_ADMIN_USERS_FETCH_STATUS, status: status });
+export const fetchAdminProductsStatus = status => ({ type: SET_ADMIN_PRODUCTS_FETCH_STATUS, status: status });
+export const fetchAdminOrdersStatus = status => ({ type: SET_ADMIN_ORDERS_FETCH_STATUS, status})
 export const adminGetUsers = payload => ({ type: ADMIN_GET_USERS, payload}); // users
 export const adminDelUser = user => ({ type: ADMIN_DEL_USERS, user }); //
 export const adminUpdateUser = user => ({ type: ADMIN_UPDATE_USER, user });
@@ -38,21 +39,32 @@ export const adminGetProducts = payload => ({ type: ADMIN_GET_PRODUCTS, payload 
 export const adminAddProduct = product => ({ type: ADMIN_ADD_PRODUCT, product });
 export const adminUpdateProduct = product => ({ type: ADMIN_UPDATE_PRODUCT, product });
 export const adminDelProduct = product => ({ type: ADMIN_DEL_PRODUCT, product });
-
-
+export const getAdminStatus = status => ({ type: SET_ADMIN_STATUS, status });
 
 /**
  * THUNK CREATORS
  */
+
+
+ export const fetchAdminStatus = () => async (dispatch) => {
+   try {
+    const res = await axios.get(`api/admin/me`)
+    dispatch(getAdminStatus(res.data.isAdmin));
+    res.data.isAdmin ? history.push('/admin') : history.push('/products')
+  } catch (e) {
+    console.log(e)
+  }
+ }
+
 export const fetchAdminUsers = () => {
   return async dispatch => {
     try {
       // dispatch(fetchAdminUserStatus(FETCH_PENDING));
       const { data } = await axios.get(`/api/admin/users`);
       dispatch(fetchAdminUsers(data))
-      // dispatch(fetchAdminUserStatus(FETCH_COMPLETE));
+      dispatch(fetchAdminUserStatus(FETCH_SUCCESS));
     } catch (err) {
-      // dispatch(fetchAdminUserStatus(FETCH_ERROR));
+      dispatch(fetchAdminUserStatus(FETCH_ERROR));
       dispatch(getErrors(err))
     }
   }
@@ -62,12 +74,12 @@ export const fetchAdminUsers = () => {
 export const fetchAdminProducts = (location) => {
   return async dispatch => {
     try {
-      // dispatch(fetchAdminProductsStatus(FETCH_PENDING))
+      dispatch(fetchAdminProductsStatus(FETCH_PENDING))
       const { data } = await axios.get(`/api/products${location ? location.search : ""}`)
       dispatch(adminGetProducts(data))
-      // dispatch(fetchAdminProductsStatus(FETCH_COMPLETE))
+      dispatch(fetchAdminProductsStatus(FETCH_COMPLETE))
     } catch (err) {
-      // dispatch(fetchAdminProductsStatus(FETCH_ERROR))
+      dispatch(fetchAdminProductsStatus(FETCH_ERROR))
       dispatch(getErrors(err));
     }
   }
@@ -76,12 +88,12 @@ export const fetchAdminProducts = (location) => {
 export const fetchAdminOrders = (location) => {
   return async dispatch => {
     try {
-      // dispatch(fetchAdminOrdersStatus(FETCH_PENDING))
+      dispatch(fetchAdminOrdersStatus(FETCH_PENDING))
       const { data } = await axios.get(`/api/orders/${location ? location.search : ""}`)
       dispatch(adminGetOrders(data));
-      // dispatch(fetchAdminOrdersStatus(FETCH_COMPLETE))
+      dispatch(fetchAdminOrdersStatus(FETCH_SUCCESS))
     } catch (err) {
-      // dispatch(fetchAdminOrdersStatus(FETCH_ERROR))
+      dispatch(fetchAdminOrdersStatus(FETCH_ERROR))
       dispatch(getErrors(err))
     }
   }
@@ -130,7 +142,7 @@ export const adminPromoteUserThunk = (user) => {
   }
 }
 
-export const adminOrderStatusThunk = (order, data) => {
+export const adminUpdateOrderThunk = (order, data) => {
   return async dispatch => {
     try {
       const res = await axios.put(`/api/admin/orders/${order.id}`, data);
@@ -192,12 +204,13 @@ const initialState = {
   users: [],
   orders: [],
   products: [],
-  // getUsersStatus: FETCH_PENDING,
-  // getOrdersStatus: FETCH_PENDING,
-  // getProductsStatus: FETCH_PENDING,
+  getUsersStatus: FETCH_PENDING,
+  getOrdersStatus: FETCH_PENDING,
+  getProductsStatus: FETCH_PENDING,
   totalUsers: 0,
   totalOrders: 0,
   totalProducts: 0,
+  adminStatus: false
 
 }
 
@@ -206,8 +219,10 @@ const initialState = {
  */
 export default (state = initialState, action) => {
   switch (action.type) {
-    // case SET_ADMIN_USERS_FETCH_STATUS:
-    //   return { ...state, getUsersStatus: action.status }
+    case SET_ADMIN_STATUS:
+      return { ...state, adminStatus: action.status }
+    case SET_ADMIN_USERS_FETCH_STATUS:
+      return { ...state, getUsersStatus: action.status }
     case ADMIN_GET_USERS:
       return { ...state, ...action.payload };
     case ADMIN_UPDATE_USER:
@@ -223,8 +238,8 @@ export default (state = initialState, action) => {
           return user
         })]
       }
-    // case SET_ADMIN_ORDERS_FETCH_STATUS:
-    //   return { ...state, getOrdersStatus: action.status }
+    case SET_ADMIN_ORDERS_FETCH_STATUS:
+      return { ...state, getOrdersStatus: action.status }
     case ADMIN_GET_ORDERS:
       return { ...state, ...action.payload };
     case ADMIN_UPDATE_ORDER:
@@ -232,8 +247,8 @@ export default (state = initialState, action) => {
         ...state,
         orders: [...state.orders.filter(order => order.id !== action.order.id), action.order]
       }
-    // case SET_ADMIN_PRODUCTS_FETCH_STATUS:
-    //   return { ...state, getProductsStatus: action.status }
+    case SET_ADMIN_PRODUCTS_FETCH_STATUS:
+      return { ...state, getProductsStatus: action.status }
     case ADMIN_GET_PRODUCTS:
       return { ...state, ...action.payload }
     case ADMIN_ADD_PRODUCT:

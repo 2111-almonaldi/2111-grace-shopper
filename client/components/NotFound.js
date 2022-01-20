@@ -43,7 +43,7 @@ const NotFound = ({ error, message }) => {
               <Button
                 variant="contained"
                 component={RouterLink}
-                to="/home"
+                to="/products"
                 className={styles.notFoundButton}>
                   <span className="not-found-button">Back To Home Page</span>
               </Button>

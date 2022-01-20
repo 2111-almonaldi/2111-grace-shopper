@@ -205,3 +205,12 @@ router.delete('/users/:id', async (req, res, next) => {
 		next(err);
 	}
 });
+
+
+router.get("/me", async (req, res, next) => {
+  try {
+    res.send({ loggedIn: true, firstName: req.user.firstName, lastName: req.user.lastName, username: req.user.username, email: req.user.email, isAdmin: req.user.isAdmin  });
+  } catch (ex) {
+    next(ex);
+  }
+});

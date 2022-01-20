@@ -7,9 +7,12 @@ import { createOrder, updateOrder } from '../store/order';
 import { logoutOrder, clearOrder } from '../store/order';
 import '../../public/navbar.css';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import MenuIcon from '@mui/icons-material/Menu';
+import NotFound from "./NotFound"
+import { fetchAdminStatus } from "../store/adminInfo"
 
-const Navbar = ({ handleClick, isLoggedIn, cart }) => (
+const Navbar = ({ handleClick, isLoggedIn, cart, isAdmin }) => (
 	<div className="header">
 		{isLoggedIn ? (
 			<div className="header headerDiv">
@@ -45,15 +48,13 @@ const Navbar = ({ handleClick, isLoggedIn, cart }) => (
 							</Link>
 						)}<br/>
 						<Link to="/cart/pendingcarts"> Pending Carts </Link>
-						{isAdmin ? (
+						{/* { isAdmin && ( */}
 							<div>
 							<Link to="/admin">
+								<span>Admin Panel</span>
 								<AdminPanelSettingsIcon />
 							</Link>
 						</div>
-						) : (
-							<NotFound />
-						)}
 					</div>
 				</div>
 			</div>
@@ -105,6 +106,7 @@ const mapState = (state) => {
 	return {
 		isLoggedIn: !!state.auth.id,
 		cart: state.cart.cartItems,
+		isAdmin: !!state.admin.adminStatus
 	};
 };
 
@@ -113,6 +115,7 @@ const mapDispatch = (dispatch) => {
 		handleClick() {
 			dispatch(logoutOrder());
 			dispatch(logout());
+			dispatch(fetchAdminStatus())
 			//dispatch(clearCart());
 		},
 	};

@@ -6,6 +6,7 @@ import Tab from "@mui/material/Tab";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -23,10 +24,10 @@ const AdminTabSelector = (props) => {
   const history = useHistory()
 
   const handleClick = (evt, newValue) => {
-    const target = evt.target.innerText.toLowerCase()
+    const session = evt.target.innerText.toLowerCase()
     setValue(newValue)
-    setSelected(target)
-    history.push("/admin/" + target)
+    setSelected(session)
+    history.push("/admin/" + session)
   }
 
   return (

@@ -87,7 +87,7 @@ Order.checkout = async (user) => {
     })
   )[0];
   await order.update({ status: "PROCESSING" });
-  // await user.createOrder(); // for next order => { status: "CREATED"}
+  await user.createOrder(); // for next order => { status: "CREATED"}
   const items = await order.getItems();
   for (let i = 0; i < items.length; i++) {
     await items[i].priceAtCheckout();

@@ -66,7 +66,7 @@ const AdminMain = () => {
   const [snackbarStatus, setSnackbarStatus] = useState(false);
   const [snackBarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-  const [selected, setSelected] = useState("users");
+  const [selected, setSelected] = useState("admin");
   const history = useHistory();
 
   useEffect(() => {
@@ -82,7 +82,7 @@ const AdminMain = () => {
         <div className="page-body">
           <Grid container justifyContent="center">
             <Grid item xs={12} className={classes.tabsContainer}>
-              <AdminTabSelector selected={selected} setSelectedTab={setSelected} />
+              <AdminTabSelector selected={selected} setSelected={setSelected} />
             </Grid>
             <Grid item className={classes.listContainer}>
               <Route path="/admin/users">
