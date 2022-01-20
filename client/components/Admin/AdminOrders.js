@@ -46,7 +46,7 @@ const AdminOrders = (props) => {
   const classes = useStyles();
   const orders = useSelector((state) => state.admin.orders) || [];
   const total = useSelector((state) => state.admin.totalOrders);
-  const fetchStatus = useSelector((state) => state.admin.getOrderStatus);
+  const fetchStatus = useSelector((state) => state.admin.getOrdersStatus);
   const [formName, setFormName] = useState("Default");
   const [dialogStatus, setDialogStatus] = useState(false);
   const [selectedData, setSelectedData] = useState({});
