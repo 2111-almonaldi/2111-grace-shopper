@@ -19,7 +19,7 @@ import AdminUserForm from "./AdminUserForm";
 import { useHistory, useLocation } from "react-router-dom";
 import { getParam, setParam } from "../../queryFunctions/queryParam";
 import PaginationUI from "../PaginationUI";
-import { FETCH_PENDING, FETCH_ERROR} from "../../../constants";
+// import { FETCH_PENDING, FETCH_ERROR} from "../../constants";
 
 const useStyles = makeStyles({
 
@@ -49,7 +49,7 @@ const AdminUsers = (props) => {
   const [formName, setFormName] = useState("Default");
   const [dialogStatus, setDialogStatus] = useState(false);
   const [selectedData, setSelectedData] = useState({});
-  const fetchStatus = useSelector((state) => state.admin.getUsersStatus)
+  // const fetchStatus = useSelector((state) => state.admin.getUsersStatus)
 
   const history = useHistory();
   const location = useLocation();
@@ -72,16 +72,16 @@ const AdminUsers = (props) => {
     dispatch(fetchAdminUsers(location));
   }, [location.search]);
 
-  if (fetchStatus === FETCH_PENDING ) {
-    return (
-      <div className="loading">Loading :{users}!</div>
+  // if (fetchStatus === FETCH_PENDING ) {
+  //   return (
+  //     <div className="loading">Loading :{users}!</div>
 
-    )
-  } else if (fetchStatus === FETCH_ERROR ) {
-    return (
-      <div className="errors">Error Loading: {users}!</div>
-    )
-  } else
+  //   )
+  // } else if (fetchStatus === FETCH_ERROR ) {
+  //   return (
+  //     <div className="errors">Error Loading: {users}!</div>
+  //   )
+  // } else
 
   return (
     <React.Fragment>

@@ -4,10 +4,11 @@ import PaginationItem from "@mui/material/PaginationItem";
 import { Link } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import { getParam, setParam } from "../queryFunctions/queryParam";
-import { DEFAULT_PAGE_SIZE} from "../../constants";
+
 
 const PaginationUI = (props) => {
   const {arr, total} = props;
+  const DEFAULT_PAGE_SIZE = 10
   const ttlPages = Math.floor( total / DEFAULT_PAGE_SIZE) + (total % DEFAULT_PAGE_SIZE < 0 ? 0 : 1)
   return (
     <Route>
