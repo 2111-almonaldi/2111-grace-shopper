@@ -62,6 +62,32 @@ router.get('/orders', requireToken, isAdmin, async (req, res, next) => {
 	}
 });
 
+// PUT /api/admin/orders/:id
+router.put("orders/:id", async (req, res, next) => {
+  try {
+    const {status, subTotal, orderQty, orderNumber, customerEmail, customerName, customerAddress, customerCity, customerState, customerZip } = req.body;
+    const [rowsUpdated, orders] = await Product.update(
+      {status, subTotal, orderQty, orderNumber, customerEmail, customerName, customerAddress, customerCity, customerState, customerZip},
+      {
+        where: {
+          id: req.params.id
+        },
+        returning: true,
+        include: {
+          models: Product
+        }
+      }
+    )
+    if (rowsUpdated) {
+      res.json(orders[0])
+    } else {
+      throw { status: 401, message: "Order Not Found"}
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
 // POST /api/admin/products
 router.post('/products', async (req, res, next) => {
 	try {
@@ -99,7 +125,20 @@ router.delete('/products/:id', async (req, res, next) => {
 	}
 });
 
-// PUT /api/admin/products
+// GET /api/admin/products
+router.get("/products", async (req, res, next) => {
+  try {
+    const products = await Product.findAll({
+      attributes: ["id", "name", "description", "price", "imageUrl", "quantity"]
+    });
+    res.json(products);
+  } catch (err) {
+    next(err);
+  }
+});
+
+
+// PUT /api/admin/products/:id
 router.put('/products/:id', async (req, res, next) => {
 	try {
 		const { name, price, imageUrl, quantity, description } = req.body;
